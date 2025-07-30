@@ -1,0 +1,7 @@
+[gd_scene load_steps=3 format=3 uid="uid://ccu5pylc5aui7"]
+
+[ext_resource type="PackedScene" uid="uid://bt5mahxf87w81" path="res://Entities/Fighter/Fighter.tscn" id="1_7qnjv"]
+[ext_resource type="Script" uid="uid://by5n0d3248vx5" path="res://Entities/Fighter/Player/player.gd" id="2_278gh"]
+
+[node name="Player" instance=ExtResource("1_7qnjv")]
+script = ExtResource("2_278gh")
