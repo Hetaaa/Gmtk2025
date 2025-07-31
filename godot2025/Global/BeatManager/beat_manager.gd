@@ -3,19 +3,22 @@ extends Node
 func on_beat_timeout():
 	emit_signal("beat_hit")
 
-## implementacja prosto z chata, może ci pomoże a jak nie to wywal. W założeniu: on action_window_start enemy oraz gracz kolejkują ruchy, które są wykonywane w tym samym czasie.
-## Trzeba zsynchronizować z muzyką
 	
 signal beat_hit(beat_count: int)
 signal measure_complete(measure_count: int)
 signal tempo_changed(new_bpm: float)
-signal action_window_start()  # When players can input actions
-signal action_window_end()    # When input window closes
-signal execute_actions()      # When all queued actions execute
+signal action_window_start()  
+signal action_window_end()    
+signal execute_actions()     
+
+@onready var music_player := AudioStreamPlayer.new()
+
 
 @export var bpm: float = 120.0
 @export var beats_per_measure: int = 4
-@export var input_window_duration: float = 0.8  # How long players have to input (as fraction of beat)
+@export var input_window_duration: float = 0.6  
+var is_paused = true
+
 
 var beat_count: int = 0
 var measure_count: int = 0
@@ -24,11 +27,78 @@ var input_window_timer: Timer
 var seconds_per_beat: float
 var accepting_input: bool = false
 
+var tracks = [
+	{
+		"index": 0,
+		"path": "res://audio/oldDisc.mp3",
+		"bpm": 35.7 ,
+	},
+	{
+		"index": 1,
+		"path": "res://audio/synth136.mp3",
+		"bpm": 135.7 ,
+	},
+	{
+		"index": 2,
+		"path": "res://audio/noca90.mp3",
+		"bpm": 90 ,
+	},
+	{
+		"index": 3,
+		"path": "res://audio/trance150.mp3",
+		"bpm": 150,
+	},
+	{
+		"index": 4,
+		"path": "res://audio/techno120.mp3",
+		"bpm": 150,
+	}
+	
+]
+
 # Action queue system
 var queued_actions: Array[Dictionary] = []
 
 func _ready():
+	if get_parent() == null:
+		get_tree().root.add_child(self)
+
 	setup_timers()
+	add_child(music_player)
+
+	print("Player ready")
+	
+func play_track(track_index):
+	reset_beats()
+	is_paused = false
+	var selectedTrack = tracks[track_index]
+	
+	music_player.stream = load(selectedTrack["path"])
+	music_player.stream.loop = true
+	
+	set_bpm(selectedTrack["bpm"])
+	music_player.play()
+	start_beats()
+
+
+func end_track():
+	# Zatrzymaj muzykę
+	if music_player.playing:
+		music_player.stop()
+	
+	# Zatrzymaj timery
+	if beat_timer:
+		beat_timer.stop()
+	if input_window_timer:
+		input_window_timer.stop()
+	
+	# Zresetuj zmienne
+	reset_beats()
+	is_paused = true
+	
+	print("Track ended")
+
+
 	
 func setup_timers():
 	# Main beat timer
@@ -52,6 +122,8 @@ func update_tempo():
 
 func _on_beat():
 	beat_count += 1
+	print(beat_count)
+	print("accepting input: ", accepting_input)
 	
 	# First, execute all queued actions from previous beat
 	if queued_actions.size() > 0:
@@ -126,3 +198,24 @@ func reset_beats():
 	measure_count = 0
 	queued_actions.clear()
 	accepting_input = false
+	
+func pause_beats():
+	if beat_timer:
+		beat_timer.stop()
+	if input_window_timer:
+		input_window_timer.stop()
+	if music_player.playing:
+		music_player.stream_paused = true
+		is_paused = true
+	accepting_input = false 
+	
+	print("Beats paused")
+
+func resume_beats():
+	if beat_timer:
+		beat_timer.start()
+	if music_player.stream and not music_player.playing:
+		music_player.stream_paused = false
+		is_paused = false
+
+	print("Beats resumed")
