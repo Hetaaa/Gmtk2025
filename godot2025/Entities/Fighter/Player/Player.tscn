@@ -9,7 +9,7 @@ font_size = 40
 
 [node name="Player" instance=ExtResource("1_7qnjv")]
 script = ExtResource("2_278gh")
-max_health = 3
+max_health = 100
 
 [node name="Sprite2D" type="Sprite2D" parent="." index="0"]
 texture = ExtResource("3_oldkh")

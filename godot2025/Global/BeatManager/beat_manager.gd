@@ -14,7 +14,7 @@ signal execute_actions()      # When all queued actions execute
 
 @export var bpm: float = 60.0
 @export var beats_per_measure: int = 4
-@export var input_window_duration: float = 0.6  
+@export var input_window_duration: float = 1  
 var is_paused = true
 
 
@@ -34,7 +34,7 @@ var tracks = [
 	{
 		"index": 1,
 		"path": "res://audio/synth136.mp3",
-		"bpm": 135.7 ,
+		"bpm": 135.7,
 	},
 	{
 		"index": 2,

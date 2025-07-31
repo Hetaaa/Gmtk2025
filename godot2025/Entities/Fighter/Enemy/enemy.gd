@@ -3,11 +3,21 @@ class_name Enemy extends Fighter
 @export var max_health: int = 3
 @export var move_pattern: Array[FightEnums.Action] = [
 	FightEnums.Action.ATTACK_HIGH,
-	FightEnums.Action.BLOCK_MIDDLE,
+	FightEnums.Action.WAIT,
 	FightEnums.Action.ATTACK_LOW,
 	FightEnums.Action.WAIT,
-	FightEnums.Action.ATTACK_MIDDLE,
-	FightEnums.Action.BLOCK_HIGH
+	FightEnums.Action.ATTACK_HIGH,
+	FightEnums.Action.WAIT,
+	FightEnums.Action.ATTACK_LOW,
+	FightEnums.Action.WAIT,
+	FightEnums.Action.ATTACK_HIGH,
+	FightEnums.Action.WAIT,
+	FightEnums.Action.ATTACK_LOW,
+	FightEnums.Action.WAIT,
+	FightEnums.Action.BLOCK_HIGH,
+	FightEnums.Action.WAIT,
+	FightEnums.Action.BLOCK_HIGH,
+	FightEnums.Action.WAIT,
 ]
 
 var current_health: int
