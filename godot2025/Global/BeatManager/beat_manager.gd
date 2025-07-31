@@ -1,20 +1,18 @@
 extends Node
 
-func on_beat_timeout():
-	emit_signal("beat_hit")
-
-	
+# Signals for beat/rhythm system
 signal beat_hit(beat_count: int)
 signal measure_complete(measure_count: int)
 signal tempo_changed(new_bpm: float)
-signal action_window_start()  
-signal action_window_end()    
-signal execute_actions()     
+
+# Signals for fight action timing
+signal action_window_start()  # When players can input actions
+signal action_window_end()    # When input window closes
+signal execute_actions()      # When all queued actions execute
 
 @onready var music_player := AudioStreamPlayer.new()
 
-
-@export var bpm: float = 120.0
+@export var bpm: float = 60.0
 @export var beats_per_measure: int = 4
 @export var input_window_duration: float = 0.6  
 var is_paused = true
@@ -60,13 +58,10 @@ var tracks = [
 var queued_actions: Array[Dictionary] = []
 
 func _ready():
-	if get_parent() == null:
-		get_tree().root.add_child(self)
-
 	setup_timers()
 	add_child(music_player)
 
-	print("Player ready")
+
 	
 func play_track(track_index):
 	reset_beats()
@@ -122,13 +117,10 @@ func update_tempo():
 
 func _on_beat():
 	beat_count += 1
-	print(beat_count)
-	print("accepting input: ", accepting_input)
 	
 	# First, execute all queued actions from previous beat
-	if queued_actions.size() > 0:
+	if beat_count > 1:  # Don't execute on first beat
 		execute_actions.emit()
-		execute_queued_actions()
 	
 	# Then start new input window for next beat
 	start_input_window()
@@ -142,7 +134,6 @@ func _on_beat():
 
 func start_input_window():
 	accepting_input = true
-	queued_actions.clear()
 	action_window_start.emit()
 	
 	# Set timer for when input window closes
@@ -152,30 +143,6 @@ func start_input_window():
 func _on_input_window_end():
 	accepting_input = false
 	action_window_end.emit()
-
-func queue_action(actor: Node, action_type: String, action_data: Dictionary = {}):
-	if not accepting_input:
-		return false
-	
-	var action = {
-		"actor": actor,
-		"type": action_type,
-		"data": action_data,
-		"timestamp": Time.get_time_dict_from_system()
-	}
-	
-	queued_actions.append(action)
-	return true
-
-func execute_queued_actions():
-	# Sort actions by priority if needed (optional)
-	# queued_actions.sort_custom(func(a, b): return a.get("priority", 0) > b.get("priority", 0))
-	
-	for action in queued_actions:
-		if is_instance_valid(action.actor):
-			action.actor.execute_action(action.type, action.data)
-	
-	queued_actions.clear()
 
 func is_input_window_open() -> bool:
 	return accepting_input
@@ -196,7 +163,6 @@ func stop_beats():
 func reset_beats():
 	beat_count = 0
 	measure_count = 0
-	queued_actions.clear()
 	accepting_input = false
 	
 func pause_beats():
@@ -219,3 +185,33 @@ func resume_beats():
 		is_paused = false
 
 	print("Beats resumed")
+
+# Helper function to get current beat timing quality
+func get_current_beat_timing() -> FightEnums.BeatTiming:
+	if not accepting_input:
+		return FightEnums.BeatTiming.NULL
+	
+	# Calculate how far into the input window we are
+	var elapsed = input_window_timer.wait_time - input_window_timer.time_left
+	var window_progress = elapsed / input_window_timer.wait_time
+	
+	# Define timing windows (adjust these values as needed)
+	if window_progress < 0.2:
+		return FightEnums.BeatTiming.PERFECT
+	elif window_progress < 0.4:
+		return FightEnums.BeatTiming.GOOD
+	elif window_progress < 0.6:
+		return FightEnums.BeatTiming.NICE
+	elif window_progress < 0.8:
+		return FightEnums.BeatTiming.LATE
+	else:
+		return FightEnums.BeatTiming.EARLY
+		
+func get_current_beat_timing_ms() -> int:
+	if not accepting_input:
+		return 9999
+	
+	# Calculate how far into the input window we are
+	var elapsed = input_window_timer.wait_time - input_window_timer.time_left
+	var elapsed_ms = elapsed * 1000
+	return elapsed_ms

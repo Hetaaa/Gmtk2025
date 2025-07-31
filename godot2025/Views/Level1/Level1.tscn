@@ -1,0 +1,47 @@
+[gd_scene load_steps=9 format=3 uid="uid://dhqvjboele1dy"]
+
+[ext_resource type="Script" uid="uid://fnahnjy3r1lf" path="res://Views/Level1/level_1.gd" id="1_jx4cl"]
+[ext_resource type="PackedScene" uid="uid://cr55hlxfh385c" path="res://Entities/Fighter/Enemy/Enemy.tscn" id="1_k7om7"]
+[ext_resource type="PackedScene" uid="uid://ccu5pylc5aui7" path="res://Entities/Fighter/Player/Player.tscn" id="2_7tcgg"]
+[ext_resource type="Texture2D" uid="uid://2bidp6g30hli" path="res://Views/Level1/Assets/level1bg.png" id="3_o8gfm"]
+[ext_resource type="Script" uid="uid://bosya3vcsaa8e" path="res://Views/Level1/debuglabel.gd" id="4_7tcgg"]
+[ext_resource type="Script" uid="uid://bg85pbhu10rdu" path="res://Views/Level1/result_label.gd" id="5_o8gfm"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_7tcgg"]
+font_size = 12
+
+[sub_resource type="LabelSettings" id="LabelSettings_o8gfm"]
+font_size = 50
+
+[node name="Level1" type="Node2D"]
+script = ExtResource("1_jx4cl")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(577, 325)
+scale = Vector2(0.6675, 0.6675)
+texture = ExtResource("3_o8gfm")
+
+[node name="Enemy" parent="." instance=ExtResource("1_k7om7")]
+position = Vector2(988, 467)
+
+[node name="Player" parent="." instance=ExtResource("2_7tcgg")]
+position = Vector2(183, 469)
+
+[node name="Debuglabel" type="Label" parent="."]
+offset_left = 7.0
+offset_top = 8.0
+offset_right = 118.0
+offset_bottom = 91.0
+text = "test"
+label_settings = SubResource("LabelSettings_7tcgg")
+script = ExtResource("4_7tcgg")
+
+[node name="ResultLabel" type="Label" parent="."]
+offset_left = 470.0
+offset_top = 88.0
+offset_right = 562.0
+offset_bottom = 157.0
+text = "test"
+label_settings = SubResource("LabelSettings_o8gfm")
+script = ExtResource("5_o8gfm")
+display_duration = 10.0

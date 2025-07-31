@@ -1,0 +1,29 @@
+extends Node
+
+enum Action {
+	NULL,
+	ATTACK_HIGH,
+	ATTACK_LOW,
+	ATTACK_MIDDLE,
+	BLOCK_HIGH,
+	BLOCK_LOW,
+	BLOCK_MIDDLE,
+	WAIT
+}
+
+
+enum FightResult {
+	ENEMY_HIT,
+	PLAYER_HIT,
+	BOTH_HIT,
+	NONE_HIT,
+}
+
+enum BeatTiming {
+	NULL,
+	PERFECT,
+	GOOD,
+	NICE,
+	LATE,
+	EARLY
+}
