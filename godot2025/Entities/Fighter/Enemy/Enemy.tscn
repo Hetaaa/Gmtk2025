@@ -1,5 +1,24 @@
-[gd_scene load_steps=2 format=3 uid="uid://cr55hlxfh385c"]
+[gd_scene load_steps=5 format=3 uid="uid://cr55hlxfh385c"]
 
 [ext_resource type="PackedScene" uid="uid://bt5mahxf87w81" path="res://Entities/Fighter/Fighter.tscn" id="1_d0mcx"]
+[ext_resource type="Script" uid="uid://xr44ff0rrgbk" path="res://Entities/Fighter/Enemy/enemy.gd" id="2_s3sib"]
+[ext_resource type="Texture2D" uid="uid://b5fw7nns4xf" path="res://Entities/Fighter/Enemy/Assets/enemySprite.png" id="2_vh0ga"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_vh0ga"]
+font_size = 40
 
 [node name="Enemy" instance=ExtResource("1_d0mcx")]
+script = ExtResource("2_s3sib")
+max_health = 3
+move_pattern = Array[int]([1, 6, 2, 7, 3, 4])
+
+[node name="Sprite2D" type="Sprite2D" parent="." index="0"]
+texture = ExtResource("2_vh0ga")
+
+[node name="PlaceholderLabel" type="Label" parent="." index="1"]
+offset_left = -157.0
+offset_top = -252.0
+offset_right = 187.0
+offset_bottom = -143.0
+text = "tesesese"
+label_settings = SubResource("LabelSettings_vh0ga")
