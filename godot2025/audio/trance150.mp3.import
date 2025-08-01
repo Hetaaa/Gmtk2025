@@ -3,12 +3,12 @@
 importer="mp3"
 type="AudioStreamMP3"
 uid="uid://bceeenypwgpv0"
-path="res://.godot/imported/trance150.mp3-463eac69ecd383a3b16feb3d13b1f9dc.mp3str"
+path="res://.godot/imported/trance150.mp3-3a245297085110092a1d5639a9ebfc00.mp3str"
 
 [deps]
 
-source_file="res://audio/trance150.mp3"
-dest_files=["res://.godot/imported/trance150.mp3-463eac69ecd383a3b16feb3d13b1f9dc.mp3str"]
+source_file="res://Audio/trance150.mp3"
+dest_files=["res://.godot/imported/trance150.mp3-3a245297085110092a1d5639a9ebfc00.mp3str"]
 
 [params]
 

@@ -23,6 +23,10 @@ BeatManager="*res://Global/BeatManager/beat_manager.gd"
 FightEnums="*res://Global/FightManager/fight_enums.gd"
 FightManager="*res://Global/FightManager/fight_manager.gd"
 
+[editor]
+
+movie_writer/movie_file="H:/Gmtk2025Godot/Record.avi"
+
 [input]
 
 ATTACK_HIGH={
