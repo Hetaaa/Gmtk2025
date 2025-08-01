@@ -71,7 +71,7 @@ func _start_calibration():
 
 	# Start the beat manager's music and timer
 	# We'll use the second track for this example
-	beat_manager.play_track(1)
+	beat_manager.play_track(0)
 
 func _finish_calibration():
 	is_calibrating = false

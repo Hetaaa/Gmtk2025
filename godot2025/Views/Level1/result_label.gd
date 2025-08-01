@@ -17,7 +17,7 @@ func _ready():
 	text = ""
 	modulate = Color.TRANSPARENT
 
-func _on_actions_revealed(player_action: FightEnums.Action, enemy_action: FightEnums.Action, result: FightEnums.FightResult, timing_bonus: float):
+func _on_actions_revealed(player_action: FightEnums.Action, enemy_action: FightEnums.Action, result: FightEnums.FightResult, timing_bonus: float, window_id: int):
 	var result_text = ""
 	var result_color = Color.WHITE
 	

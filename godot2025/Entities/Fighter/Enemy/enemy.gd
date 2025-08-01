@@ -2,16 +2,9 @@ class_name Enemy extends Fighter
 
 @export var max_health: int = 3
 @export var move_pattern: Array[FightEnums.Action] = [
-	FightEnums.Action.ATTACK_LOW,
-	FightEnums.Action.ATTACK_HIGH,
-	
-	FightEnums.Action.ATTACK_LOW,
-	FightEnums.Action.ATTACK_HIGH,
-	
-	FightEnums.Action.BLOCK_MIDDLE,
-	FightEnums.Action.BLOCK_MIDDLE,
-
-	
+	FightEnums.Action.BLOCK_HIGH,
+	FightEnums.Action.BLOCK_HIGH,
+	FightEnums.Action.BLOCK_HIGH,
 ]
 
 var current_health: int
@@ -23,8 +16,8 @@ func _ready():
 	FightManager.register_enemy(self)
 	
 	# Connect to BeatManager signals
-	BeatManager.action_window_open.connect(_on_action_window_start)
-	BeatManager.action_window_close.connect(_on_action_window_end)
+	BeatManager.action_window_open.connect(_on_action_window_open)
+	BeatManager.action_window_close.connect(_on_action_window_close)
 	
 	# Ensure we have a valid move pattern
 	if move_pattern.is_empty():
@@ -38,11 +31,11 @@ func get_next_action() -> FightEnums.Action:
 	move_index = (move_index + 1) % move_pattern.size()  # Loop back to start
 	return action
 
-func submit_enemy_action():
+func submit_enemy_action(target_window_id: int = -1):
 	var action = get_next_action()
 	
-	# Submit action to FightManager
-	FightManager.enemy_action_submitted.emit(action)
+	# Use FightManager's method instead of direct signal emission
+	FightManager.submit_enemy_action(action, target_window_id)
 	
 func take_damage(amount: int):
 	current_health -= amount
@@ -53,20 +46,17 @@ func take_damage(amount: int):
 	var tween = create_tween()
 	tween.tween_property(self, "modulate", Color.WHITE, 0.3)
 	
-
 # Method to change enemy's pattern mid-fight (optional)
 func set_new_pattern(new_pattern: Array[FightEnums.Action]):
 	move_pattern = new_pattern
 	move_index = 0
 
 # --- Signal Callbacks ---
-func _on_action_window_start():
-	# Enemy submits action immediately when window opens
-	submit_enemy_action()
-	
-	# Visual cue for enemy action window
+func _on_action_window_open(window_id: int, beat_count: int) -> void:
+	# Submit action for this specific window
+	submit_enemy_action(window_id)
 	modulate = Color.WHITE * 1.1
 
-func _on_action_window_end():
+func _on_action_window_close(window_id: int, beat_count: int):
 	# Visual cue for end of action window
 	modulate = Color.WHITE * 0.9

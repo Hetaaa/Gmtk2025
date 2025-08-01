@@ -8,7 +8,7 @@
 [node name="Enemy" instance=ExtResource("1_d0mcx")]
 script = ExtResource("2_s3sib")
 max_health = 100
-move_pattern = Array[int]([2, 1, 2, 1, 6, 6])
+move_pattern = Array[int]([4, 4, 4])
 
 [node name="Sprite2D" type="Sprite2D" parent="." index="0"]
 texture = ExtResource("2_vh0ga")

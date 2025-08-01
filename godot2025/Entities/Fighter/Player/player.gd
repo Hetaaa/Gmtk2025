@@ -31,7 +31,7 @@ func submit_player_action_to_manager(action: FightEnums.Action):
 	# Use the new submit method which handles timing validation internally
 	FightManager.submit_player_action(action)
 	var timing = BeatManager.get_current_beat_timing()
-	print(FightEnums.Action.keys()[action] + ' ' + FightEnums.BeatTiming.keys()[timing])
+	#print("From player.gd = Player pressed " + FightEnums.Action.keys()[action] + ' ' + FightEnums.BeatTiming.keys()[timing])
 	
 	# Store the selected action and timing locally for display
 	selected_action_enum = action

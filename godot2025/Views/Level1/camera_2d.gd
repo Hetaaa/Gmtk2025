@@ -11,7 +11,7 @@ func _ready():
 	
 	# Connect to FightManager signal (assuming FightManager is autoloaded)
 	if FightManager:
-		FightManager.actions_revealed.connect(_on_actions_reavealed)
+		FightManager.actions_revealed.connect(_on_actions_revealed)
 
 func _process(delta):
 	if shake_timer > 0:
@@ -37,9 +37,9 @@ func shake(intensity: float, duration: float):
 	shake_duration = duration
 	shake_timer = duration
 
-func _on_actions_reavealed(player_action: FightEnums.Action, enemy_action: FightEnums.Action, result: FightEnums.FightResult, timing_bonus: float):
+func _on_actions_revealed(player_action: FightEnums.Action, enemy_action: FightEnums.Action, result: FightEnums.FightResult, timing_bonus: float, window_id: int):
 	if result == FightEnums.FightResult.ENEMY_HIT:
-		var base_intensity = 100
+		var base_intensity = 50
 		var base_duration = 0.2
 		
 		# Perfect timing gets stronger shake

@@ -28,7 +28,7 @@ func _ready() -> void:
 	slide_duration = BeatManager.grace_period / 2.0
 	
 	# Connect signals
-	BeatManager.action_window_open.connect(_on_action_window_start)
+	BeatManager.action_window_open.connect(_on_action_window_open)
 	FightManager.fight_ended.connect(_on_fight_ended)
 	
 	# Get parent reference and ensure it's valid
@@ -178,7 +178,7 @@ func _get_texture_path(action: FightEnums.Action) -> String:
 
 
 ### Signal Handlers
-func _on_action_window_start() -> void:
+func _on_action_window_open(window_id: int, beat_count: int):
 	await get_tree().process_frame # Ensure all updates are processed before refreshing
 	_update_display(true)
 
