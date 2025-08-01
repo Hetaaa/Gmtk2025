@@ -14,7 +14,7 @@ signal resolve_current_round()
 @export var bpm: float = 60.0
 @export var beats_per_measure: int = 4
 @export var grace_period: float = 0.4  # Total grace window centered on beat
-@export var timing_offset: float = 0.023 # This offset shifts the entire timing sequence
+@export var timing_offset: float = 0.016 # This offset shifts the entire timing sequence
 
 @export var beat_sound_path: String = "res://Global/BeatManager/audiomass-output.mp3"# Path to your beat sound file (e.g., a kick drum)
 
@@ -146,18 +146,37 @@ func _schedule_beat_events():
 
 func _schedule_beat_events_custom(beat_time: float):
 	var current_time = music_player.get_playback_position()
-	var time_to_beat = beat_time - current_time
 
-	var time_to_open = time_to_beat - (grace_period / 2.0)
-	var time_to_close = time_to_beat + (grace_period / 2.0)
+	var target_open_absolute_time = (beat_time - (grace_period / 2.0)) + timing_offset
+	var target_hit_absolute_time = beat_time + timing_offset
+	var target_close_absolute_time = (beat_time + (grace_period / 2.0)) + timing_offset
 
-	if time_to_open <= 0:
+	var delay_to_open = target_open_absolute_time - current_time
+	var delay_to_hit = target_hit_absolute_time - current_time
+	var delay_to_close = target_close_absolute_time - current_time
+
+
+	if delay_to_open <= 0:
 		_open_action_window()
 	else:
-		get_tree().create_timer(time_to_open).timeout.connect(_open_action_window)
+		get_tree().create_timer(delay_to_open).timeout.connect(_open_action_window)
 
-	get_tree().create_timer(time_to_close).timeout.connect(_close_action_window)
+	var beat_count_at_schedule = beat_count # Capture current values
+	var measure_count_at_schedule = measure_count
 
+	if delay_to_hit <= 0:
+		beat_hit.emit(beat_count_at_schedule)
+	else:
+		var timer_hit = get_tree().create_timer(delay_to_hit, false) # 'false' for one_shot
+		timer_hit.timeout.connect(func():
+			beat_hit.emit(beat_count_at_schedule)
+		)
+
+	if delay_to_close <= 0:
+		_close_action_window()
+	else:
+		get_tree().create_timer(delay_to_close).timeout.connect(_close_action_window)
+		
 func _open_action_window():
 	if not action_window_opened:
 		action_window_opened = true
@@ -182,7 +201,7 @@ func _process(_delta):
 
 	var current_time = music_player.get_playback_position()
 
-	# Jeśli track cofnął się (czyli loop), resetujemy
+	# If track reversed (e.g., loop), reset
 	if current_time < last_time:
 		beat_index = 0
 		beat_count = 0
@@ -190,15 +209,20 @@ func _process(_delta):
 
 	last_time = current_time
 
-	if beat_index < beat_map.size() and current_time >= beat_map[beat_index] - timing_offset:
-		beat_count += 1
-		if beat_count % beats_per_measure == 0:
-			measure_count += 1
-			measure_complete.emit(measure_count)
+	if beat_index < beat_map.size():
+		var current_beat_time = beat_map[beat_index]
+		var beat_scheduling_trigger_time = current_beat_time 
 
-		beat_hit.emit(beat_count)
-		_schedule_beat_events_custom(beat_map[beat_index])
-		beat_index += 1
+		if current_time >= beat_scheduling_trigger_time:
+			beat_count += 1
+			if beat_count % beats_per_measure == 0:
+				measure_count += 1
+				measure_complete.emit(measure_count)
+
+			_schedule_beat_events_custom(current_beat_time)
+			beat_index += 1
+
+
 
 
 
