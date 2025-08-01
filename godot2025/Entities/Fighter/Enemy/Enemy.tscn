@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://cr55hlxfh385c"]
+[gd_scene load_steps=6 format=3 uid="uid://cr55hlxfh385c"]
 
 [ext_resource type="PackedScene" uid="uid://bt5mahxf87w81" path="res://Entities/Fighter/Fighter.tscn" id="1_d0mcx"]
 [ext_resource type="Script" uid="uid://xr44ff0rrgbk" path="res://Entities/Fighter/Enemy/enemy.gd" id="2_s3sib"]
@@ -6,32 +6,19 @@
 [ext_resource type="Script" uid="uid://pv6ru3qvvb6q" path="res://Entities/Fighter/Enemy/enemy_action_preview.gd" id="4_5c0np"]
 [ext_resource type="Script" uid="uid://bn4t5kq1ax2ot" path="res://Entities/Fighter/Enemy/enemy_action_preview_region.gd" id="5_fia76"]
 
-[sub_resource type="LabelSettings" id="LabelSettings_vh0ga"]
-font_size = 40
-
 [node name="Enemy" instance=ExtResource("1_d0mcx")]
 script = ExtResource("2_s3sib")
 max_health = 100
-move_pattern = Array[int]([1, 7, 2, 7, 1, 7, 2, 7, 1, 7, 2, 7, 4, 7, 4, 7])
+move_pattern = Array[int]([2, 1, 2, 1, 6, 6])
 
 [node name="Sprite2D" type="Sprite2D" parent="." index="0"]
 texture = ExtResource("2_vh0ga")
 
-[node name="PlaceholderLabel" type="Label" parent="." index="1"]
-offset_left = -157.0
-offset_top = -252.0
-offset_right = 187.0
-offset_bottom = -143.0
-text = "tesesese"
-label_settings = SubResource("LabelSettings_vh0ga")
-
-[node name="EnemyActionPreview" type="Node2D" parent="." index="2"]
-script = ExtResource("4_5c0np")
-slide_duration = 0.2
-
-[node name="EnemyActionPreviewRegion" type="CanvasLayer" parent="." index="3"]
+[node name="EnemyActionPreview" type="Node2D" parent="." index="1"]
 visible = false
+script = ExtResource("4_5c0np")
+spacing = 125.0
+beat_duration = 0.02
+
+[node name="EnemyActionPreviewRegion" type="Node2D" parent="." index="2"]
 script = ExtResource("5_fia76")
-fade_duration = 0.01
-pulse_intensity = 0.01
-pulse_speed = 0.01

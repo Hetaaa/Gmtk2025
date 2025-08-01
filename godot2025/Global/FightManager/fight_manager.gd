@@ -1,3 +1,4 @@
+# FightManager.gd
 extends Node
 
 # Signals for fight events
@@ -15,8 +16,8 @@ var player_action_queued: FightEnums.Action = FightEnums.Action.NULL
 var enemy_action_queued: FightEnums.Action = FightEnums.Action.NULL
 var player_timing_queued: FightEnums.BeatTiming = FightEnums.BeatTiming.NULL
 
-# Flag to control if actions can be submitted
-var accepting_submissions: bool = false
+# NEW: Flag to ensure only one resolution per beat
+var round_resolved_this_beat: bool = false
 
 const ATTACK_TO_BLOCK_MAP: Dictionary = {
 	FightEnums.Action.ATTACK_HIGH: FightEnums.Action.BLOCK_HIGH,
@@ -44,9 +45,9 @@ const BLOCKS: Array[FightEnums.Action] = [
 ]
 
 func _ready():
-	BeatManager.action_window_start.connect(_on_action_window_start)
-	BeatManager.action_window_end.connect(_on_action_window_end)
-	BeatManager.execute_actions.connect(_on_execute_actions)
+	# Connect to BeatManager signals. IMPORTANT: Use the correct signal names!
+	BeatManager.action_window_open.connect(_on_action_window_open)
+	BeatManager.action_window_close.connect(_on_action_window_close) # Corrected signal name
 	
 	player_action_submitted.connect(_on_player_action_submitted)
 	enemy_action_submitted.connect(_on_enemy_action_submitted)
@@ -57,40 +58,60 @@ func register_player(player: Player):
 func register_enemy(enemy: Enemy):
 	enemy_ref = enemy
 
-# --- Signal Callbacks from BeatManager ---
-func _on_action_window_start():
-	accepting_submissions = true
-	# Reset queued actions at the start of a new window
-	reset_round_queued_actions()
+# NEW: Reset the resolution flag when a new action window opens
+func _on_action_window_open():
+	round_resolved_this_beat = false
+	reset_round_queued_actions() # Clear previous beat's actions at the start of a new window
 
-func _on_action_window_end():
-	accepting_submissions = false
-	# If no action was submitted, default to WAIT
-	if player_action_queued == FightEnums.Action.NULL:
-		player_action_queued = FightEnums.Action.WAIT
-	if enemy_action_queued == FightEnums.Action.NULL:
-		enemy_action_queued = FightEnums.Action.WAIT
-
-func _on_execute_actions():
-	resolve_fight_round()
+func _on_action_window_close():
+	# If the round hasn't been resolved by player input yet, resolve it now.
+	if not round_resolved_this_beat:
+		# If player hasn't submitted an action, default to WAIT
+		if player_action_queued == FightEnums.Action.NULL:
+			player_action_queued = FightEnums.Action.WAIT
+			player_timing_queued = FightEnums.BeatTiming.NULL
+		# If enemy hasn't submitted an action yet, default to WAIT
+		if enemy_action_queued == FightEnums.Action.NULL:
+			enemy_action_queued = FightEnums.Action.WAIT
+			
+		_resolve_current_round() # Call the internal resolution function
 
 # --- Callbacks for Action Submission Signals ---
 func _on_player_action_submitted(action: FightEnums.Action, timing: FightEnums.BeatTiming):
-	if accepting_submissions:
-		player_action_queued = action
-		player_timing_queued = timing
-	else:
-		print("Player action submitted outside input window!")
+	# Only accept input if the action window is open and the round hasn't been resolved yet
+	if not BeatManager.action_window_opened or round_resolved_this_beat:
+		return
+	
+	player_action_queued = action
+	player_timing_queued = timing
+	
+	_resolve_current_round()
 
 func _on_enemy_action_submitted(action: FightEnums.Action):
-	if accepting_submissions:
-		enemy_action_queued = action
-	else:
-		print("Enemy action submitted outside input window!")
+	# Enemy actions are always accepted (they're AI controlled)
+	enemy_action_queued = action
 
-func resolve_fight_round():
+# Public method for player input (call this from your input handler)
+func submit_player_action(action: FightEnums.Action):
+	var timing = BeatManager.get_current_beat_timing()
+	player_action_submitted.emit(action, timing)
+
+# Internal function to handle resolution logic, called by both player input and window close
+func _resolve_current_round():
+	if round_resolved_this_beat: # Prevent multiple resolutions per beat
+		return
+	
+	round_resolved_this_beat = true # Mark as resolved for this beat
+
+	# If enemy hasn't submitted an action yet, default to WAIT
+	if enemy_action_queued == FightEnums.Action.NULL:
+		enemy_action_queued = FightEnums.Action.WAIT
+	
 	var result = determine_winner(player_action_queued, enemy_action_queued)
 	var timing_bonus = get_timing_bonus(player_timing_queued)
+	
+	print("Fight result: ", FightEnums.FightResult.keys()[result])
+	print("Timing bonus: ", timing_bonus)
 	
 	actions_revealed.emit(player_action_queued, enemy_action_queued, result, timing_bonus)
 	
@@ -100,20 +121,24 @@ func resolve_fight_round():
 			if enemy_ref and enemy_ref.has_method("take_damage"):
 				var damage = 1 + int(timing_bonus > 0.8)  # Perfect timing = extra damage
 				enemy_ref.take_damage(damage)
+				print("Enemy takes ", damage, " damage")
 		
 		FightEnums.FightResult.PLAYER_HIT: # This means enemy's attack hit the player
 			if player_ref and player_ref.has_method("take_damage"):
 				player_ref.take_damage(1) # Assuming enemy damage is always 1 for simplicity
+				print("Player takes 1 damage")
 
 		FightEnums.FightResult.BOTH_HIT: # Both hit each other
 			if enemy_ref and enemy_ref.has_method("take_damage"):
 				var player_damage = 1 + int(timing_bonus > 0.8)
 				enemy_ref.take_damage(player_damage)
+				print("Enemy takes ", player_damage, " damage")
 			if player_ref and player_ref.has_method("take_damage"):
 				player_ref.take_damage(1) # Assuming enemy damage is always 1
+				print("Player takes 1 damage")
 
 		FightEnums.FightResult.NONE_HIT: # No one hit (e.g., successful block, or both waited/blocked)
-			pass
+			print("No one takes damage")
 	
 	# Check for fight end
 	if player_ref and player_ref.current_health <= 0:
@@ -121,10 +146,19 @@ func resolve_fight_round():
 	elif enemy_ref and enemy_ref.current_health <= 0:
 		fight_ended.emit("Player") # Player wins if enemy health <= 0
 
+	# Actions are reset at the start of the next action windowoooooo
+	# reset_round_queued_actions() # NO: Do not reset here. Reset at the start of the next window.
+
+
 func determine_winner(p_action: FightEnums.Action, e_action: FightEnums.Action) -> FightEnums.FightResult:
+	print("Checking block:")
+	print("Player action:", FightEnums.Action.keys()[player_action_queued])
+	print("Enemy action:", FightEnums.Action.keys()[enemy_action_queued])
+
 	# 1. Both attack at the same height -> BOTH_HIT
 	if p_action in ATTACKS and e_action in ATTACKS:
-		if ATTACK_TO_BLOCK_MAP.get(p_action) == BLOCK_TO_ATTACK_MAP.get(e_action): # Checks if they're the "same height" attack
+		# Check if they're attacking the same height
+		if p_action == e_action:
 			return FightEnums.FightResult.BOTH_HIT
 
 	# 2. Handle WAIT actions
@@ -140,7 +174,7 @@ func determine_winner(p_action: FightEnums.Action, e_action: FightEnums.Action) 
 		else:
 			return FightEnums.FightResult.NONE_HIT # Enemy waits, player blocks/waits -> No one hit
 
-	# 3. Handle Attack vs. Block/Other Attack Scenarios
+	# 3. Handle Attack vs. Block scenarios
 	var p_is_attack := p_action in ATTACKS
 	var p_is_block := p_action in BLOCKS
 	var e_is_attack := e_action in ATTACKS
@@ -160,8 +194,7 @@ func determine_winner(p_action: FightEnums.Action, e_action: FightEnums.Action) 
 		else:
 			return FightEnums.FightResult.PLAYER_HIT # Wrong block
 
-	# 4. If nothing above, it's likely both blocking, or some other non-hitting combo
-	# This acts as a fallback for cases like both blocking or other unhandled scenarios resulting in no hit.
+	# 4. Both blocking or other non-hitting combinations
 	return FightEnums.FightResult.NONE_HIT
 
 func get_timing_bonus(timing: FightEnums.BeatTiming) -> float:

@@ -56,6 +56,3 @@ func show_result(result_text: String, color: Color, duration: float = display_du
 	scale = Vector2(0.5, 0.5)
 	tween.tween_property(self, "scale", Vector2(1.2, 1.2), 0.1)
 	tween.tween_property(self, "scale", Vector2(1.0, 1.0), 0.1).set_delay(0.1)
-	
-	# Fade out after duration
-	tween.tween_property(self, "modulate", Color.TRANSPARENT, 0.5).set_delay(duration)
