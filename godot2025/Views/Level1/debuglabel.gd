@@ -24,8 +24,8 @@ func _ready():
 	# Connect to BeatManager signals
 	BeatManager.beat_hit.connect(_on_beat_hit)
 	BeatManager.measure_complete.connect(_on_measure_complete)
-	BeatManager.action_window_start.connect(_on_action_window_start)
-	BeatManager.action_window_end.connect(_on_action_window_end)
+	BeatManager.action_window_open.connect(_on_action_window_start)
+	BeatManager.action_window_close.connect(_on_action_window_end)
 	BeatManager.tempo_changed.connect(_on_tempo_changed)
 	
 	# Connect to FightManager signals
@@ -48,16 +48,6 @@ func update_display():
 	if show_bpm:
 		display_lines.append("BPM: " + str(BeatManager.bpm))
 	
-	# Timing window status
-	if show_timing_window:
-		var window_status = "Window: "
-		if BeatManager.accepting_input:
-			window_status += "OPEN ✅"
-			var timing_quality = BeatManager.get_current_beat_timing()
-			window_status += " (" + get_timing_name(timing_quality) + ")"
-		else:
-			window_status += "CLOSED ❌"
-		display_lines.append(window_status)
 	
 	# Current queued actions
 	if show_current_actions:
@@ -183,9 +173,7 @@ func flash_beat_indicator():
 
 # --- Process update for real-time timing display ---
 func _process(_delta):
-	# Update timing window status in real-time during input window
-	if BeatManager.accepting_input and show_timing_window:
-		update_display()
+	update_display()
 
 # --- Utility functions for external control ---
 func toggle_beat_flash():
