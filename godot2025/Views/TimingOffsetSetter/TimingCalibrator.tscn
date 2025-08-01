@@ -1,0 +1,64 @@
+[gd_scene load_steps=3 format=3 uid="uid://bw28g5dsolm3h"]
+
+[ext_resource type="Script" uid="uid://ctbdx2qfi5y3y" path="res://Views/TimingOffsetSetter/timing_offset.gd" id="1_vexer"]
+[ext_resource type="PackedScene" uid="uid://cafdmmsxd306a" path="res://Global/Shaders/crtEffect/crtEffect.tscn" id="2_kb7mb"]
+
+[node name="TimingCalibrator" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = -2.0
+offset_right = 10.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_vexer")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.424
+anchor_top = 0.5
+anchor_right = 0.575
+anchor_bottom = 0.706
+offset_left = 87.552
+offset_top = 1.0
+offset_right = -86.4
+offset_bottom = -132.488
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Instructions" type="Label" parent="Panel/VBoxContainer"]
+layout_mode = 2
+text = "Instructions"
+
+[node name="InputCounter" type="Label" parent="Panel/VBoxContainer"]
+layout_mode = 2
+text = "Input"
+
+[node name="OffsetResult" type="Label" parent="Panel/VBoxContainer"]
+layout_mode = 2
+text = "Offset"
+
+[node name="StartButton" type="Button" parent="Panel/VBoxContainer"]
+layout_mode = 2
+text = "Start"
+
+[node name="ResetButton" type="Button" parent="Panel/VBoxContainer"]
+layout_mode = 2
+text = "Restet"
+
+[node name="CrtEffect" parent="." instance=ExtResource("2_kb7mb")]
+
+[connection signal="pressed" from="Panel/VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/ResetButton" to="." method="_on_reset_button_pressed"]

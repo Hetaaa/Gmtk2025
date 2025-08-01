@@ -201,6 +201,7 @@ func _process(_delta):
 		beat_index += 1
 
 
+
 func can_accept_input() -> bool:
 	if is_paused or not action_window_opened:
 		return false
