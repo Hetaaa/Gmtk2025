@@ -124,7 +124,8 @@ func _close_action_window():
 # New function to play the beat sound
 func _on_beat_hit_play_sound(_beat_count: int):
 	if beat_indicator_player.stream:
-		beat_indicator_player.play()
+		#beat_indicator_player.play()
+		pass
 
 func can_accept_input() -> bool:
 	if is_paused or not action_window_opened:
