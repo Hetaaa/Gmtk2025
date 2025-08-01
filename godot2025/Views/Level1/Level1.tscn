@@ -24,7 +24,6 @@ texture = ExtResource("3_o8gfm")
 
 [node name="Enemy" parent="." instance=ExtResource("1_k7om7")]
 position = Vector2(988, 467)
-move_pattern = Array[int]([2, 1, 2, 1, 6, 6])
 
 [node name="Player" parent="." instance=ExtResource("2_7tcgg")]
 position = Vector2(183, 469)
