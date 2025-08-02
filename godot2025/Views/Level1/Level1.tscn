@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://dhqvjboele1dy"]
+[gd_scene load_steps=16 format=3 uid="uid://dhqvjboele1dy"]
 
 [ext_resource type="Script" uid="uid://fnahnjy3r1lf" path="res://Views/Level1/level_1.gd" id="1_jx4cl"]
 [ext_resource type="PackedScene" uid="uid://cr55hlxfh385c" path="res://Entities/Fighter/Enemy/Enemy.tscn" id="1_k7om7"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://2bidp6g30hli" path="res://Views/Level1/Assets/level1bg.png" id="3_o8gfm"]
 [ext_resource type="Script" uid="uid://bosya3vcsaa8e" path="res://Views/Level1/debuglabel.gd" id="4_7tcgg"]
 [ext_resource type="Texture2D" uid="uid://hksmych4yaof" path="res://Views/Level1/Assets/darnek.png" id="4_68f1g"]
+[ext_resource type="Texture2D" uid="uid://57a03xysogl4" path="res://Entities/UI/FightEnd/Death_Screen.png" id="4_mdt5n"]
 [ext_resource type="Script" uid="uid://bg85pbhu10rdu" path="res://Views/Level1/result_label.gd" id="5_o8gfm"]
 [ext_resource type="Script" uid="uid://cwd460tcty84l" path="res://Views/Level1/camera_2d.gd" id="7_rkknl"]
 [ext_resource type="PackedScene" uid="uid://btsthgqwbxfrf" path="res://Entities/UI/BeatSlider/BeatSlider.tscn" id="8_eifpy"]
@@ -19,9 +20,10 @@ font_size = 12
 [sub_resource type="LabelSettings" id="LabelSettings_o8gfm"]
 font_size = 50
 
-[node name="Level1" type="Node2D"]
+[node name="Level1" type="Node2D" node_paths=PackedStringArray("end_screen")]
 scale = Vector2(0.967373, 0.989198)
 script = ExtResource("1_jx4cl")
+end_screen = NodePath("FightEnd")
 
 [node name="Node2D" type="Node2D" parent="."]
 position = Vector2(-591.292, -386.171)
@@ -62,6 +64,12 @@ text = "test"
 label_settings = SubResource("LabelSettings_o8gfm")
 script = ExtResource("5_o8gfm")
 display_duration = 10.0
+
+[node name="FightEnd" type="Sprite2D" parent="."]
+material = ExtResource("2_sw0ay")
+position = Vector2(-604.73, -387.182)
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("4_mdt5n")
 
 [node name="BeatSlider" parent="." instance=ExtResource("8_eifpy")]
 anchors_preset = 15

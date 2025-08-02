@@ -3,12 +3,12 @@
 importer="mp3"
 type="AudioStreamMP3"
 uid="uid://bjg0elc7l1cwm"
-path="res://.godot/imported/soyouthinkmucheasier.mp3-3d84074ef9e8f10a1fd4041bf453241b.mp3str"
+path="res://.godot/imported/soyouthinkmucheasier.mp3-98f21abdc9145c5f374698580f480ca8.mp3str"
 
 [deps]
 
-source_file="res://Audio/soyouthinkmucheasier.mp3"
-dest_files=["res://.godot/imported/soyouthinkmucheasier.mp3-3d84074ef9e8f10a1fd4041bf453241b.mp3str"]
+source_file="res://audio/soyouthinkmucheasier.mp3"
+dest_files=["res://.godot/imported/soyouthinkmucheasier.mp3-98f21abdc9145c5f374698580f480ca8.mp3str"]
 
 [params]
 
