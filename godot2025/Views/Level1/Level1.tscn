@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dhqvjboele1dy"]
+[gd_scene load_steps=11 format=3 uid="uid://dhqvjboele1dy"]
 
 [ext_resource type="Script" uid="uid://fnahnjy3r1lf" path="res://Views/Level1/level_1.gd" id="1_jx4cl"]
 [ext_resource type="PackedScene" uid="uid://cr55hlxfh385c" path="res://Entities/Fighter/Enemy/Enemy.tscn" id="1_k7om7"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://bosya3vcsaa8e" path="res://Views/Level1/debuglabel.gd" id="4_7tcgg"]
 [ext_resource type="Script" uid="uid://bg85pbhu10rdu" path="res://Views/Level1/result_label.gd" id="5_o8gfm"]
 [ext_resource type="Script" uid="uid://cwd460tcty84l" path="res://Views/Level1/camera_2d.gd" id="7_rkknl"]
+[ext_resource type="PackedScene" uid="uid://btsthgqwbxfrf" path="res://Entities/UI/BeatSlider/BeatSlider.tscn" id="8_eifpy"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_7tcgg"]
 font_size = 12
@@ -15,21 +16,34 @@ font_size = 12
 font_size = 50
 
 [node name="Level1" type="Node2D"]
+scale = Vector2(0.967373, 0.989198)
 script = ExtResource("1_jx4cl")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(577, 325)
+[node name="Node2D" type="Node2D" parent="."]
+position = Vector2(-591.292, -386.171)
+scale = Vector2(1, 1)
+
+[node name="Background" type="Sprite2D" parent="Node2D"]
+position = Vector2(576.75, 241.5)
 scale = Vector2(0.6675, 0.6675)
 texture = ExtResource("3_o8gfm")
 
-[node name="Enemy" parent="." instance=ExtResource("1_k7om7")]
-position = Vector2(988, 467)
-move_pattern = Array[int]([1, 1, 4])
+[node name="BlackBackdrop" type="ColorRect" parent="Node2D"]
+offset_left = -50.0
+offset_top = 566.0
+offset_right = 1202.0
+offset_bottom = 738.0
+color = Color(0, 0, 0, 1)
 
-[node name="Player" parent="." instance=ExtResource("2_7tcgg")]
-position = Vector2(183, 469)
+[node name="Enemy" parent="Node2D" instance=ExtResource("1_k7om7")]
+position = Vector2(987.75, 383.5)
+scale = Vector2(1, 1)
 
-[node name="Debuglabel" type="Label" parent="."]
+[node name="Player" parent="Node2D" instance=ExtResource("2_7tcgg")]
+position = Vector2(182.75, 385.5)
+scale = Vector2(1, 1)
+
+[node name="Debuglabel" type="Label" parent="Node2D"]
 offset_left = 7.0
 offset_top = 8.0
 offset_right = 118.0
@@ -38,16 +52,27 @@ text = "test"
 label_settings = SubResource("LabelSettings_7tcgg")
 script = ExtResource("4_7tcgg")
 
-[node name="ResultLabel" type="Label" parent="."]
-offset_left = 470.0
-offset_top = 88.0
-offset_right = 562.0
-offset_bottom = 157.0
+[node name="ResultLabel" type="Label" parent="Node2D"]
+offset_left = 469.75
+offset_top = 4.5
+offset_right = 561.75
+offset_bottom = 73.5
 text = "test"
 label_settings = SubResource("LabelSettings_o8gfm")
 script = ExtResource("5_o8gfm")
 display_duration = 10.0
 
+[node name="BeatSlider" parent="." instance=ExtResource("8_eifpy")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 214.315
+offset_bottom = 214.315
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.330922, 0.330922)
+slide_distance = -400.0
+
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(576, 323)
+scale = Vector2(1, 1)
 script = ExtResource("7_rkknl")

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://ci2aun0y63y5g"]
+
+[ext_resource type="Texture2D" uid="uid://0d0qp0pabind" path="res://Entities/UI/BeatSlider/Assets/player_beat.png" id="1_u3qke"]
+
+[node name="PlayerBeat" type="Sprite2D"]
+texture = ExtResource("1_u3qke")
