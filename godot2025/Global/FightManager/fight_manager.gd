@@ -19,6 +19,12 @@ enum PhaseType {
 var player_ref: Player
 var enemy_ref: Enemy
 
+#Sound effects
+var sound_fail: AudioStreamPlayer
+var sound_success_attack: AudioStreamPlayer
+var sound_success_block: AudioStreamPlayer
+
+
 # Phase system variables
 var phase_pattern: Array[int] = []
 var current_phase_index: int = 0
@@ -82,6 +88,20 @@ func _ready():
 	BeatManager.action_window_open.connect(_on_action_window_open)
 	BeatManager.action_window_close.connect(_on_action_window_close)
 	BeatManager.resolve_round.connect(_on_resolve_round)
+	
+	sound_fail = AudioStreamPlayer.new()
+	sound_fail.stream = load("res://audio/kurwa.mp3")
+	add_child(sound_fail)
+	
+	sound_success_attack = AudioStreamPlayer.new()
+	sound_success_attack.stream = load("res://audio/punch1.mp3")
+	add_child(sound_success_attack)
+	
+	sound_success_block = AudioStreamPlayer.new()
+	sound_success_block.stream = load("res://audio/blocked10.mp3")
+	add_child(sound_success_block)
+	
+	
 	
 	player_action_submitted.connect(_on_player_action_submitted)
 	enemy_action_submitted.connect(_on_enemy_action_submitted)
@@ -210,6 +230,7 @@ func _on_enemy_action_submitted(action: FightEnums.Action, window_id: int):
 
 func submit_player_action(action: FightEnums.Action):
 	if current_phase_type != PhaseType.PLAYER_PHASE:
+		sound_fail.play()
 		print("Cannot submit player action - not in player phase")
 		return
 	
@@ -221,9 +242,17 @@ func submit_player_action(action: FightEnums.Action):
 	
 	var timing = BeatManager.get_timing_for_window(player_window_id)
 	if timing == FightEnums.BeatTiming.NULL:
+		sound_fail.play()
 		print("Invalid timing for player window ", player_window_id)
 		return
-	
+		
+	var is_attack := action in ATTACKS
+	var is_block := action in BLOCKS
+
+	if is_attack:
+		sound_success_attack.play()
+	elif is_block:
+		sound_success_block.play()
 	player_action_submitted.emit(action, timing, player_window_id)
 
 # Helper method to find earliest open window for current player phase
@@ -262,7 +291,14 @@ func submit_enemy_action(action: FightEnums.Action, target_window_id: int = -1):
 	
 	if window_id == -1:
 		return
-	
+		
+	var is_attack := action in ATTACKS
+	var is_block := action in BLOCKS
+
+	if is_attack:
+		sound_success_attack.play()
+	elif is_block:
+		sound_success_block.play()
 	enemy_action_submitted.emit(action, window_id)
 
 func _resolve_window_immediately(window_id: int):
