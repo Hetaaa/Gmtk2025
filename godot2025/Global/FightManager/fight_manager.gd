@@ -5,6 +5,7 @@ extends Node
 signal actions_revealed(player_action: FightEnums.Action, enemy_action: FightEnums.Action, result: FightEnums.FightResult, timing_bonus: float, window_id: int)
 signal fight_ended(winner: String)
 signal phase_changed(phase_type: PhaseType, moves_remaining: int)
+signal phases_loaded()
 
 # Signals for receiving actions from player/enemy
 signal player_action_submitted(action: FightEnums.Action, timing: FightEnums.BeatTiming, window_id: int)
@@ -15,8 +16,8 @@ enum PhaseType {
 	PLAYER_PHASE
 }
 
-var player_ref: Node
-var enemy_ref: Node
+var player_ref: Player
+var enemy_ref: Enemy
 
 # Phase system variables
 var phase_pattern: Array[int] = []
@@ -110,7 +111,7 @@ func load_phase_pattern(file_path: String) -> bool:
 	if phase_pattern.is_empty():
 		push_error("Phase pattern file is empty or invalid")
 		return false
-	
+	phases_loaded.emit()
 	_initialize_first_phase()
 	return true
 
