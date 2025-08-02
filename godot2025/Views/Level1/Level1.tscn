@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://dhqvjboele1dy"]
+[gd_scene load_steps=17 format=3 uid="uid://dhqvjboele1dy"]
 
 [ext_resource type="Script" uid="uid://fnahnjy3r1lf" path="res://Views/Level1/level_1.gd" id="1_jx4cl"]
 [ext_resource type="PackedScene" uid="uid://cr55hlxfh385c" path="res://Entities/Fighter/Enemy/Enemy.tscn" id="1_k7om7"]
@@ -6,10 +6,15 @@
 [ext_resource type="Texture2D" uid="uid://2bidp6g30hli" path="res://Views/Level1/Assets/level1bg.png" id="3_o8gfm"]
 [ext_resource type="Script" uid="uid://bosya3vcsaa8e" path="res://Views/Level1/debuglabel.gd" id="4_7tcgg"]
 [ext_resource type="Script" uid="uid://bg85pbhu10rdu" path="res://Views/Level1/result_label.gd" id="5_o8gfm"]
+[ext_resource type="FontFile" uid="uid://cfa4vejqva60b" path="res://Entities/UI/Tiny5-Regular.ttf" id="7_8duqw"]
 [ext_resource type="Script" uid="uid://cwd460tcty84l" path="res://Views/Level1/camera_2d.gd" id="7_rkknl"]
-[ext_resource type="PackedScene" uid="uid://bj661pypnyxav" path="res://Global/PauseManager/PauseMenu.tscn" id="8_eifpy"]
+[ext_resource type="PackedScene" uid="uid://btsthgqwbxfrf" path="res://Entities/UI/BeatSlider/BeatSlider.tscn" id="8_eifpy"]
+[ext_resource type="PackedScene" uid="uid://dp0bhf44ueyi1" path="res://Entities/UI/EnemyHP/EnemyHp.tscn" id="9_obthu"]
+[ext_resource type="PackedScene" uid="uid://d4gbprg56cy7s" path="res://Entities/UI/PlayerHP/PlayerHP.tscn" id="9_x75e8"]
+[ext_resource type="PackedScene" uid="uid://d3n17wdkrqfle" path="res://Entities/UI/321Start/321Start.tscn" id="13_mdt5n"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_7tcgg"]
+font = ExtResource("7_8duqw")
 font_size = 12
 
 [sub_resource type="LabelSettings" id="LabelSettings_o8gfm"]
@@ -38,6 +43,10 @@ texture = ExtResource("3_o8gfm")
 position = Vector2(713, 443)
 scale = Vector2(0.467716, 0.467716)
 
+[node name="Enemy" parent="Node2D" instance=ExtResource("1_k7om7")]
+position = Vector2(412.457, 91.9933)
+scale = Vector2(0.564785, 0.564785)
+move_pattern = Array[int]([4, 4, 1, 3, 2, 1, 3, 2, 4, 4])
 
 [node name="Player" parent="." instance=ExtResource("2_7tcgg")]
 position = Vector2(441, 437)
@@ -62,8 +71,35 @@ label_settings = SubResource("LabelSettings_o8gfm")
 script = ExtResource("5_o8gfm")
 display_duration = 10.0
 
+[node name="BeatSlider" parent="." instance=ExtResource("8_eifpy")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -589.225
+offset_top = -144.562
+offset_right = -589.225
+offset_bottom = -144.562
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.241312, 0.241312)
+
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(576, 323)
 script = ExtResource("7_rkknl")
 
-[editable path="PauseMenu"]
+[node name="EnemyHp" parent="." instance=ExtResource("9_obthu")]
+offset_left = -501.358
+offset_top = -770.397
+offset_right = -501.358
+offset_bottom = -770.397
+scale = Vector2(0.31, 0.31)
+
+[node name="PlayerHp" parent="." instance=ExtResource("9_x75e8")]
+offset_left = -1117.46
+offset_top = -770.0
+offset_right = -1117.46
+offset_bottom = -770.0
+scale = Vector2(0.31, 0.31)
+
+[node name="321Start" parent="." instance=ExtResource("13_mdt5n")]
+position = Vector2(-605.764, -500.405)

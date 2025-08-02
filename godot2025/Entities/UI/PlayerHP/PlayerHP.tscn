@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://ds7agw3pp1ncc" path="res://Entities/UI/PlayerHP/player_hp.gd" id="1_fm0u3"]
 [ext_resource type="Texture2D" uid="uid://rjitxoo6s0lo" path="res://Entities/UI/PlayerHP/player_health_border.png" id="2_pa2ak"]
+[ext_resource type="FontFile" uid="uid://cfa4vejqva60b" path="res://Entities/UI/Tiny5-Regular.ttf" id="2_qa3w7"]
 [ext_resource type="Texture2D" uid="uid://bfqkflmcqwyfl" path="res://Entities/UI/PlayerHP/PLAYER.png" id="3_yf2ln"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pa2ak"]
@@ -14,99 +15,11 @@ corner_radius_bottom_left = 7
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fm0u3"]
 bg_color = Color(1, 1, 1, 1)
 
-[sub_resource type="FontFile" id="FontFile_pa2ak"]
-subpixel_positioning = 0
-msdf_pixel_range = 14
-msdf_size = 128
-cache/0/16/0/ascent = 0.0
-cache/0/16/0/descent = 0.0
-cache/0/16/0/underline_position = 0.0
-cache/0/16/0/underline_thickness = 0.0
-cache/0/16/0/scale = 1.0
-cache/0/17/0/ascent = 0.0
-cache/0/17/0/descent = 0.0
-cache/0/17/0/underline_position = 0.0
-cache/0/17/0/underline_thickness = 0.0
-cache/0/17/0/scale = 1.0
-cache/0/18/0/ascent = 0.0
-cache/0/18/0/descent = 0.0
-cache/0/18/0/underline_position = 0.0
-cache/0/18/0/underline_thickness = 0.0
-cache/0/18/0/scale = 1.0
-cache/0/19/0/ascent = 0.0
-cache/0/19/0/descent = 0.0
-cache/0/19/0/underline_position = 0.0
-cache/0/19/0/underline_thickness = 0.0
-cache/0/19/0/scale = 1.0
-cache/0/20/0/ascent = 0.0
-cache/0/20/0/descent = 0.0
-cache/0/20/0/underline_position = 0.0
-cache/0/20/0/underline_thickness = 0.0
-cache/0/20/0/scale = 1.0
-cache/0/21/0/ascent = 0.0
-cache/0/21/0/descent = 0.0
-cache/0/21/0/underline_position = 0.0
-cache/0/21/0/underline_thickness = 0.0
-cache/0/21/0/scale = 1.0
-cache/0/22/0/ascent = 0.0
-cache/0/22/0/descent = 0.0
-cache/0/22/0/underline_position = 0.0
-cache/0/22/0/underline_thickness = 0.0
-cache/0/22/0/scale = 1.0
-cache/0/23/0/ascent = 0.0
-cache/0/23/0/descent = 0.0
-cache/0/23/0/underline_position = 0.0
-cache/0/23/0/underline_thickness = 0.0
-cache/0/23/0/scale = 1.0
-cache/0/24/0/ascent = 0.0
-cache/0/24/0/descent = 0.0
-cache/0/24/0/underline_position = 0.0
-cache/0/24/0/underline_thickness = 0.0
-cache/0/24/0/scale = 1.0
-cache/0/25/0/ascent = 0.0
-cache/0/25/0/descent = 0.0
-cache/0/25/0/underline_position = 0.0
-cache/0/25/0/underline_thickness = 0.0
-cache/0/25/0/scale = 1.0
-cache/0/26/0/ascent = 0.0
-cache/0/26/0/descent = 0.0
-cache/0/26/0/underline_position = 0.0
-cache/0/26/0/underline_thickness = 0.0
-cache/0/26/0/scale = 1.0
-cache/0/27/0/ascent = 0.0
-cache/0/27/0/descent = 0.0
-cache/0/27/0/underline_position = 0.0
-cache/0/27/0/underline_thickness = 0.0
-cache/0/27/0/scale = 1.0
-cache/0/28/0/ascent = 0.0
-cache/0/28/0/descent = 0.0
-cache/0/28/0/underline_position = 0.0
-cache/0/28/0/underline_thickness = 0.0
-cache/0/28/0/scale = 1.0
-cache/0/29/0/ascent = 0.0
-cache/0/29/0/descent = 0.0
-cache/0/29/0/underline_position = 0.0
-cache/0/29/0/underline_thickness = 0.0
-cache/0/29/0/scale = 1.0
-cache/0/30/0/ascent = 0.0
-cache/0/30/0/descent = 0.0
-cache/0/30/0/underline_position = 0.0
-cache/0/30/0/underline_thickness = 0.0
-cache/0/30/0/scale = 1.0
-cache/0/31/0/ascent = 0.0
-cache/0/31/0/descent = 0.0
-cache/0/31/0/underline_position = 0.0
-cache/0/31/0/underline_thickness = 0.0
-cache/0/31/0/scale = 1.0
-cache/0/32/0/ascent = 0.0
-cache/0/32/0/descent = 0.0
-cache/0/32/0/underline_position = 0.0
-cache/0/32/0/underline_thickness = 0.0
-cache/0/32/0/scale = 1.0
-
 [sub_resource type="LabelSettings" id="LabelSettings_yf2ln"]
-font = SubResource("FontFile_pa2ak")
-font_size = 32
+font = ExtResource("2_qa3w7")
+font_size = 70
+outline_size = 16
+outline_color = Color(0.165656, 0.165656, 0.165656, 1)
 
 [node name="PlayerHp" type="Control"]
 layout_mode = 3
@@ -130,10 +43,10 @@ show_percentage = false
 
 [node name="HealthLabel" type="Label" parent="."]
 layout_mode = 0
-offset_left = 731.0
-offset_top = 332.0
-offset_right = 846.0
-offset_bottom = 376.0
+offset_left = 662.0
+offset_top = 315.0
+offset_right = 925.0
+offset_bottom = 395.0
 scale = Vector2(0.9111, 0.935026)
 text = "ttetetett"
 label_settings = SubResource("LabelSettings_yf2ln")
