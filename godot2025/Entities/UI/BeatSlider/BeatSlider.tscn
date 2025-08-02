@@ -9,11 +9,6 @@ layout_mode = 3
 anchors_preset = 0
 scale = Vector2(1.77037, 1.77037)
 script = ExtResource("1_25btn")
-slide_distance = 10.0
-spawn_offset = 800.0
-cleanup_delay = 1.5
-fade_in_duration = 0.2
-fade_out_duration = 0.2
 
 [node name="Border" type="Sprite2D" parent="."]
 position = Vector2(0, 140)

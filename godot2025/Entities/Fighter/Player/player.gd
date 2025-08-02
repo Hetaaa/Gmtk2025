@@ -6,15 +6,21 @@ class_name Player extends Fighter
 var current_health: int
 var selected_action_enum: FightEnums.Action = FightEnums.Action.NULL # Store the enum value
 var selected_timing_enum: FightEnums.BeatTiming = FightEnums.BeatTiming.NULL
+
 var hit_sound: AudioStreamPlayer
+
+@onready var Sprite = $Sprite2D
+
 
 func _ready():
 	current_health = max_health
+	Sprite.play("WAIT")
 	FightManager.register_player(self)
-	FightManager.player_ref
+
 	hit_sound = AudioStreamPlayer.new()
 	hit_sound.stream = load("res://audio/hit3.wav")
 	add_child(hit_sound)
+
 	
 func _input(event):
 	# Allow input anytime, but let the system validate timing	
@@ -40,24 +46,34 @@ func submit_player_action_to_manager(action: FightEnums.Action):
 	var timing = BeatManager.get_current_beat_timing()
 	print("Timing result: ", FightEnums.BeatTiming.keys()[timing])
 	
+	
 	# Use the new submit method which handles timing validation internally
 	FightManager.submit_player_action(action)
-	
 	print("From player.gd = Player pressed " + FightEnums.Action.keys()[action] + ' ' + FightEnums.BeatTiming.keys()[timing])
 	
 	# Store the selected action and timing locally for display
 	selected_action_enum = action
 	selected_timing_enum = timing
 	
+	change_animation(FightEnums.Action.keys()[action])
 func take_damage(amount: int):
 	current_health -= amount
 	current_health = max(0, current_health)
 	
+
 	#Sound effect
 	hit_sound.play()
 	
+	Sprite.play("PLAYER_HIT")
+
 	# Visual damage effect
 	modulate = Color.RED
 	var tween = create_tween()
 	tween.tween_property(self, "modulate", Color.WHITE, 0.3)
 	health_changed.emit()
+
+func change_animation(anim : StringName):
+	Sprite.play(anim)
+
+func _on_sprite_2d_animation_finished() -> void:
+	change_animation("WAIT")

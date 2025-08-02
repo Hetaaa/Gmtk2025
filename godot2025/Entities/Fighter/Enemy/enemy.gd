@@ -2,10 +2,19 @@ class_name Enemy extends Fighter
 
 @export var max_health: int = 3
 @export var move_pattern: Array[FightEnums.Action] = [
+	FightEnums.Action.BLOCK_HIGH,
+	FightEnums.Action.BLOCK_HIGH,
 	FightEnums.Action.ATTACK_HIGH,
+	FightEnums.Action.ATTACK_MIDDLE,
+	FightEnums.Action.ATTACK_LOW,
 	FightEnums.Action.ATTACK_HIGH,
+	FightEnums.Action.ATTACK_MIDDLE,
+	FightEnums.Action.ATTACK_LOW,
+	FightEnums.Action.BLOCK_HIGH,
 	FightEnums.Action.BLOCK_HIGH,
 ]
+
+@onready var Sprite = $Sprite2D
 
 var current_health: int
 var move_index: int = 0
@@ -16,6 +25,7 @@ func _ready():
 	current_health = max_health
 	# Register enemy with FightManager
 	FightManager.register_enemy(self)
+	Sprite.play("WAIT")
 	
 	hit_sound= AudioStreamPlayer.new()
 	hit_sound.stream = load("res://audio/hit6.wav")
@@ -97,12 +107,16 @@ func _on_action_window_open(window_id: int, beat_count: int) -> void:
 func _on_action_window_close(window_id: int, beat_count: int):
 	# No visual changes here - phase color takes precedence
 	pass
-
+func change_animation(anim : StringName):
+	Sprite.play(anim)
+	
 func _on_phase_changed(phase_type: FightManager.PhaseType, moves_remaining: int):
 	if phase_type == FightManager.PhaseType.ENEMY_PHASE:
 		print("Enemy: My turn! ", moves_remaining, " moves to make")
-		modulate = Color.GREEN * 1.2  # Visual indicator it's enemy phase
 		reset_for_new_phase()
 	else:
-		print("Enemy: Player's turn to respond")
-		modulate = Color.WHITE  # Return to normal color
+		print("Enemy: Player's turn to respond") 
+
+
+func _on_sprite_2d_animation_finished() -> void:
+	Sprite.play("WAIT")

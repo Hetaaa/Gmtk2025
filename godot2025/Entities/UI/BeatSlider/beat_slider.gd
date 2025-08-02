@@ -36,11 +36,19 @@ var game_time: float = 0.0
 var spawned_beats: Dictionary = {}
 var active_sprites: Array[TextureRect] = []
 
+# Skip mode tracking - simplified
+var current_loop_skip_count: int = 0
+var is_first_loop: bool = true  # Track if we're on the first loop
+var global_gameplay_beat_counter: int = 0  # Track total gameplay beats across all loops
+
 var enemy_sprite_texture
 var player_sprite_texture
+
 # Called when the node enters the scene tree
 func _ready():
 	BeatManager.mapLoaded.connect(_on_map_loaded)
+	BeatManager.music_looped.connect(_on_music_looped)
+	BeatManager.skip_mode_changed.connect(_on_skip_mode_changed)
 	FightManager.phases_loaded.connect(_on_phases_loaded)
 	# Ensure we have default textures if none provided
 	enemy_sprite_texture = load("res://Entities/UI/BeatSlider/Assets/enemy_beat.png")
@@ -60,31 +68,69 @@ func is_enemy_beat(beat_index: int) -> bool:
 	if phase_pattern.is_empty():
 		return true  # Default to enemy if no pattern specified
 	
+	# The beat_index represents the position in the beat_timestamps array
+	# We need to convert this to a "gameplay beat number" that accounts for the pattern cycle
+	var beat_number = beat_index + 1
+	
+	# Calculate the actual gameplay beat number considering global progression
+	var gameplay_beat_number: int
+	
+	if BeatManager.is_first_loop and BeatManager.skip_first_beats > 0:
+		# First loop with skipped beats
+		if beat_number > BeatManager.skip_first_beats:
+			# This beat comes after the skipped ones
+			gameplay_beat_number = beat_number - BeatManager.skip_first_beats
+		else:
+			# This beat will be skipped, use raw beat number for visual consistency
+			gameplay_beat_number = beat_number
+	else:
+		# Not first loop, or first loop without skips
+		# We need to calculate how many gameplay beats have been processed so far
+		
+		# Calculate gameplay beats from first loop
+		var first_loop_total_beats = beat_timestamps.size()
+		var first_loop_skipped_beats = BeatManager.skip_first_beats if BeatManager.skip_first_beats > 0 else 0
+		var first_loop_gameplay_beats = first_loop_total_beats - first_loop_skipped_beats
+		
+		# Calculate how many complete loops have finished
+		# Since we're in a subsequent loop, at least one loop is complete
+		var completed_loops = 1
+		
+		# For each additional completed loop, all beats are gameplay beats
+		var additional_gameplay_beats = (completed_loops - 1) * beat_timestamps.size()
+		
+		# Total gameplay beats processed before this loop
+		var total_previous_gameplay_beats = first_loop_gameplay_beats + additional_gameplay_beats
+		
+		# Current beat's position in the global gameplay sequence
+		gameplay_beat_number = total_previous_gameplay_beats + beat_number
+	
 	# Calculate total beats in one complete pattern cycle
 	var total_pattern_beats = 0
 	for phase_length in phase_pattern:
-		total_pattern_beats += phase_length
+		total_pattern_beats += phase_length * 2  # Each number creates 2 phases (enemy + player)
 	
 	if total_pattern_beats == 0:
 		return true  # Safety check for empty pattern
 	
 	# Find which beat we are within the repeating pattern
-	var beat_in_pattern = beat_index % total_pattern_beats
+	var beat_in_pattern = (gameplay_beat_number - 1) % total_pattern_beats
 	
 	# Walk through the pattern to find which phase this beat belongs to
-	var phase_start = 0
-	var is_enemy_phase = true  # Start with enemy phase
+	var current_beat = 0
 	
-	for phase_length in phase_pattern:
-		var phase_end = phase_start + phase_length
+	for i in range(phase_pattern.size()):
+		var phase_length = phase_pattern[i]
 		
-		# Check if the beat falls within this phase [phase_start, phase_end)
-		if beat_in_pattern >= phase_start and beat_in_pattern < phase_end:
-			return is_enemy_phase
+		# Enemy phase for this length
+		if beat_in_pattern >= current_beat and beat_in_pattern < current_beat + phase_length:
+			return true  # Enemy phase
+		current_beat += phase_length
 		
-		# Move to next phase
-		phase_start = phase_end
-		is_enemy_phase = !is_enemy_phase  # Alternate between enemy and player
+		# Player phase for this length
+		if beat_in_pattern >= current_beat and beat_in_pattern < current_beat + phase_length:
+			return false  # Player phase
+		current_beat += phase_length
 	
 	# This should never be reached, but default to enemy just in case
 	return true
@@ -108,11 +154,24 @@ func check_for_new_beats():
 	for i in range(beat_timestamps.size()):
 		var beat_time = beat_timestamps[i]
 		var spawn_time = beat_time - lead_time
+		var beat_number = i + 1  # Beat numbers start from 1
+		
+		# Skip spawning if this beat should be skipped (only applies to current loop)
+		if should_skip_beat(beat_number):
+			# Mark as spawned so we don't check it again
+			if not spawned_beats.has(i):
+				spawned_beats[i] = true
+			continue
 		
 		# Check if it's time to spawn this beat and we haven't spawned it yet
 		if game_time >= spawn_time and not spawned_beats.has(i):
 			spawn_beat_sprite(beat_time, i)
 			spawned_beats[i] = true
+
+# Simplified skip logic - only check current loop state
+func should_skip_beat(beat_number: int) -> bool:
+	# Only skip if we're on the first loop AND have a skip count set AND the beat is within that range
+	return is_first_loop and current_loop_skip_count > 0 and beat_number <= current_loop_skip_count
 
 # Spawn a sprite for a specific beat
 func spawn_beat_sprite(beat_time: float, beat_index: int):
@@ -258,9 +317,38 @@ func get_current_accuracy() -> float:
 # Helper function to get the phase type of a specific beat (for debugging)
 func get_beat_phase_type(beat_index: int) -> String:
 	return "Enemy" if is_enemy_beat(beat_index) else "Player"
-	
+
+# Signal handlers for BeatManager
 func _on_map_loaded():
 	beat_timestamps = BeatManager.beat_map
 	
 func _on_phases_loaded():
 	phase_pattern = FightManager.phase_pattern
+
+# Handle music loop - reset for new loop
+func _on_music_looped():
+	# Calculate how many gameplay beats we processed in the previous loop
+	var beats_in_previous_loop = 0
+	if is_first_loop and current_loop_skip_count > 0:
+		# On first loop, we process all beats except the skipped ones
+		beats_in_previous_loop = beat_timestamps.size() - current_loop_skip_count
+	else:
+		# On subsequent loops, we process all beats
+		beats_in_previous_loop = beat_timestamps.size()
+	
+	# Add to global counter
+	global_gameplay_beat_counter += beats_in_previous_loop
+	
+	spawned_beats.clear()  # Clear the spawned beats dictionary to allow re-spawning
+	current_loop_skip_count = 0  # Reset skip count - no skipping on subsequent loops
+	is_first_loop = false  # Mark that we're no longer on the first loop
+	cleanup_all_sprites()
+
+# Handle skip mode changes from BeatManager
+func _on_skip_mode_changed(is_skipping: bool, skip_count: int):
+	if is_skipping:
+		current_loop_skip_count = skip_count
+		is_first_loop = true  # If we're entering skip mode, we're on the first loop
+	else:
+		current_loop_skip_count = 0
+		is_first_loop = false  # If skip mode is turned off, we're no longer on first loop
