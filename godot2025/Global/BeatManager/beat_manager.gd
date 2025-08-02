@@ -13,8 +13,8 @@ signal resolve_round(window_id: int, beat_count: int)
 
 @export var bpm: float = 60.0
 @export var beats_per_measure: int = 4
-@export var grace_period: float = 0.6
-@export var timing_offset: float = 0.152
+@export var grace_period: float = 0.4
+@export var timing_offset: float = 0.00
 
 @export var beat_sound_path: String = "res://Global/BeatManager/audiomass-output.mp3"
 
