@@ -8,6 +8,8 @@ signal action_window_open(window_id: int, beat_count: int)
 signal action_window_close(window_id: int, beat_count: int)
 signal resolve_round(window_id: int, beat_count: int)
 
+signal mapLoaded()
+
 @onready var music_player := AudioStreamPlayer.new()
 @onready var beat_indicator_player := AudioStreamPlayer.new()
 
@@ -58,15 +60,15 @@ var tracks = [
 	},
 	{
 		"path": "res://Audio/synth136.mp3", 
-		"bpm": 136
+		"beat_map_file":"res://Audio/BeatMaps/synthkickMap.txt"
 	},
 	{
 		"path": "res://Audio/noca90.mp3",
-		"bpm": 90 
+		"beat_map_file":"res://Audio/BeatMaps/piekaryMap.txt"
 	},
 	{ 
 		"path": "res://Audio/trance150.mp3", 
-		"bpm": 150 
+		"beat_map_file": "res://Audio/BeatMaps/tranceMap.txt"
 		},
 	{ 
 		"path": "res://Audio/techno120.mp3",
@@ -103,6 +105,14 @@ var tracks = [
 	{ 
 		"path": "res://Audio/fastmeloody.mp3", 
 		"beat_map_file": "res://Audio/BeatMaps/festMap.txt"
+	},
+	{ 
+		"path": "res://Audio/myarchnemesis.mp3", 
+		"beat_map_file": "res://Audio/BeatMaps/myarchnemesiskickMap.txt"
+	},
+	{ 
+		"path": "res://Audio/cartrip.mp3", 
+		"beat_map_file": "res://Audio/BeatMaps/cartripMap.txt"
 	}
 ]
 
@@ -202,6 +212,7 @@ func play_track(index: int):
 	if track.has("beat_map_file"):
 		use_beat_map = true
 		beat_map = load_beat_map_from_file(track["beat_map_file"])
+		mapLoaded.emit()
 	else:
 		use_beat_map = false
 		set_bpm(track["bpm"])
@@ -224,6 +235,11 @@ func reset():
 	beat_count = 0
 	measure_count = 0
 	_reset_all_windows()
+	
+	
+func set_music_speed(speed: float):
+	music_player.pitch_scale = speed
+	
 
 func _reset_all_windows():
 	active_windows.clear()

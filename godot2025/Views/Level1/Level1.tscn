@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dhqvjboele1dy"]
+[gd_scene load_steps=11 format=3 uid="uid://dhqvjboele1dy"]
 
 [ext_resource type="Script" uid="uid://fnahnjy3r1lf" path="res://Views/Level1/level_1.gd" id="1_jx4cl"]
 [ext_resource type="PackedScene" uid="uid://cr55hlxfh385c" path="res://Entities/Fighter/Enemy/Enemy.tscn" id="1_k7om7"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://bosya3vcsaa8e" path="res://Views/Level1/debuglabel.gd" id="4_7tcgg"]
 [ext_resource type="Script" uid="uid://bg85pbhu10rdu" path="res://Views/Level1/result_label.gd" id="5_o8gfm"]
 [ext_resource type="Script" uid="uid://cwd460tcty84l" path="res://Views/Level1/camera_2d.gd" id="7_rkknl"]
+[ext_resource type="PackedScene" uid="uid://bj661pypnyxav" path="res://Global/PauseManager/PauseMenu.tscn" id="8_eifpy"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_7tcgg"]
 font_size = 12
@@ -17,6 +18,17 @@ font_size = 50
 [node name="Level1" type="Node2D"]
 script = ExtResource("1_jx4cl")
 
+[node name="PauseMenu" parent="." instance=ExtResource("8_eifpy")]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+offset_left = 576.0
+offset_top = 322.0
+offset_right = 576.0
+offset_bottom = 322.0
+grow_horizontal = 0
+grow_vertical = 0
+
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(577, 325)
 scale = Vector2(0.6675, 0.6675)
@@ -25,6 +37,7 @@ texture = ExtResource("3_o8gfm")
 [node name="Enemy" parent="." instance=ExtResource("1_k7om7")]
 position = Vector2(713, 443)
 scale = Vector2(0.467716, 0.467716)
+
 
 [node name="Player" parent="." instance=ExtResource("2_7tcgg")]
 position = Vector2(441, 437)
@@ -52,3 +65,5 @@ display_duration = 10.0
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(576, 323)
 script = ExtResource("7_rkknl")
+
+[editable path="PauseMenu"]

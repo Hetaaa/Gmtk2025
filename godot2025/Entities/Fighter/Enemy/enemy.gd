@@ -69,6 +69,7 @@ func take_damage(amount: int):
 	modulate = Color.RED
 	var tween = create_tween()
 	tween.tween_property(self, "modulate", Color.WHITE, 0.3)
+	health_changed.emit()
 
 # Method to change enemy's pattern mid-fight (optional)
 func set_new_pattern(new_pattern: Array[FightEnums.Action]):

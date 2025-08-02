@@ -1,5 +1,8 @@
 class_name Player extends Fighter
+
 @export var max_health: int = 3
+
+
 var current_health: int
 var selected_action_enum: FightEnums.Action = FightEnums.Action.NULL # Store the enum value
 var selected_timing_enum: FightEnums.BeatTiming = FightEnums.BeatTiming.NULL
@@ -7,9 +10,9 @@ var selected_timing_enum: FightEnums.BeatTiming = FightEnums.BeatTiming.NULL
 
 func _ready():
 	current_health = max_health
-	FightManager.register_player(self)
 	Sprite.play("WAIT")
-	
+	FightManager.player_ref
+
 	
 func _input(event):
 	# Allow input anytime, but let the system validate timing	
@@ -53,9 +56,11 @@ func take_damage(amount: int):
 	modulate = Color.RED
 	var tween = create_tween()
 	tween.tween_property(self, "modulate", Color.WHITE, 0.3)
+  health_changed.emit()
 
 func change_animation(anim : StringName):
 	Sprite.play(anim)
 
 func _on_sprite_2d_animation_finished() -> void:
 	change_animation("WAIT")
+
