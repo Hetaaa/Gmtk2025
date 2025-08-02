@@ -56,11 +56,10 @@ func take_damage(amount: int):
 	modulate = Color.RED
 	var tween = create_tween()
 	tween.tween_property(self, "modulate", Color.WHITE, 0.3)
-  health_changed.emit()
+	health_changed.emit()
 
 func change_animation(anim : StringName):
 	Sprite.play(anim)
 
 func _on_sprite_2d_animation_finished() -> void:
 	change_animation("WAIT")
-
