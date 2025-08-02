@@ -16,8 +16,8 @@ enum PhaseType {
 	PLAYER_PHASE
 }
 
-var player_ref: Node
-var enemy_ref: Node
+var player_ref: Player
+var enemy_ref: Enemy
 
 # Phase system variables
 var phase_pattern: Array[int] = []

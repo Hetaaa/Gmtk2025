@@ -1,13 +1,17 @@
-[gd_scene load_steps=11 format=3 uid="uid://dhqvjboele1dy"]
+[gd_scene load_steps=15 format=3 uid="uid://dhqvjboele1dy"]
 
 [ext_resource type="Script" uid="uid://fnahnjy3r1lf" path="res://Views/Level1/level_1.gd" id="1_jx4cl"]
 [ext_resource type="PackedScene" uid="uid://cr55hlxfh385c" path="res://Entities/Fighter/Enemy/Enemy.tscn" id="1_k7om7"]
 [ext_resource type="PackedScene" uid="uid://ccu5pylc5aui7" path="res://Entities/Fighter/Player/Player.tscn" id="2_7tcgg"]
+[ext_resource type="Material" uid="uid://b3k41nmnmix4k" path="res://Global/Shaders/singleSpriteCRT/spriteCRT.tres" id="2_sw0ay"]
 [ext_resource type="Texture2D" uid="uid://2bidp6g30hli" path="res://Views/Level1/Assets/level1bg.png" id="3_o8gfm"]
 [ext_resource type="Script" uid="uid://bosya3vcsaa8e" path="res://Views/Level1/debuglabel.gd" id="4_7tcgg"]
+[ext_resource type="Texture2D" uid="uid://hksmych4yaof" path="res://Views/Level1/Assets/darnek.png" id="4_68f1g"]
 [ext_resource type="Script" uid="uid://bg85pbhu10rdu" path="res://Views/Level1/result_label.gd" id="5_o8gfm"]
 [ext_resource type="Script" uid="uid://cwd460tcty84l" path="res://Views/Level1/camera_2d.gd" id="7_rkknl"]
 [ext_resource type="PackedScene" uid="uid://btsthgqwbxfrf" path="res://Entities/UI/BeatSlider/BeatSlider.tscn" id="8_eifpy"]
+[ext_resource type="PackedScene" uid="uid://dp0bhf44ueyi1" path="res://Entities/UI/EnemyHP/EnemyHp.tscn" id="9_obthu"]
+[ext_resource type="PackedScene" uid="uid://d4gbprg56cy7s" path="res://Entities/UI/PlayerHP/PlayerHP.tscn" id="9_x75e8"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_7tcgg"]
 font_size = 12
@@ -21,42 +25,39 @@ script = ExtResource("1_jx4cl")
 
 [node name="Node2D" type="Node2D" parent="."]
 position = Vector2(-591.292, -386.171)
-scale = Vector2(1, 1)
 
 [node name="Background" type="Sprite2D" parent="Node2D"]
-position = Vector2(576.75, 241.5)
-scale = Vector2(0.6675, 0.6675)
+material = ExtResource("2_sw0ay")
+position = Vector2(-13.4385, -1.01135)
+scale = Vector2(0.233, 0.233)
 texture = ExtResource("3_o8gfm")
 
-[node name="BlackBackdrop" type="ColorRect" parent="Node2D"]
-offset_left = -50.0
-offset_top = 566.0
-offset_right = 1202.0
-offset_bottom = 738.0
-color = Color(0, 0, 0, 1)
+[node name="Darkening" type="Sprite2D" parent="Node2D"]
+scale = Vector2(0.244536, 0.244536)
+texture = ExtResource("4_68f1g")
 
 [node name="Enemy" parent="Node2D" instance=ExtResource("1_k7om7")]
-position = Vector2(987.75, 383.5)
-scale = Vector2(1, 1)
+position = Vector2(412.457, 91.9933)
+scale = Vector2(0.564785, 0.564785)
 
 [node name="Player" parent="Node2D" instance=ExtResource("2_7tcgg")]
-position = Vector2(182.75, 385.5)
-scale = Vector2(1, 1)
+position = Vector2(-353.535, 90.9824)
+scale = Vector2(0.611772, 0.611772)
 
 [node name="Debuglabel" type="Label" parent="Node2D"]
-offset_left = 7.0
-offset_top = 8.0
-offset_right = 118.0
-offset_bottom = 91.0
+offset_left = -608.865
+offset_top = -323.494
+offset_right = -497.865
+offset_bottom = -240.494
 text = "test"
 label_settings = SubResource("LabelSettings_7tcgg")
 script = ExtResource("4_7tcgg")
 
 [node name="ResultLabel" type="Label" parent="Node2D"]
-offset_left = 469.75
-offset_top = 4.5
-offset_right = 561.75
-offset_bottom = 73.5
+offset_left = -52.72
+offset_top = -140.518
+offset_right = 39.28
+offset_bottom = -71.5179
 text = "test"
 label_settings = SubResource("LabelSettings_o8gfm")
 script = ExtResource("5_o8gfm")
@@ -66,13 +67,29 @@ display_duration = 10.0
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 214.315
-offset_bottom = 214.315
+offset_left = -589.225
+offset_top = -144.562
+offset_right = -589.225
+offset_bottom = -144.562
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(0.330922, 0.330922)
+scale = Vector2(0.241312, 0.241312)
 slide_distance = -400.0
 
 [node name="Camera2D" type="Camera2D" parent="."]
-scale = Vector2(1, 1)
+position = Vector2(-605.764, -385.16)
 script = ExtResource("7_rkknl")
+
+[node name="EnemyHp" parent="." instance=ExtResource("9_obthu")]
+offset_left = -501.358
+offset_top = -770.397
+offset_right = -501.358
+offset_bottom = -770.397
+scale = Vector2(0.31, 0.31)
+
+[node name="PlayerHp" parent="." instance=ExtResource("9_x75e8")]
+offset_left = -1117.46
+offset_top = -770.0
+offset_right = -1117.46
+offset_bottom = -770.0
+scale = Vector2(0.31, 0.31)
