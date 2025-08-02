@@ -49,15 +49,6 @@ func update_display():
 		display_lines.append("BPM: " + str(BeatManager.bpm))
 	
 	
-	# Current queued actions
-	if show_current_actions:
-		var actions = FightManager.get_current_actions()
-		var player_action = get_action_name(actions.get("player", FightEnums.Action.NULL))
-		var enemy_action = get_action_name(actions.get("enemy", FightEnums.Action.NULL))
-		
-		display_lines.append("Player: " + get_action_emoji(actions.get("player", FightEnums.Action.NULL)) + " " + player_action)
-		display_lines.append("Enemy: " + get_action_emoji(actions.get("enemy", FightEnums.Action.NULL)) + " " + enemy_action)
-	
 	# Health status
 	if show_health_status:
 		var player_health = get_player_health()
