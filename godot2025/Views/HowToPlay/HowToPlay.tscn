@@ -1,0 +1,82 @@
+[gd_scene load_steps=8 format=3 uid="uid://cwl2oi2gueov0"]
+
+[ext_resource type="Script" uid="uid://dkeadog1po16y" path="res://Views/HowToPlay/how_to_play.gd" id="1_6gjxi"]
+[ext_resource type="Texture2D" uid="uid://chk2pgx67t35n" path="res://Views/MainMenu/randomBackground1.jpg" id="2_wc3ww"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hh1ce"]
+texture = ExtResource("2_wc3ww")
+modulate_color = Color(0.481789, 0.481789, 0.481789, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8f0ni"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wk244"]
+bg_color = Color(0.929632, 0.791503, 0.932026, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+shadow_size = 5
+shadow_offset = Vector2(0, 3.42)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xwt56"]
+bg_color = Color(0.791232, 0.63318, 0.844492, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+shadow_size = 5
+shadow_offset = Vector2(0, 3.42)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0r311"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+shadow_size = 5
+shadow_offset = Vector2(0, 3.42)
+
+[node name="HowToPlay" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_6gjxi")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_hh1ce")
+
+[node name="Button" type="Button" parent="Panel"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -124.0
+offset_top = -177.0
+offset_right = 122.0
+offset_bottom = -104.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_vertical = 3
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 27
+theme_override_styles/focus = SubResource("StyleBoxEmpty_8f0ni")
+theme_override_styles/hover = SubResource("StyleBoxFlat_wk244")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_xwt56")
+theme_override_styles/normal = SubResource("StyleBoxFlat_0r311")
+text = "Back"
+
+[connection signal="pressed" from="Panel/Button" to="." method="_on_back_pressed"]
