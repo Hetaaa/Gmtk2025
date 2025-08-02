@@ -222,7 +222,6 @@ func submit_player_action(action: FightEnums.Action):
 	if timing == FightEnums.BeatTiming.NULL:
 		print("Invalid timing for player window ", player_window_id)
 		return
-	
 	player_action_submitted.emit(action, timing, player_window_id)
 
 # Helper method to find earliest open window for current player phase
@@ -263,7 +262,7 @@ func submit_enemy_action(action: FightEnums.Action, target_window_id: int = -1):
 		return
 	
 	enemy_action_submitted.emit(action, window_id)
-
+	enemy_ref.change_animation(FightEnums.Action.keys()[action])
 func _resolve_window_immediately(window_id: int):
 	if not window_actions.has(window_id):
 		return

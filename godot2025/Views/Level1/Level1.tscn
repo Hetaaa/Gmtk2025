@@ -23,11 +23,12 @@ scale = Vector2(0.6675, 0.6675)
 texture = ExtResource("3_o8gfm")
 
 [node name="Enemy" parent="." instance=ExtResource("1_k7om7")]
-position = Vector2(988, 467)
-move_pattern = Array[int]([1, 1, 4])
+position = Vector2(713, 443)
+scale = Vector2(0.467716, 0.467716)
 
 [node name="Player" parent="." instance=ExtResource("2_7tcgg")]
-position = Vector2(183, 469)
+position = Vector2(441, 437)
+scale = Vector2(-0.48, 0.48)
 
 [node name="Debuglabel" type="Label" parent="."]
 offset_left = 7.0
