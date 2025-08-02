@@ -39,15 +39,15 @@ var tracks = [
 	},
 	{
 		"path": "res://Audio/synth136.mp3", 
-		"bpm": 136
+		"beat_map_file":"res://Audio/BeatMaps/synthkickMap.txt"
 	},
 	{
 		"path": "res://Audio/noca90.mp3",
-		"bpm": 90 
+		"beat_map_file":"res://Audio/BeatMaps/piekaryMap.txt"
 	},
 	{ 
 		"path": "res://Audio/trance150.mp3", 
-		"bpm": 150 
+		"beat_map_file": "res://Audio/BeatMaps/tranceMap.txt"
 		},
 	{ 
 		"path": "res://Audio/techno120.mp3",
@@ -84,6 +84,14 @@ var tracks = [
 	{ 
 		"path": "res://Audio/fastmeloody.mp3", 
 		"beat_map_file": "res://Audio/BeatMaps/festMap.txt"
+	},
+	{ 
+		"path": "res://Audio/myarchnemesis.mp3", 
+		"beat_map_file": "res://Audio/BeatMaps/myarchnemesiskickMap.txt"
+	},
+	{ 
+		"path": "res://Audio/cartrip.mp3", 
+		"beat_map_file": "res://Audio/BeatMaps/cartripMap.txt"
 	}
 ]
 
