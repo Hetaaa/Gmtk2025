@@ -1,5 +1,7 @@
 class_name Fighter extends CharacterBody2D
 
+signal health_changed
+
 func _ready():
 	BeatManager.action_window_start.connect(_on_action_window_start)
 	BeatManager.action_window_end.connect(_on_action_window_end)

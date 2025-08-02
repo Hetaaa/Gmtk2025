@@ -1,0 +1,6 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://b3k41nmnmix4k"]
+
+[ext_resource type="Shader" uid="uid://gky0nbj5di3c" path="res://Global/Shaders/singleSpriteCRT/spriteCRT.gdshader" id="1_735h7"]
+
+[resource]
+shader = ExtResource("1_735h7")

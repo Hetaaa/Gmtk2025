@@ -8,6 +8,8 @@ signal action_window_open(window_id: int, beat_count: int)
 signal action_window_close(window_id: int, beat_count: int)
 signal resolve_round(window_id: int, beat_count: int)
 
+signal mapLoaded()
+
 @onready var music_player := AudioStreamPlayer.new()
 @onready var beat_indicator_player := AudioStreamPlayer.new()
 
@@ -210,6 +212,7 @@ func play_track(index: int):
 	if track.has("beat_map_file"):
 		use_beat_map = true
 		beat_map = load_beat_map_from_file(track["beat_map_file"])
+		mapLoaded.emit()
 	else:
 		use_beat_map = false
 		set_bpm(track["bpm"])
@@ -232,6 +235,11 @@ func reset():
 	beat_count = 0
 	measure_count = 0
 	_reset_all_windows()
+	
+	
+func set_music_speed(speed: float):
+	music_player.pitch_scale = speed
+	
 
 func _reset_all_windows():
 	active_windows.clear()
