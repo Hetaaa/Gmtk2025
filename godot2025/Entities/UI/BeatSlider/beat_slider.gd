@@ -43,8 +43,8 @@ func _ready():
 	BeatManager.mapLoaded.connect(_on_map_loaded)
 	FightManager.phases_loaded.connect(_on_phases_loaded)
 	# Ensure we have default textures if none provided
-	enemy_sprite_texture = load("res://Entities/BeatSlider/Assets/enemy_beat.png")
-	player_sprite_texture = load("res://Entities/BeatSlider/Assets/player_beat.png")
+	enemy_sprite_texture = load("res://Entities/UI/BeatSlider/Assets/enemy_beat.png")
+	player_sprite_texture = load("res://Entities/UI/BeatSlider/Assets/player_beat.png")
 
 func create_default_texture(color: Color) -> Texture2D:
 	var image = Image.create(32, 32, false, Image.FORMAT_RGBA8)
