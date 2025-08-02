@@ -19,12 +19,17 @@ class_name Enemy extends Fighter
 var current_health: int
 var move_index: int = 0
 var last_submitted_window: int = -1  # Track which window we last submitted to
+var hit_sound: AudioStreamPlayer
 
 func _ready():
 	current_health = max_health
 	# Register enemy with FightManager
 	FightManager.register_enemy(self)
 	Sprite.play("WAIT")
+	
+	hit_sound= AudioStreamPlayer.new()
+	hit_sound.stream = load("res://audio/hit6.wav")
+	add_child(hit_sound)
 	
 	# Connect to BeatManager signals
 	BeatManager.action_window_open.connect(_on_action_window_open)
@@ -72,6 +77,9 @@ func submit_enemy_action(target_window_id: int = -1):
 func take_damage(amount: int):
 	current_health -= amount
 	current_health = max(0, current_health)
+	
+	#Sound effect
+	hit_sound.play()
 	
 	# Visual damage effect
 	modulate = Color.RED
