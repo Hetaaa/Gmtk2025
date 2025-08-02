@@ -225,7 +225,7 @@ func _on_beat_hit(beat_count: int) -> void:
 
 # The action window opening signifies that the *next* action is becoming active.
 # This is where we might want to ensure the _new_ first sprite is fully in place.
-func _on_action_window_open() -> void:
+func _on_action_window_open(window_id: int, beat_count: int):
 	# In this new system, sprites are constantly moving.
 	# When the window opens, it means the first sprite is 'active'.
 	# We might want to slightly adjust its visuals or prepare for input,
