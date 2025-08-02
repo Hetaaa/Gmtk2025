@@ -242,7 +242,7 @@ animations = [{
 [node name="Enemy" instance=ExtResource("1_d0mcx")]
 script = ExtResource("2_s3sib")
 max_health = 100
-move_pattern = Array[int]([1, 1, 4])
+move_pattern = Array[int]([4, 4, 1, 3, 2, 1, 3, 2, 4, 4])
 
 [node name="EnemyActionPreviewRegion" type="Node2D" parent="." index="0"]
 script = ExtResource("5_fia76")
