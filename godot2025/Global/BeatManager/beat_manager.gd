@@ -4,19 +4,19 @@ signal beat_hit(beat_count: int)
 signal measure_complete(measure_count: int)
 signal tempo_changed(new_bpm: float)
 
-signal action_window_open()
-signal action_window_close()
-signal resolve_current_round()
+signal action_window_open(window_id: int, beat_count: int)
+signal action_window_close(window_id: int, beat_count: int)
+signal resolve_round(window_id: int, beat_count: int)
 
 @onready var music_player := AudioStreamPlayer.new()
-@onready var beat_indicator_player := AudioStreamPlayer.new() # New AudioStreamPlayer for the beat sound
+@onready var beat_indicator_player := AudioStreamPlayer.new()
 
 @export var bpm: float = 60.0
 @export var beats_per_measure: int = 4
-@export var grace_period: float = 0.4  # Total grace window centered on beat
-@export var timing_offset: float = 0.023 # This offset shifts the entire timing sequence
+@export var grace_period: float = 0.4
+@export var timing_offset: float = 0.00
 
-@export var beat_sound_path: String = "res://Global/BeatManager/audiomass-output.mp3"# Path to your beat sound file (e.g., a kick drum)
+@export var beat_sound_path: String = "res://Global/BeatManager/audiomass-output.mp3"
 
 @export var use_beat_map := false
 @export var beat_map: Array[float] = []
@@ -30,7 +30,26 @@ var beat_index := 0
 var beat_timer: Timer
 var seconds_per_beat: float
 
-var action_window_opened := false
+# New: Track multiple overlapping action windows
+var active_windows: Array[ActionWindow] = []
+var next_window_id := 0
+
+# ActionWindow class to track individual windows
+class ActionWindow:
+	var id: int
+	var beat_count: int
+	var target_beat_time: float
+	var window_start_time: float
+	var window_end_time: float
+	var is_open: bool = false
+	var is_resolved: bool = false
+	
+	func _init(window_id: int, beat_num: int, beat_time: float, grace: float, offset: float):
+		id = window_id
+		beat_count = beat_num
+		target_beat_time = beat_time + offset
+		window_start_time = target_beat_time - (grace / 2.0)
+		window_end_time = target_beat_time + (grace / 2.0)
 
 var tracks = [
 	{ 
@@ -90,11 +109,74 @@ var tracks = [
 func _ready():
 	setup_timer()
 	add_child(music_player)
-	add_child(beat_indicator_player) # Add the new beat indicator player to the scene
-	beat_indicator_player.stream = load(beat_sound_path) # Load the beat sound
-
-	# Connect the beat_hit signal to play the beat sound
+	add_child(beat_indicator_player)
+	beat_indicator_player.stream = load(beat_sound_path)
 	beat_hit.connect(_on_beat_hit_play_sound)
+
+var last_time := 0.0
+
+func _process(_delta):
+	if is_paused:
+		return
+	
+	var current_time = music_player.get_playback_position() if use_beat_map else 0.0
+	
+	if use_beat_map:
+		# If track reversed (e.g., loop), reset
+		if current_time < last_time:
+			beat_index = 0
+			beat_count = 0
+			measure_count = 0
+			_reset_all_windows()
+
+		last_time = current_time
+
+		if beat_index < beat_map.size():
+			var current_beat_time = beat_map[beat_index]
+			var beat_scheduling_trigger_time = current_beat_time - 0.5
+
+			if current_time >= beat_scheduling_trigger_time:
+				beat_count += 1
+				if beat_count % beats_per_measure == 0:
+					measure_count += 1
+					measure_complete.emit(measure_count)
+				
+				_schedule_beat_events_custom(current_beat_time)
+				beat_index += 1
+	
+	# Update all active windows
+	_update_active_windows()
+
+func _update_active_windows():
+	var current_time = _get_current_time()
+	
+	# Check for windows that need to open
+	for window in active_windows:
+		if not window.is_open and current_time >= window.window_start_time:
+			window.is_open = true
+			action_window_open.emit(window.id, window.beat_count)
+	
+	# Check for windows that need to close and resolve
+	var windows_to_remove = []
+	for window in active_windows:
+		if window.is_open and not window.is_resolved and current_time >= window.window_end_time:
+			window.is_resolved = true
+			action_window_close.emit(window.id, window.beat_count)
+			resolve_round.emit(window.id, window.beat_count)
+			windows_to_remove.append(window)
+		# Also remove windows that were marked as resolved immediately
+		elif window.is_resolved:
+			windows_to_remove.append(window)
+	
+	# Remove resolved windows
+	for window in windows_to_remove:
+		active_windows.erase(window)
+
+func _get_current_time() -> float:
+	if use_beat_map:
+		return music_player.get_playback_position() + timing_offset
+	else:
+		return Time.get_ticks_msec() / 1000.0
 
 func setup_timer():
 	beat_timer = Timer.new()
@@ -120,7 +202,6 @@ func play_track(index: int):
 	if track.has("beat_map_file"):
 		use_beat_map = true
 		beat_map = load_beat_map_from_file(track["beat_map_file"])
-
 	else:
 		use_beat_map = false
 		set_bpm(track["bpm"])
@@ -142,7 +223,11 @@ func stop_track():
 func reset():
 	beat_count = 0
 	measure_count = 0
-	action_window_opened = false
+	_reset_all_windows()
+
+func _reset_all_windows():
+	active_windows.clear()
+	next_window_id = 0
 
 func _on_beat_timer_timeout():
 	if is_paused or use_beat_map:
@@ -156,130 +241,105 @@ func _on_beat_timer_timeout():
 	_schedule_beat_events()
 
 func _schedule_beat_events():
-	var time_to_actual_beat = timing_offset
-
-	var time_to_action_window_open = time_to_actual_beat - (grace_period / 2.0)
-	if time_to_action_window_open < 0:
-		_open_action_window()
-	else:
-		get_tree().create_timer(time_to_action_window_open).timeout.connect(_open_action_window)
-
-	get_tree().create_timer(time_to_actual_beat).timeout.connect(
+	var current_time = _get_current_time()
+	var target_beat_time = current_time + timing_offset
+	
+	# Create new action window
+	var window = ActionWindow.new(next_window_id, beat_count, target_beat_time, grace_period, 0.0)
+	next_window_id += 1
+	active_windows.append(window)
+	
+	# Schedule beat hit signal
+	get_tree().create_timer(timing_offset).timeout.connect(
 		func():
-			beat_hit.emit(beat_count) # This signal now triggers the beat sound
+			beat_hit.emit(beat_count)
 	)
 
-	var time_to_action_window_close = time_to_actual_beat + (grace_period / 2.0)
-	get_tree().create_timer(time_to_action_window_close).timeout.connect(_close_action_window)
-
 func _schedule_beat_events_custom(beat_time: float):
+	# Create new action window
+	var window = ActionWindow.new(next_window_id, beat_count, beat_time, grace_period, timing_offset)
+	next_window_id += 1
+	active_windows.append(window)
+	
+	# Schedule beat hit signal
 	var current_time = music_player.get_playback_position()
-	var time_to_beat = beat_time - current_time
-
-	var time_to_open = time_to_beat - (grace_period / 2.0)
-	var time_to_close = time_to_beat + (grace_period / 2.0)
-
-	if time_to_open <= 0:
-		_open_action_window()
+	var delay_to_hit = (beat_time + timing_offset) - current_time
+	
+	if delay_to_hit <= 0:
+		beat_hit.emit(beat_count)
 	else:
-		get_tree().create_timer(time_to_open).timeout.connect(_open_action_window)
+		var timer_hit = get_tree().create_timer(delay_to_hit, false)
+		timer_hit.timeout.connect(func(): beat_hit.emit(beat_count))
 
-	get_tree().create_timer(time_to_close).timeout.connect(_close_action_window)
-
-func _open_action_window():
-	if not action_window_opened:
-		action_window_opened = true
-		action_window_open.emit()
-
-func _close_action_window():
-	if action_window_opened:
-		action_window_opened = false
-		action_window_close.emit()
-		resolve_current_round.emit()
-
-# New function to play the beat sound
 func _on_beat_hit_play_sound(_beat_count: int):
 	if beat_indicator_player.stream:
 		beat_indicator_player.play()
-		
-var last_time := 0.0
 
-func _process(_delta):
-	if is_paused or not use_beat_map:
-		return
-
-	var current_time = music_player.get_playback_position()
-
-	# Jeśli track cofnął się (czyli loop), resetujemy
-	if current_time < last_time:
-		beat_index = 0
-		beat_count = 0
-		measure_count = 0
-
-	last_time = current_time
-
-	if beat_index < beat_map.size() and current_time >= beat_map[beat_index] - timing_offset:
-		beat_count += 1
-		if beat_count % beats_per_measure == 0:
-			measure_count += 1
-			measure_complete.emit(measure_count)
-
-		beat_hit.emit(beat_count)
-		_schedule_beat_events_custom(beat_map[beat_index])
-		beat_index += 1
-
-
-
-func can_accept_input() -> bool:
-	if is_paused or not action_window_opened:
-		return false
-
-	var current_playback_time = music_player.get_playback_position()
+# Get the earliest open window that can accept input
+func get_earliest_open_window() -> int:
+	var earliest_window = null
+	for window in active_windows:
+		if window.is_open and not window.is_resolved:
+			if earliest_window == null or window.target_beat_time < earliest_window.target_beat_time:
+				earliest_window = window
 	
-	var beat_time = seconds_per_beat if not use_beat_map else get_time_to_next_beat()
-	if beat_time <= 0:
-		return false
+	return earliest_window.id if earliest_window else -1
+
+# Get timing for a specific window
+func get_timing_for_window(window_id: int) -> FightEnums.BeatTiming:
+	var target_window = null
+	for window in active_windows:
+		if window.id == window_id:
+			target_window = window
+			break
 	
-	var ideal_beat_time_relative_to_zero = fmod(current_playback_time + timing_offset, seconds_per_beat)
-	if ideal_beat_time_relative_to_zero < 0:
-		ideal_beat_time_relative_to_zero += seconds_per_beat
-
-	var half_grace = grace_period / 2.0
-
-	return (ideal_beat_time_relative_to_zero <= half_grace) or \
-		   (ideal_beat_time_relative_to_zero >= seconds_per_beat - half_grace)
-
-func get_time_to_next_beat() -> float:
-	if beat_index < beat_map.size():
-		return beat_map[beat_index] - music_player.get_playback_position()
-	return seconds_per_beat
-
-func get_current_beat_timing() -> FightEnums.BeatTiming:
-	var current_playback_time = music_player.get_playback_position()
-	var ideal_beat_time_relative_to_zero = fmod(current_playback_time + timing_offset, seconds_per_beat)
-
-	if ideal_beat_time_relative_to_zero < 0:
-		ideal_beat_time_relative_to_zero += seconds_per_beat
-
-	var beat_distance = min(ideal_beat_time_relative_to_zero, seconds_per_beat - ideal_beat_time_relative_to_zero)
-
-	print (beat_distance)
-	
-	if not can_accept_input():
-		print("window closed")
+	if not target_window:
 		return FightEnums.BeatTiming.NULL
-
-	if beat_distance <= 0.05:
+	
+	var current_time = _get_current_time()
+	var distance = abs(current_time - target_window.target_beat_time)
+	print(distance)
+	
+	if distance <= 0.1:
 		return FightEnums.BeatTiming.PERFECT
-	elif beat_distance <= 0.1:
+	elif distance <= 0.15:
 		return FightEnums.BeatTiming.GOOD
-	elif beat_distance <= 0.15:
+	elif distance <= 0.25:
 		return FightEnums.BeatTiming.NICE
-	elif beat_distance <= grace_period / 2.0:
+	elif distance <= grace_period / 2.0:
 		return FightEnums.BeatTiming.LATE
 	else:
 		return FightEnums.BeatTiming.NULL
-		
+
+# Legacy method for backward compatibility - returns timing for earliest window
+func get_current_beat_timing() -> FightEnums.BeatTiming:
+	var earliest_id = get_earliest_open_window()
+	if earliest_id == -1:
+		return FightEnums.BeatTiming.NULL
+	return get_timing_for_window(earliest_id)
+
+# Check if any action window is currently open
+func has_open_window() -> bool:
+	for window in active_windows:
+		if window.is_open and not window.is_resolved:
+			return true
+	return false
+
+# Get all currently open window IDs
+func get_open_window_ids() -> Array[int]:
+	var ids: Array[int] = []
+	for window in active_windows:
+		if window.is_open and not window.is_resolved:
+			ids.append(window.id)
+	return ids
+
+# Mark a window as resolved (called when FightManager resolves immediately)
+func mark_window_resolved(window_id: int):
+	for window in active_windows:
+		if window.id == window_id:
+			window.is_resolved = true
+			break
+
 func load_beat_map_from_file(path: String) -> Array[float]:
 	var beat_times: Array[float] = []
 	var file := FileAccess.open(path, FileAccess.READ)

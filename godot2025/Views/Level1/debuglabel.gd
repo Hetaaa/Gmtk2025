@@ -24,8 +24,8 @@ func _ready():
 	# Connect to BeatManager signals
 	BeatManager.beat_hit.connect(_on_beat_hit)
 	BeatManager.measure_complete.connect(_on_measure_complete)
-	BeatManager.action_window_open.connect(_on_action_window_start)
-	BeatManager.action_window_close.connect(_on_action_window_end)
+	BeatManager.action_window_open.connect(_on_action_window_open)
+	BeatManager.action_window_close.connect(_on_action_window_close)
 	BeatManager.tempo_changed.connect(_on_tempo_changed)
 	
 	# Connect to FightManager signals
@@ -48,15 +48,6 @@ func update_display():
 	if show_bpm:
 		display_lines.append("BPM: " + str(BeatManager.bpm))
 	
-	
-	# Current queued actions
-	if show_current_actions:
-		var actions = FightManager.get_current_actions()
-		var player_action = get_action_name(actions.get("player", FightEnums.Action.NULL))
-		var enemy_action = get_action_name(actions.get("enemy", FightEnums.Action.NULL))
-		
-		display_lines.append("Player: " + get_action_emoji(actions.get("player", FightEnums.Action.NULL)) + " " + player_action)
-		display_lines.append("Enemy: " + get_action_emoji(actions.get("enemy", FightEnums.Action.NULL)) + " " + enemy_action)
 	
 	# Health status
 	if show_health_status:
@@ -127,18 +118,18 @@ func _on_measure_complete(measure_count: int):
 	tween.tween_property(self, "modulate", Color.YELLOW, 0.1)
 	tween.tween_property(self, "modulate", Color.WHITE, 0.1)
 
-func _on_action_window_start():
+func _on_action_window_open(window_id: int, beat_count: int) -> void:
 	update_display()
 	modulate = Color.WHITE * 1.2  # Brighten when window opens
 
-func _on_action_window_end():
+func _on_action_window_close(window_id: int, beat_count: int):
 	update_display()
 	modulate = Color.WHITE * 0.8  # Dim when window closes
 
 func _on_tempo_changed(new_bpm: float):
 	update_display()
 
-func _on_actions_revealed(player_action: FightEnums.Action, enemy_action: FightEnums.Action, result: FightEnums.FightResult, timing_bonus: float):
+func _on_actions_revealed(player_action: FightEnums.Action, enemy_action: FightEnums.Action, result: FightEnums.FightResult, timing_bonus: float, window_id: int):
 	update_display()
 	
 	# Show result with color coding
