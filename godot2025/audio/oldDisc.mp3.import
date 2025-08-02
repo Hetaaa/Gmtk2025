@@ -3,12 +3,12 @@
 importer="mp3"
 type="AudioStreamMP3"
 uid="uid://bkowth1nr85ad"
-path="res://.godot/imported/oldDisc.mp3-5549d74f3c184c88fcecffb1deff1023.mp3str"
+path="res://.godot/imported/oldDisc.mp3-91556d33534c598a6468abcb91952ca6.mp3str"
 
 [deps]
 
-source_file="res://Audio/oldDisc.mp3"
-dest_files=["res://.godot/imported/oldDisc.mp3-5549d74f3c184c88fcecffb1deff1023.mp3str"]
+source_file="res://audio/oldDisc.mp3"
+dest_files=["res://.godot/imported/oldDisc.mp3-91556d33534c598a6468abcb91952ca6.mp3str"]
 
 [params]
 
