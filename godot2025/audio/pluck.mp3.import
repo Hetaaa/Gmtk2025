@@ -3,12 +3,12 @@
 importer="mp3"
 type="AudioStreamMP3"
 uid="uid://hhvtglxjpjpb"
-path="res://.godot/imported/pluck.mp3-af5e81e188563a6825a6e6caaed6a3ce.mp3str"
+path="res://.godot/imported/pluck.mp3-6e3d612bcbcb033fddf438b837900f68.mp3str"
 
 [deps]
 
-source_file="res://Audio/pluck.mp3"
-dest_files=["res://.godot/imported/pluck.mp3-af5e81e188563a6825a6e6caaed6a3ce.mp3str"]
+source_file="res://audio/pluck.mp3"
+dest_files=["res://.godot/imported/pluck.mp3-6e3d612bcbcb033fddf438b837900f68.mp3str"]
 
 [params]
 

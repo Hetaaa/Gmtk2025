@@ -3,12 +3,12 @@
 importer="mp3"
 type="AudioStreamMP3"
 uid="uid://c366lc8np1qho"
-path="res://.godot/imported/cartrip.mp3-242fdedd47947ffc72ee702ac1061fb9.mp3str"
+path="res://.godot/imported/cartrip.mp3-8dc3f79f348816640498f8b655ac5a48.mp3str"
 
 [deps]
 
-source_file="res://Audio/cartrip.mp3"
-dest_files=["res://.godot/imported/cartrip.mp3-242fdedd47947ffc72ee702ac1061fb9.mp3str"]
+source_file="res://audio/cartrip.mp3"
+dest_files=["res://.godot/imported/cartrip.mp3-8dc3f79f348816640498f8b655ac5a48.mp3str"]
 
 [params]
 

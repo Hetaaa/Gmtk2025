@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://8qfuplbc274r"
-path="res://.godot/imported/randomFont.ttf-623910a3ce0e04d28ab4fc4160567fbd.fontdata"
+uid="uid://cdgyynrj00xij"
+path="res://.godot/imported/IBMPlexMono-Regular.ttf-a4ba5803f507ba0e0ed2bb28bbdc42ad.fontdata"
 
 [deps]
 
-source_file="res://Views/MainMenu/randomFont.ttf"
-dest_files=["res://.godot/imported/randomFont.ttf-623910a3ce0e04d28ab4fc4160567fbd.fontdata"]
+source_file="res://Views/MainMenu/IBMPlexMono-Regular.ttf"
+dest_files=["res://.godot/imported/IBMPlexMono-Regular.ttf-a4ba5803f507ba0e0ed2bb28bbdc42ad.fontdata"]
 
 [params]
 

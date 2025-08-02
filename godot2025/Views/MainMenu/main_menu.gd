@@ -14,7 +14,7 @@ func _on_start_pressed() -> void:
 	get_tree().change_scene_to_file("res://Views/ChoosingLevels/ChoosingLevel.tscn")
 
 func _on_rules_pressed() -> void:
-	get_tree().change_scene_to_file("res://Views/HowToPlay/HowToPlay.tscn")
+	get_tree().change_scene_to_file("res://Views/Options/Options.tscn")
 
 func _on_exit_pressed() -> void:
 	get_tree().quit()
