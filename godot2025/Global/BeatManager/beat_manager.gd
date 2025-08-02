@@ -13,8 +13,8 @@ signal resolve_round(window_id: int, beat_count: int)
 
 @export var bpm: float = 60.0
 @export var beats_per_measure: int = 4
-@export var set_grace_period: float = 0.5
-@export var timing_offset: float = 0.01
+@export var grace_period: float = 0.6
+@export var timing_offset: float = 0.152
 
 @export var beat_sound_path: String = "res://Global/BeatManager/audiomass-output.mp3"
 
@@ -26,7 +26,6 @@ var is_paused = true
 var beat_count := 0
 var measure_count := 0
 var beat_index := 0
-var grace_period : float
 
 var beat_timer: Timer
 var seconds_per_beat: float
@@ -84,7 +83,6 @@ func _ready():
 	add_child(music_player)
 	add_child(beat_indicator_player)
 	beat_indicator_player.stream = load(beat_sound_path)
-	grace_period = set_grace_period
 	beat_hit.connect(_on_beat_hit_play_sound)
 
 var last_time := 0.0
@@ -115,8 +113,6 @@ func _process(_delta):
 					measure_count += 1
 					measure_complete.emit(measure_count)
 				
-				var time_to_next_beat = abs(beat_map[beat_index] - beat_map[beat_index+1]) if beat_index + 1 < beat_map.size() else set_grace_period
-				grace_period = minf(set_grace_period, time_to_next_beat)
 				_schedule_beat_events_custom(current_beat_time)
 				beat_index += 1
 	
