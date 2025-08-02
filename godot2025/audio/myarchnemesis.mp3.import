@@ -3,12 +3,12 @@
 importer="mp3"
 type="AudioStreamMP3"
 uid="uid://dcwmdbbwpu3nx"
-path="res://.godot/imported/myarchnemesis.mp3-9caeb634dc90922983242744818f3169.mp3str"
+path="res://.godot/imported/myarchnemesis.mp3-f1ee1fdae13f764ea85ce8ce1452626e.mp3str"
 
 [deps]
 
-source_file="res://Audio/myarchnemesis.mp3"
-dest_files=["res://.godot/imported/myarchnemesis.mp3-9caeb634dc90922983242744818f3169.mp3str"]
+source_file="res://audio/myarchnemesis.mp3"
+dest_files=["res://.godot/imported/myarchnemesis.mp3-f1ee1fdae13f764ea85ce8ce1452626e.mp3str"]
 
 [params]
 

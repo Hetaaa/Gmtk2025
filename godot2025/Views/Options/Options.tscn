@@ -1,0 +1,83 @@
+[gd_scene load_steps=12 format=3 uid="uid://cwl2oi2gueov0"]
+
+[ext_resource type="Script" uid="uid://dkeadog1po16y" path="res://Views/Options/options.gd" id="1_2t56n"]
+[ext_resource type="Texture2D" uid="uid://k32fmvgliorv" path="res://Views/MainMenu/image_1 (1).png" id="2_swfmm"]
+[ext_resource type="Texture2D" uid="uid://btvlato3l4dn5" path="res://Views/MainMenu/Sciemnienie_1.png" id="3_swfmm"]
+[ext_resource type="FontFile" uid="uid://cdgyynrj00xij" path="res://Views/MainMenu/IBMPlexMono-Regular.ttf" id="4_xm55j"]
+[ext_resource type="Texture2D" uid="uid://c7y6qalbd6sdp" path="res://Views/MainMenu/Button.png" id="5_w5sxe"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hh1ce"]
+texture = ExtResource("2_swfmm")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8f0ni"]
+texture = ExtResource("3_swfmm")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kfdbo"]
+texture = ExtResource("5_w5sxe")
+modulate_color = Color(0.400698, 0.400698, 0.400698, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_i3gm8"]
+texture = ExtResource("5_w5sxe")
+modulate_color = Color(0.400698, 0.400698, 0.400698, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1gsmq"]
+texture = ExtResource("5_w5sxe")
+modulate_color = Color(0.400698, 0.400698, 0.400698, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_n0m8n"]
+texture = ExtResource("5_w5sxe")
+
+[node name="Options" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_2t56n")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_hh1ce")
+
+[node name="Panel2" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_8f0ni")
+
+[node name="Button" type="Button" parent="Panel2"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -75.0
+offset_top = 190.0
+offset_right = 75.0
+offset_bottom = 230.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("4_xm55j")
+theme_override_font_sizes/font_size = 12
+theme_override_styles/focus = SubResource("StyleBoxTexture_kfdbo")
+theme_override_styles/hover = SubResource("StyleBoxTexture_i3gm8")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_1gsmq")
+theme_override_styles/normal = SubResource("StyleBoxTexture_n0m8n")
+text = "Back"
+
+[connection signal="pressed" from="Panel2/Button" to="." method="_on_back_pressed"]

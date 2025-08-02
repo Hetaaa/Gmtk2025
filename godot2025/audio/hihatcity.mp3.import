@@ -3,12 +3,12 @@
 importer="mp3"
 type="AudioStreamMP3"
 uid="uid://c6f0e5jhhw85c"
-path="res://.godot/imported/hihatcity.mp3-954e3f2ff7ba4f3c43aefeb4a890569b.mp3str"
+path="res://.godot/imported/hihatcity.mp3-20106340b86b247dabc85e341c6a9606.mp3str"
 
 [deps]
 
-source_file="res://Audio/hihatcity.mp3"
-dest_files=["res://.godot/imported/hihatcity.mp3-954e3f2ff7ba4f3c43aefeb4a890569b.mp3str"]
+source_file="res://audio/hihatcity.mp3"
+dest_files=["res://.godot/imported/hihatcity.mp3-20106340b86b247dabc85e341c6a9606.mp3str"]
 
 [params]
 

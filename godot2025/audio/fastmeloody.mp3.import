@@ -3,12 +3,12 @@
 importer="mp3"
 type="AudioStreamMP3"
 uid="uid://dhqdrmr273hvv"
-path="res://.godot/imported/fastmeloody.mp3-a04ec078805c14b059336c974b802b2e.mp3str"
+path="res://.godot/imported/fastmeloody.mp3-a527ba1ebdb965a192de45aea6ffabce.mp3str"
 
 [deps]
 
-source_file="res://Audio/fastmeloody.mp3"
-dest_files=["res://.godot/imported/fastmeloody.mp3-a04ec078805c14b059336c974b802b2e.mp3str"]
+source_file="res://audio/fastmeloody.mp3"
+dest_files=["res://.godot/imported/fastmeloody.mp3-a527ba1ebdb965a192de45aea6ffabce.mp3str"]
 
 [params]
 
