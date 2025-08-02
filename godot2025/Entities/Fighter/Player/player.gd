@@ -11,7 +11,8 @@ var selected_timing_enum: FightEnums.BeatTiming = FightEnums.BeatTiming.NULL
 func _ready():
 	current_health = max_health
 	Sprite.play("WAIT")
-	FightManager.player_ref
+	FightManager.register_player(self)
+
 
 	
 func _input(event):

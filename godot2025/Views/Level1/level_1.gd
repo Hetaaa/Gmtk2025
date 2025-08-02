@@ -1,4 +1,5 @@
 extends Node2D
+@onready var beatslider = $BeatSlider
 
 func _ready() -> void:
 	BeatManager.play_track(9, 4)

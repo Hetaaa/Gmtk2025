@@ -45,4 +45,4 @@ func update_health_bar():
 
 # Optional: More efficient update method if you have health change signals
 func _on_health_changed():
-	update_health_bar
+	update_health_bar()

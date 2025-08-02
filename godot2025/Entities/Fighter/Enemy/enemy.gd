@@ -24,6 +24,7 @@ func _ready():
 	current_health = max_health
 	# Register enemy with FightManager
 	FightManager.register_enemy(self)
+	Sprite.play("WAIT")
 	
 	# Connect to BeatManager signals
 	BeatManager.action_window_open.connect(_on_action_window_open)
