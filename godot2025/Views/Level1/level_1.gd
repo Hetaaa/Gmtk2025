@@ -11,3 +11,4 @@ func _ready() -> void:
 func _process(delta):
 	var current_time = BeatManager._get_current_time()
 	beatslider.update_time(current_time)
+
