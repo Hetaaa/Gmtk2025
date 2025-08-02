@@ -73,8 +73,36 @@ var tracks = [
 		"bpm": 150 
 	},
 	{ 
-		"path": "res://Audio/soyouthink.mp3", 
+		"path": "res://Audio/soyouthinkmucheasier.mp3", 
 		"beat_map_file": "res://Audio/BeatMaps/soyouthinkMap.txt"
+	},
+	{ 
+		"path": "res://Audio/synthdrill.mp3", 
+		"beat_map_file": "res://Audio/BeatMaps/synthdrillMap.txt"
+	},
+	{ 
+		"path": "res://Audio/bonus.mp3", 
+		"beat_map_file": "res://Audio/BeatMaps/bonusMap.txt"
+	},
+	{ 
+		"path": "res://Audio/thebindingofbeatboxer.mp3", 
+		"beat_map_file": "res://Audio/BeatMaps/bindingMap.txt"
+	},
+	{ 
+		"path": "res://Audio/pluck.mp3", 
+		"beat_map_file": "res://Audio/BeatMaps/pluckMap.txt"
+	},
+	{ 
+		"path": "res://Audio/hihatcity.mp3", 
+		"beat_map_file": "res://Audio/BeatMaps/hihatMap.txt"
+	},
+	{ 
+		"path": "res://Audio/jazdazkur.mp3", 
+		"beat_map_file": "res://Audio/BeatMaps/jazdaMap.txt"
+	},
+	{ 
+		"path": "res://Audio/fastmeloody.mp3", 
+		"beat_map_file": "res://Audio/BeatMaps/festMap.txt"
 	}
 ]
 
