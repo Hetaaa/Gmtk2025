@@ -199,6 +199,11 @@ func reset():
 	beat_count = 0
 	measure_count = 0
 	_reset_all_windows()
+	
+	
+func set_music_speed(speed: float):
+	music_player.pitch_scale = speed
+	
 
 func _reset_all_windows():
 	active_windows.clear()
