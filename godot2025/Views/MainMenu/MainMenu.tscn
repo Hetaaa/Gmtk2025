@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://bdwtqglppwmjj"]
+[gd_scene load_steps=10 format=3 uid="uid://bdwtqglppwmjj"]
 
 [ext_resource type="Texture2D" uid="uid://chk2pgx67t35n" path="res://Views/MainMenu/randomBackground1.jpg" id="1_luwsm"]
 [ext_resource type="Script" uid="uid://b1hgre3sxaak2" path="res://Views/MainMenu/main_menu.gd" id="1_rf5ug"]
 [ext_resource type="FontFile" uid="uid://8qfuplbc274r" path="res://Views/MainMenu/randomFont.ttf" id="2_rf5ug"]
+[ext_resource type="PackedScene" uid="uid://bj661pypnyxav" path="res://Global/PauseManager/PauseMenu.tscn" id="4_sbnus"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_sbnus"]
 texture = ExtResource("1_luwsm")
@@ -132,6 +133,14 @@ theme_override_constants/shadow_offset_y = 5
 theme_override_fonts/font = ExtResource("2_rf5ug")
 theme_override_font_sizes/font_size = 80
 text = "BEAT BOXER?"
+
+[node name="PauseMenu" parent="." instance=ExtResource("4_sbnus")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
 
 [connection signal="pressed" from="VBoxContainer/Button" to="." method="_on_start_pressed"]
 [connection signal="pressed" from="VBoxContainer/Button2" to="." method="_on_rules_pressed"]

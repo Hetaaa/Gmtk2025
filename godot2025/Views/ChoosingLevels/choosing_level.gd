@@ -12,9 +12,10 @@ func _ready():
 func _on_level_button_pressed(button: Button) -> void:
 	var level_number := int(button.name.replace("LevelButton", ""))
 
-	var path := "res://zobaczymy" + str(level_number) + ".tscn"
-	# get_tree().change_scene_to_file(path)
-	print("Choosing level:", level_number)
+
+	var path := "res://Views/Level" + str(level_number) + "/Level" + str(level_number) + ".tscn"
+	get_tree().change_scene_to_file(path)
+	#print("Choosing level:", level_number)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
