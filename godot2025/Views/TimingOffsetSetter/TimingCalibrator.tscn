@@ -1,7 +1,17 @@
-[gd_scene load_steps=3 format=3 uid="uid://bw28g5dsolm3h"]
+[gd_scene load_steps=8 format=3 uid="uid://bw28g5dsolm3h"]
 
 [ext_resource type="Script" uid="uid://ctbdx2qfi5y3y" path="res://Views/TimingOffsetSetter/timing_offset.gd" id="1_vexer"]
-[ext_resource type="PackedScene" uid="uid://cafdmmsxd306a" path="res://Global/Shaders/crtEffect/crtEffect.tscn" id="2_kb7mb"]
+[ext_resource type="Texture2D" uid="uid://dxkftq270377t" path="res://Views/TimingOffsetSetter/Assets/image 1.png" id="2_0ymxt"]
+[ext_resource type="Texture2D" uid="uid://bnd7q0ce167cs" path="res://Views/TimingOffsetSetter/Assets/Group 6.png" id="3_5dykj"]
+[ext_resource type="Texture2D" uid="uid://ch8pfjbx2xq6c" path="res://Views/TimingOffsetSetter/Assets/CENTER CONTAINER.png" id="4_5dykj"]
+[ext_resource type="FontFile" uid="uid://cfa4vejqva60b" path="res://Entities/UI/Tiny5-Regular.ttf" id="5_b736t"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_mdh2s"]
+load_path = "res://.godot/imported/TEXT.png-63ca76ef2574861d07d7817a1957474c.ctex"
+
+[sub_resource type="LabelSettings" id="LabelSettings_binqi"]
+font = ExtResource("5_b736t")
+font_size = 40
 
 [node name="TimingCalibrator" type="Control"]
 layout_mode = 3
@@ -15,6 +25,21 @@ offset_bottom = -2.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_vexer")
+
+[node name="Background" type="Sprite2D" parent="."]
+position = Vector2(573.167, 330)
+scale = Vector2(0.45612, 0.466667)
+texture = ExtResource("2_0ymxt")
+
+[node name="Darken" type="Sprite2D" parent="."]
+position = Vector2(571.822, 328.994)
+scale = Vector2(0.458733, 0.468064)
+texture = ExtResource("3_5dykj")
+
+[node name="MusicIndicator" type="Sprite2D" parent="."]
+position = Vector2(570, 347)
+scale = Vector2(0.210436, 0.219084)
+texture = ExtResource("4_5dykj")
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 1
@@ -38,27 +63,21 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Instructions" type="Label" parent="Panel/VBoxContainer"]
+[node name="TextureRect" type="TextureRect" parent="Panel"]
 layout_mode = 2
-text = "Instructions"
+offset_left = -247.0
+offset_top = -194.0
+offset_right = 1395.0
+offset_bottom = 92.0
+scale = Vector2(0.3, 0.3)
+texture = SubResource("CompressedTexture2D_mdh2s")
+stretch_mode = 1
 
-[node name="InputCounter" type="Label" parent="Panel/VBoxContainer"]
-layout_mode = 2
-text = "Input"
-
-[node name="OffsetResult" type="Label" parent="Panel/VBoxContainer"]
-layout_mode = 2
-text = "Offset"
-
-[node name="StartButton" type="Button" parent="Panel/VBoxContainer"]
-layout_mode = 2
-text = "Start"
-
-[node name="ResetButton" type="Button" parent="Panel/VBoxContainer"]
-layout_mode = 2
-text = "Restet"
-
-[node name="CrtEffect" parent="." instance=ExtResource("2_kb7mb")]
-
-[connection signal="pressed" from="Panel/VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
-[connection signal="pressed" from="Panel/VBoxContainer/ResetButton" to="." method="_on_reset_button_pressed"]
+[node name="TextLabel" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = -38.0
+offset_top = 147.0
+offset_right = 37.0
+offset_bottom = 192.0
+text = "0/10"
+label_settings = SubResource("LabelSettings_binqi")

@@ -388,7 +388,6 @@ func get_timing_for_window(window_id: int) -> FightEnums.BeatTiming:
 	
 	var current_time = _get_current_time()
 	var distance = abs(current_time - target_window.target_beat_time)
-	print(distance)
 	
 	if distance <= 0.1:
 		return FightEnums.BeatTiming.PERFECT

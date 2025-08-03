@@ -1,8 +1,9 @@
-[gd_scene load_steps=52 format=3 uid="uid://cr55hlxfh385c"]
+[gd_scene load_steps=54 format=3 uid="uid://cr55hlxfh385c"]
 
 [ext_resource type="PackedScene" uid="uid://bt5mahxf87w81" path="res://Entities/Fighter/Fighter.tscn" id="1_d0mcx"]
 [ext_resource type="Script" uid="uid://xr44ff0rrgbk" path="res://Entities/Fighter/Enemy/enemy.gd" id="2_s3sib"]
 [ext_resource type="Texture2D" uid="uid://rdk8y643cnin" path="res://Textures/Enemy/hitUp/0001.png" id="4_3dvy3"]
+[ext_resource type="Shader" uid="uid://c551fftwxflyi" path="res://shader/flash.gdshader" id="4_l6u7b"]
 [ext_resource type="Script" uid="uid://bn4t5kq1ax2ot" path="res://Entities/Fighter/Enemy/enemy_action_preview_region.gd" id="5_fia76"]
 [ext_resource type="Texture2D" uid="uid://dyieepq5b5n1l" path="res://Textures/Enemy/hitUp/0002.png" id="5_skwkm"]
 [ext_resource type="Texture2D" uid="uid://bv4r0d5a0sy40" path="res://Textures/Enemy/hitUp/0003.png" id="6_5c61j"]
@@ -50,6 +51,10 @@
 [ext_resource type="Texture2D" uid="uid://wkwus83ckgf5" path="res://Textures/Enemy/idle/0007.png" id="53_gcpcs"]
 [ext_resource type="Texture2D" uid="uid://bohsqyr43hv4k" path="res://Textures/Enemy/idle/0008.png" id="54_l07dy"]
 [ext_resource type="Texture2D" uid="uid://cx5mf5cljhxiv" path="res://Textures/Enemy/idle/0009.png" id="55_ibtes"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3ngr0"]
+shader = ExtResource("4_l6u7b")
+shader_parameter/active = false
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_tvap6"]
 animations = [{
@@ -242,6 +247,7 @@ visible = false
 script = ExtResource("5_fia76")
 
 [node name="Sprite2D" type="AnimatedSprite2D" parent="." index="1"]
+material = SubResource("ShaderMaterial_3ngr0")
 scale = Vector2(3, 3)
 sprite_frames = SubResource("SpriteFrames_tvap6")
 animation = &"ATTACK_LOW"
@@ -263,5 +269,7 @@ layout_mode = 0
 offset_right = 317.0
 offset_bottom = 317.0
 texture = ExtResource("52_3ngr0")
+
+[node name="HurtSound" type="AudioStreamPlayer" parent="." index="3"]
 
 [connection signal="animation_finished" from="Sprite2D" to="." method="_on_sprite_2d_animation_finished"]
