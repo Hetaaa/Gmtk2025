@@ -11,7 +11,7 @@ var hit_sound: AudioStreamPlayer
 @onready var Sprite = $Sprite2D
 @onready var button_display_container = $ButtonDisplayContainer
 @onready var button_icon = $ButtonDisplayContainer/ButtonIcon
-
+@onready var hurt_sound = $HurtSound
 var action_to_button_texture = {
 	FightEnums.Action.BLOCK_HIGH: "W.png",
 	FightEnums.Action.BLOCK_MIDDLE: "S.png", 
@@ -20,12 +20,13 @@ var action_to_button_texture = {
 	FightEnums.Action.ATTACK_MIDDLE: "K.png",
 	FightEnums.Action.ATTACK_LOW: "M.png"
 }
-
+var shader_material : ShaderMaterial
 func _ready():
 	current_health = max_health
+	
 	Sprite.play("WAIT")
 	FightManager.register_player(self)
-
+	shader_material = Sprite.material
 	hit_sound = AudioStreamPlayer.new()
 	hit_sound.stream = load("res://audio/hit3.wav")
 	add_child(hit_sound)
@@ -115,13 +116,15 @@ func take_damage(amount: int):
 	hit_sound.play()
 	
 	Sprite.play("PLAYER_HIT")
-
+	hurt_sound.play()
 	# Visual damage effect
-	modulate = Color.RED
-	var tween = create_tween()
-	tween.tween_property(self, "modulate", Color.WHITE, 0.3)
+	#modulate = Color.RED
+	#var tween = create_tween()
+	#tween.tween_property(self, "modulate", Color.WHITE, 0.3)
 	health_changed.emit()
-
+	shader_material.set_shader_parameter("active", true)
+	await get_tree().create_timer(0.1, false).timeout
+	shader_material.set_shader_parameter("active", false)
 func change_animation(anim : StringName):
 	Sprite.play(anim)
 

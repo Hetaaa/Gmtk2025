@@ -38,10 +38,20 @@ func shake(intensity: float, duration: float):
 	shake_timer = duration
 
 func _on_actions_revealed(player_action: FightEnums.Action, enemy_action: FightEnums.Action, result: FightEnums.FightResult, timing_bonus: float, window_id: int):
-	if result == FightEnums.FightResult.ENEMY_HIT:
-		var base_intensity = 50
-		var base_duration = 0.2
+
+	if result == FightEnums.FightResult.ENEMY_HIT or FightEnums.FightResult.PLAYER_HIT:
 		
+		var base_intensity = 0.0
+		var base_duration = 0.0
+		if result == FightEnums.FightResult.PLAYER_HIT:
+			base_intensity = 20.0
+			base_duration = 0.2
+		elif result == FightEnums.FightResult.ENEMY_HIT:
+			base_intensity = 40.0
+			base_duration = 0.2
+		elif result == FightEnums.FightResult.PLAYER_BLOCKED:
+			base_duration = 20.0
+			base_duration = 0.2
 		# Perfect timing gets stronger shake
 		var intensity_multiplier = 1.0 + (timing_bonus * 0.5) # 1.0 to 1.5x
 		var final_intensity = base_intensity * intensity_multiplier

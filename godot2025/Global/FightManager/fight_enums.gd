@@ -15,6 +15,7 @@ enum Action {
 enum FightResult {
 	ENEMY_HIT,
 	PLAYER_HIT,
+	PLAYER_BLOCKED,
 	BOTH_HIT,
 	NONE_HIT,
 }

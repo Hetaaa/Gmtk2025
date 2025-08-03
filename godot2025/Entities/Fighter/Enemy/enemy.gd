@@ -37,12 +37,14 @@ var action_to_button_texture = {
 	FightEnums.Action.ATTACK_LOW: "M.png"
 }
 
+var shader_material : ShaderMaterial
+
 func _ready():
 	current_health = max_health
 	# Register enemy with FightManager
 	FightManager.register_enemy(self)
 	Sprite.play("WAIT")
-	
+	shader_material = Sprite.material
 	hit_sound = AudioStreamPlayer.new()
 	hit_sound.stream = load("res://audio/hit6.wav")
 	add_child(hit_sound)
@@ -151,11 +153,14 @@ func take_damage(amount: int):
 	hit_sound.play()
 	
 	# Visual damage effect
-	modulate = Color.RED
-	var tween = create_tween()
-	tween.tween_property(self, "modulate", Color.WHITE, 0.3)
+	#modulate = Color.RED
+	#var tween = create_tween()
+	#tween.tween_property(self, "modulate", Color.WHITE, 0.3)
+	
 	health_changed.emit()
-
+	shader_material.set_shader_parameter("active", true)
+	await get_tree().create_timer(0.1, false).timeout
+	shader_material.set_shader_parameter("active", false)
 # Method to change enemy's pattern mid-fight (optional)
 func set_new_pattern(new_pattern: Array[FightEnums.Action]):
 	move_pattern = new_pattern

@@ -1,7 +1,8 @@
-[gd_scene load_steps=51 format=3 uid="uid://ccu5pylc5aui7"]
+[gd_scene load_steps=53 format=3 uid="uid://ccu5pylc5aui7"]
 
 [ext_resource type="PackedScene" uid="uid://bt5mahxf87w81" path="res://Entities/Fighter/Fighter.tscn" id="1_7qnjv"]
 [ext_resource type="Script" uid="uid://by5n0d3248vx5" path="res://Entities/Fighter/Player/player.gd" id="2_278gh"]
+[ext_resource type="Material" uid="uid://c13p8vprcnvu1" path="res://shader/flash.tres" id="3_a36n5"]
 [ext_resource type="Texture2D" uid="uid://b0lt2i2rxr1u4" path="res://Textures/Player/blockhigh/0001.png" id="3_epvkq"]
 [ext_resource type="Texture2D" uid="uid://ce4l2uh83pxh5" path="res://Textures/Player/blockhigh/0002.png" id="4_7tvuv"]
 [ext_resource type="Texture2D" uid="uid://c35fn5vy4we28" path="res://Textures/Player/blockhigh/0003.png" id="5_s2stu"]
@@ -49,6 +50,7 @@
 [ext_resource type="Texture2D" uid="uid://ee0bgo5ksl3b" path="res://Textures/Player/punchUP/0007.png" id="44_7rsf0"]
 [ext_resource type="Texture2D" uid="uid://l3jr2c7vejbl" path="res://Textures/Player/punchUP/0008.png" id="45_mdx4t"]
 [ext_resource type="Texture2D" uid="uid://c6kjpmt2gmlxa" path="res://Textures/UI/KeyboardButtons/K.png" id="49_u8sl1"]
+[ext_resource type="AudioStream" uid="uid://d321c4git4ewv" path="res://audio/punch1.mp3" id="50_fskie"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_yhbrc"]
 animations = [{
@@ -244,6 +246,7 @@ script = ExtResource("2_278gh")
 max_health = 2
 
 [node name="Sprite2D" type="AnimatedSprite2D" parent="." index="0"]
+material = ExtResource("3_a36n5")
 scale = Vector2(3, 3)
 sprite_frames = SubResource("SpriteFrames_yhbrc")
 animation = &"ATTACK_LOW"
@@ -268,5 +271,10 @@ offset_right = 317.0
 offset_bottom = 317.0
 texture = ExtResource("49_u8sl1")
 flip_h = true
+
+[node name="HurtSound" type="AudioStreamPlayer" parent="." index="2"]
+stream = ExtResource("50_fskie")
+volume_db = 8.432
+bus = &"sounds"
 
 [connection signal="animation_finished" from="Sprite2D" to="." method="_on_sprite_2d_animation_finished"]
