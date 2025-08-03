@@ -12,6 +12,7 @@ var hit_sound: AudioStreamPlayer
 @onready var button_display_container = $ButtonDisplayContainer
 @onready var button_icon = $ButtonDisplayContainer/ButtonIcon
 @onready var hurt_sound = $HurtSound
+
 var action_to_button_texture = {
 	FightEnums.Action.BLOCK_HIGH: "W.png",
 	FightEnums.Action.BLOCK_MIDDLE: "S.png", 
@@ -20,7 +21,9 @@ var action_to_button_texture = {
 	FightEnums.Action.ATTACK_MIDDLE: "K.png",
 	FightEnums.Action.ATTACK_LOW: "M.png"
 }
+
 var shader_material : ShaderMaterial
+
 func _ready():
 	current_health = max_health
 	
@@ -33,8 +36,12 @@ func _ready():
 	if button_icon:
 		button_icon.visible = false
 
-	
 func _input(event):
+	# WAŻNE: Sprawdź czy EndScreenManager kontroluje input
+	if EndScreenManager.is_end_screen_active():
+		print("Player: Blocking input - EndScreenManager is active")
+		return  # Nie obsługuj inputu gdy ekran końcowy jest aktywny
+	
 	# Allow input anytime, but let the system validate timing	
 	if event.is_action_pressed("ATTACK_HIGH"):
 		submit_player_action_to_manager(FightEnums.Action.ATTACK_HIGH)
@@ -58,7 +65,6 @@ func submit_player_action_to_manager(action: FightEnums.Action):
 	var timing = BeatManager.get_current_beat_timing()
 	print("Timing result: ", FightEnums.BeatTiming.keys()[timing])
 	
-	
 	# Use the new submit method which handles timing validation internally
 	FightManager.submit_player_action(action)
 	print("From player.gd = Player pressed " + FightEnums.Action.keys()[action] + ' ' + FightEnums.BeatTiming.keys()[timing])
@@ -66,8 +72,7 @@ func submit_player_action_to_manager(action: FightEnums.Action):
 	# Store the selected action and timing locally for display
 	selected_action_enum = action
 	selected_timing_enum = timing
-	
-	
+
 func show_button_animation(action: FightEnums.Action):
 	"""Pokazuje animację przycisku nad głową enemy"""
 	if not button_icon or not action_to_button_texture.has(action):
@@ -111,7 +116,6 @@ func take_damage(amount: int):
 	current_health -= amount
 	current_health = max(0, current_health)
 	
-
 	#Sound effect
 	hit_sound.play()
 	
@@ -125,6 +129,7 @@ func take_damage(amount: int):
 	shader_material.set_shader_parameter("active", true)
 	await get_tree().create_timer(0.1, false).timeout
 	shader_material.set_shader_parameter("active", false)
+
 func change_animation(anim : StringName):
 	Sprite.play(anim)
 
