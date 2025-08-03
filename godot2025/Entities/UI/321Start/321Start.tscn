@@ -5,7 +5,7 @@
 
 [sub_resource type="LabelSettings" id="LabelSettings_xess1"]
 font = ExtResource("2_0m38f")
-font_size = 120
+font_size = 50
 outline_size = 16
 outline_color = Color(0, 0, 0, 1)
 
