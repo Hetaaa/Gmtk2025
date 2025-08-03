@@ -25,6 +25,12 @@ font_size = 50
 [node name="Level1" type="Node2D"]
 scale = Vector2(0.967373, 0.989198)
 script = ExtResource("1_jx4cl")
+player_phase_position = Vector2(-50, 90)
+player_enemy_phase_position = Vector2(-200, 90)
+enemy_phase_position = Vector2(250, 90)
+enemy_player_phase_position = Vector2(80, 90)
+move_duration = 0.2
+position_change_delay = 0.1
 
 [node name="Node2D" type="Node2D" parent="."]
 position = Vector2(-591.292, -386.171)
@@ -40,11 +46,11 @@ scale = Vector2(0.244536, 0.244536)
 texture = ExtResource("4_68f1g")
 
 [node name="Enemy" parent="Node2D" instance=ExtResource("1_k7om7")]
-position = Vector2(412.457, 91.9933)
+position = Vector2(241.892, 95.0261)
 scale = Vector2(0.224832, 0.228508)
 
 [node name="Player" parent="Node2D" instance=ExtResource("2_7tcgg")]
-position = Vector2(-353.535, 90.9824)
+position = Vector2(-193.307, 90.9824)
 scale = Vector2(-0.231, 0.231)
 
 [node name="Debuglabel" type="Label" parent="Node2D"]

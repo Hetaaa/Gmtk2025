@@ -51,13 +51,15 @@ class WindowAction:
 	var enemy_submitted: bool = false
 	var resolved: bool = false
 	var phase_type: PhaseType
-	var move_index: int = -1
+	var intended_move_index: int = -1  # Original intended index
+	var actual_storage_index: int = -1  # Where it was actually stored
+	var action_stored: bool = false     # Whether action has been stored in phase array
 	
 	func _init(id: int, beat: int, p_type: PhaseType, m_index: int = -1):
 		window_id = id
 		beat_count = beat
 		phase_type = p_type
-		move_index = m_index
+		intended_move_index = m_index
 
 const ATTACK_TO_BLOCK_MAP: Dictionary = {
 	FightEnums.Action.ATTACK_HIGH: FightEnums.Action.BLOCK_HIGH,
@@ -203,30 +205,79 @@ func _on_player_action_submitted(action: FightEnums.Action, timing: FightEnums.B
 			window_action.player_timing = timing
 			window_action.player_submitted = true
 			
-			# Store the player move
-			if window_action.move_index >= 0 and window_action.move_index < player_phase_moves.size():
-				player_phase_moves[window_action.move_index] = action
+			# Store the player move - FIXED: use intended_move_index
+			if window_action.intended_move_index >= 0 and window_action.intended_move_index < player_phase_moves.size():
+				player_phase_moves[window_action.intended_move_index] = action
 			
 			_resolve_window_immediately(window_id)
+
+func find_next_available_enemy_index(starting_index: int) -> int:
+	for i in range(starting_index, enemy_phase_moves.size()):
+		if enemy_phase_moves[i] == FightEnums.Action.WAIT:
+			return i
+	
+	for i in range(0, starting_index):
+		if enemy_phase_moves[i] == FightEnums.Action.WAIT:
+			return i
+	
+	return -1
 
 func _on_enemy_action_submitted(action: FightEnums.Action, window_id: int):
 	if current_phase_type != PhaseType.ENEMY_PHASE:
 		print("Enemy action ignored - not in enemy phase")
 		return
 	
-	if window_actions.has(window_id) and not window_actions[window_id].resolved:
-		var window_action = window_actions[window_id]
-		if not window_action.enemy_submitted:
-			window_action.enemy_action = action
-			window_action.enemy_submitted = true
-			
-			# FIXED: Properly store the enemy move with bounds checking
-			if window_action.move_index >= 0 and window_action.move_index < enemy_phase_moves.size():
-				enemy_phase_moves[window_action.move_index] = action
-				print("DEBUG: Stored enemy move at index ", window_action.move_index, ": ", action)
-				print("DEBUG: Current enemy_phase_moves array: ", enemy_phase_moves)
-			else:
-				print("ERROR: Invalid move_index for enemy action: ", window_action.move_index, " (array size: ", enemy_phase_moves.size(), ")")
+	if not window_actions.has(window_id) or window_actions[window_id].resolved:
+		print("ERROR: Invalid or resolved window: ", window_id)
+		return
+	
+	var window_action = window_actions[window_id]
+	
+	if window_action.enemy_submitted:
+		print("DEBUG: Enemy action already submitted for window ", window_id)
+		return
+	
+	# Set the action and mark as submitted
+	window_action.enemy_action = action
+	window_action.enemy_submitted = true
+	
+	# Store in phase array using centralized method
+	if not store_enemy_action_in_phase(window_action, action):
+		print("ERROR: Failed to store enemy action for window ", window_id)
+		return
+	
+	# Immediately resolve the window since enemy acted
+	_resolve_window_immediately(window_id)
+
+func store_enemy_action_in_phase(window_action: WindowAction, action: FightEnums.Action) -> bool:
+	# Skip if already stored
+	if window_action.action_stored:
+		print("DEBUG: Action already stored for window ", window_action.window_id, " at index ", window_action.actual_storage_index)
+		return true
+	
+	# Find available index
+	var target_index = window_action.intended_move_index
+	if target_index < 0 or target_index >= enemy_phase_moves.size():
+		print("ERROR: Invalid intended_move_index: ", target_index)
+		return false
+	
+	# Check if target index is available
+	if enemy_phase_moves[target_index] != FightEnums.Action.WAIT:
+		print("DEBUG: Target index ", target_index, " is occupied with: ", enemy_phase_moves[target_index])
+		target_index = find_next_available_enemy_index(window_action.intended_move_index)
+		
+		if target_index == -1:
+			print("ERROR: No available slots in enemy_phase_moves array!")
+			return false
+	
+	# Store the action
+	enemy_phase_moves[target_index] = action
+	window_action.actual_storage_index = target_index
+	window_action.action_stored = true
+	
+	print("DEBUG: Stored enemy move at index ", target_index, ": ", action)
+	print("DEBUG: Current enemy_phase_moves array: ", enemy_phase_moves)
+	return true
 
 func submit_player_action(action: FightEnums.Action):
 	if current_phase_type != PhaseType.PLAYER_PHASE:
@@ -246,7 +297,8 @@ func submit_player_action(action: FightEnums.Action):
 		print("Invalid timing for player window ", player_window_id)
 		return
 
-		
+	player_ref.change_animation(FightEnums.Action.keys()[action])
+
 	var is_attack := action in ATTACKS
 	var is_block := action in BLOCKS
 
@@ -254,6 +306,7 @@ func submit_player_action(action: FightEnums.Action):
 		sound_success_attack.play()
 	elif is_block:
 		sound_success_block.play()
+
 
 	player_action_submitted.emit(action, timing, player_window_id)
 
@@ -303,6 +356,89 @@ func submit_enemy_action(action: FightEnums.Action, target_window_id: int = -1):
 		sound_success_block.play()
 	enemy_action_submitted.emit(action, window_id)
 	enemy_ref.change_animation(FightEnums.Action.keys()[action])
+	
+	
+func _resolve_window(window_id: int):
+	if not window_actions.has(window_id):
+		return
+	
+	var window_action = window_actions[window_id]
+	if window_action.resolved:
+		return
+	
+	window_action.resolved = true
+	
+	if window_action.phase_type == PhaseType.ENEMY_PHASE:
+		# Handle missed enemy action (window closed without submission)
+		if not window_action.enemy_submitted:
+			window_action.enemy_action = FightEnums.Action.WAIT
+			
+			# Store the WAIT action using centralized method
+			if not store_enemy_action_in_phase(window_action, window_action.enemy_action):
+				print("ERROR: Failed to store missed enemy action for window ", window_id)
+		
+		# Action is already stored (either from submission or just above)
+		print("Enemy move ", window_action.actual_storage_index, " finalized: ", window_action.enemy_action)
+		
+		# Advance enemy's move index
+		if enemy_ref and enemy_ref.has_method("advance_to_next_move"):
+			enemy_ref.advance_to_next_move()
+		
+		_advance_phase_progress()
+		
+	else: # PLAYER_PHASE
+		# Handle missed player action
+		if not window_action.player_submitted:
+			window_action.player_action = FightEnums.Action.WAIT
+			window_action.player_timing = FightEnums.BeatTiming.NULL
+		
+		# Get corresponding enemy move using actual storage index
+		var enemy_move = FightEnums.Action.WAIT
+		var move_index = window_action.intended_move_index
+		
+		if move_index >= 0 and move_index < enemy_phase_moves.size():
+			enemy_move = enemy_phase_moves[move_index]
+			print("DEBUG: Retrieved enemy move for player move index ", move_index, ": ", enemy_move)
+		else:
+			print("ERROR: Invalid move_index for player resolution: ", move_index)
+		
+		window_action.enemy_action = enemy_move
+		
+		var result = determine_winner(window_action.player_action, window_action.enemy_action)
+		var timing_bonus = get_timing_bonus(window_action.player_timing)
+		
+		actions_revealed.emit(window_action.player_action, window_action.enemy_action, result, timing_bonus, window_id)
+		_apply_damage(result, timing_bonus, window_id)
+		
+		print("Combat resolved (natural) - Player: ", window_action.player_action, " vs Enemy: ", window_action.enemy_action)
+		_advance_phase_progress()
+	
+	get_tree().create_timer(0.1).timeout.connect(func(): _cleanup_window(window_id))
+
+
+func _resolve_window_enemy_phase_section(window_action):
+	if window_action.enemy_action == FightEnums.Action.NULL:
+		window_action.enemy_action = FightEnums.Action.WAIT
+	
+	# FIXED: use intended_move_index
+	if window_action.intended_move_index >= 0 and window_action.intended_move_index < enemy_phase_moves.size():
+		var target_index = window_action.intended_move_index
+		
+		if enemy_phase_moves[target_index] != FightEnums.Action.WAIT:
+			print("DEBUG: Target index ", target_index, " is occupied during natural resolution")
+			target_index = find_next_available_enemy_index(window_action.intended_move_index)
+			
+			if target_index == -1:
+				print("ERROR: No available slots in enemy_phase_moves array during natural resolution!")
+				return
+			else:
+				print("DEBUG: Found next available index during natural resolution: ", target_index)
+		
+		enemy_phase_moves[target_index] = window_action.enemy_action
+		print("DEBUG: Stored enemy move (natural) at index ", target_index, ": ", window_action.enemy_action)
+	else:
+		print("ERROR: Invalid intended_move_index for enemy natural resolution: ", window_action.intended_move_index)
+
 func _resolve_window_immediately(window_id: int):
 	if not window_actions.has(window_id):
 		return
@@ -314,28 +450,24 @@ func _resolve_window_immediately(window_id: int):
 	window_action.resolved = true
 	
 	if window_action.phase_type == PhaseType.ENEMY_PHASE:
-		# Enemy phase - just store the action, don't resolve combat yet
-		print("Enemy move ", window_action.move_index, " stored: ", window_action.enemy_action)
+		# Action should already be stored by _on_enemy_action_submitted
+		print("Enemy move ", window_action.actual_storage_index, " stored: ", window_action.enemy_action)
 		
-		# FIXED: Advance enemy's move index after storing the action
+		# Advance enemy's move index
 		if enemy_ref and enemy_ref.has_method("advance_to_next_move"):
 			enemy_ref.advance_to_next_move()
 		
 		_advance_phase_progress()
-	else:
-		# Player phase - resolve against corresponding enemy move
+		
+	else: # PLAYER_PHASE
+		# Store player move and resolve combat
+		if window_action.intended_move_index >= 0 and window_action.intended_move_index < player_phase_moves.size():
+			player_phase_moves[window_action.intended_move_index] = window_action.player_action
+		
+		# Get corresponding enemy move
 		var enemy_move = FightEnums.Action.WAIT
-		
-		# FIXED: Add better bounds checking and debug info
-		print("DEBUG: Retrieving enemy move for player move index: ", window_action.move_index)
-		print("DEBUG: enemy_phase_moves array: ", enemy_phase_moves)
-		print("DEBUG: enemy_phase_moves size: ", enemy_phase_moves.size())
-		
-		if window_action.move_index >= 0 and window_action.move_index < enemy_phase_moves.size():
-			enemy_move = enemy_phase_moves[window_action.move_index]
-			print("DEBUG: Retrieved enemy move at index ", window_action.move_index, ": ", enemy_move)
-		else:
-			print("ERROR: Invalid move_index for player phase: ", window_action.move_index)
+		if window_action.intended_move_index >= 0 and window_action.intended_move_index < enemy_phase_moves.size():
+			enemy_move = enemy_phase_moves[window_action.intended_move_index]
 		
 		window_action.enemy_action = enemy_move
 		
@@ -349,66 +481,6 @@ func _resolve_window_immediately(window_id: int):
 		_advance_phase_progress()
 	
 	BeatManager.mark_window_resolved(window_id)
-	get_tree().create_timer(0.1).timeout.connect(func(): _cleanup_window(window_id))
-
-func _resolve_window(window_id: int):
-	if not window_actions.has(window_id):
-		return
-	
-	var window_action = window_actions[window_id]
-	if window_action.resolved:
-		return
-	
-	window_action.resolved = true
-	
-	# Handle missed actions based on phase
-	if window_action.phase_type == PhaseType.ENEMY_PHASE:
-		if window_action.enemy_action == FightEnums.Action.NULL:
-			window_action.enemy_action = FightEnums.Action.WAIT
-		
-		# FIXED: Store the enemy move with proper bounds checking
-		if window_action.move_index >= 0 and window_action.move_index < enemy_phase_moves.size():
-			enemy_phase_moves[window_action.move_index] = window_action.enemy_action
-			print("DEBUG: Stored enemy move (natural) at index ", window_action.move_index, ": ", window_action.enemy_action)
-		else:
-			print("ERROR: Invalid move_index for enemy natural resolution: ", window_action.move_index)
-		
-		print("Enemy move ", window_action.move_index, " stored (natural): ", window_action.enemy_action)
-		
-		# FIXED: Advance enemy's move index after storing the action
-		if enemy_ref and enemy_ref.has_method("advance_to_next_move"):
-			enemy_ref.advance_to_next_move()
-		
-		_advance_phase_progress()
-		
-	else: # PLAYER_PHASE
-		if window_action.player_action == FightEnums.Action.NULL:
-			window_action.player_action = FightEnums.Action.WAIT
-			window_action.player_timing = FightEnums.BeatTiming.NULL
-		
-		# Get corresponding enemy move
-		var enemy_move = FightEnums.Action.WAIT
-		
-		print("DEBUG: Retrieving enemy move (natural) for player move index: ", window_action.move_index)
-		print("DEBUG: enemy_phase_moves array: ", enemy_phase_moves)
-		
-		if window_action.move_index >= 0 and window_action.move_index < enemy_phase_moves.size():
-			enemy_move = enemy_phase_moves[window_action.move_index]
-			print("DEBUG: Retrieved enemy move (natural) at index ", window_action.move_index, ": ", enemy_move)
-		else:
-			print("ERROR: Invalid move_index for player natural resolution: ", window_action.move_index)
-		
-		window_action.enemy_action = enemy_move
-		
-		var result = determine_winner(window_action.player_action, window_action.enemy_action)
-		var timing_bonus = get_timing_bonus(window_action.player_timing)
-		
-		actions_revealed.emit(window_action.player_action, window_action.enemy_action, result, timing_bonus, window_id)
-		_apply_damage(result, timing_bonus, window_id)
-		
-		print("Combat resolved (natural) - Player: ", window_action.player_action, " vs Enemy: ", window_action.enemy_action)
-		_advance_phase_progress()
-	
 	get_tree().create_timer(0.1).timeout.connect(func(): _cleanup_window(window_id))
 
 func _advance_phase_progress():
@@ -464,26 +536,23 @@ func _transition_to_next_phase():
 
 # NEW: Pre-create player windows that are about to open
 func _pre_create_player_windows():
-	# Get the next few window IDs that BeatManager will create
 	var open_window_ids = BeatManager.get_open_window_ids()
 	
 	print("DEBUG: Pre-creating player windows. Open BM windows: ", open_window_ids)
 	print("DEBUG: Current move index: ", current_move_index)
 	
-	# Convert existing enemy windows to player windows, or create new ones
 	for window_id in open_window_ids:
 		if window_actions.has(window_id):
 			var existing_window = window_actions[window_id]
 			if existing_window.phase_type == PhaseType.ENEMY_PHASE and not existing_window.resolved:
-				# Convert this enemy window to a player window
+				# FIXED: use intended_move_index
 				existing_window.phase_type = PhaseType.PLAYER_PHASE
-				existing_window.move_index = current_move_index
+				existing_window.intended_move_index = current_move_index
 				print("DEBUG: Converted enemy window ", window_id, " to player window for move index: ", current_move_index)
 				break
 			else:
 				print("DEBUG: Window ", window_id, " already exists as: phase=", existing_window.phase_type, " resolved=", existing_window.resolved)
 		else:
-			# Create a player phase window for this ID
 			window_actions[window_id] = WindowAction.new(window_id, 0, PhaseType.PLAYER_PHASE, current_move_index)
 			print("DEBUG: Pre-created player window ", window_id, " for move index: ", current_move_index)
 			break
