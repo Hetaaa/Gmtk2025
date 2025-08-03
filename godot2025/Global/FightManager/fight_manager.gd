@@ -631,6 +631,8 @@ func determine_winner(p_action: FightEnums.Action, e_action: FightEnums.Action) 
 		var correct_block = ATTACK_TO_BLOCK_MAP[e_action]
 		print("DEBUG: Enemy attacks, player blocks. Enemy attack: ", e_action, " needs block: ", correct_block, " player has: ", p_action)
 		if correct_block == p_action:
+			print("DEBUG: Correct block -> No hits")
+			player_ref.highlight()
 			print("DEBUG: Correct block -> Player blocked successfully")
 			return FightEnums.FightResult.PLAYER_BLOCKED  # Correct block
 		else:

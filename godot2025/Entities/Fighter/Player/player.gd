@@ -12,6 +12,8 @@ var hit_sound: AudioStreamPlayer
 @onready var button_display_container = $ButtonDisplayContainer
 @onready var button_icon = $ButtonDisplayContainer/ButtonIcon
 @onready var hurt_sound = $HurtSound
+@onready var flash_shader = preload("res://shader/flash.tres")
+@onready var highlight_shader = preload("res://shader/highlight.tres")
 
 var action_to_button_texture = {
 	FightEnums.Action.BLOCK_HIGH: "W.png",
@@ -30,6 +32,7 @@ var is_button_animating: bool = false
 
 func _ready():
 	current_health = max_health
+	Sprite.material = flash_shader
 	
 	Sprite.play("WAIT")
 	FightManager.register_player(self)
@@ -184,7 +187,13 @@ func take_damage(amount: int):
 	shader_material.set_shader_parameter("active", false)
 
 func change_animation(anim : StringName):
+	print("NAZWA ANIMACJI ", anim)
 	Sprite.play(anim)
 
 func _on_sprite_2d_animation_finished() -> void:
 	change_animation("WAIT")
+
+func highlight():
+	Sprite.material = highlight_shader
+	await get_tree().create_timer(0.4, false).timeout
+	Sprite.material = flash_shader
