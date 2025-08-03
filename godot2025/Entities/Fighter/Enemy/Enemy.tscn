@@ -250,6 +250,7 @@ visible = false
 script = ExtResource("5_fia76")
 
 [node name="Sprite2D" type="AnimatedSprite2D" parent="." index="1"]
+scale = Vector2(3, 3)
 sprite_frames = SubResource("SpriteFrames_tvap6")
 animation = &"ATTACK_HIGH"
 
