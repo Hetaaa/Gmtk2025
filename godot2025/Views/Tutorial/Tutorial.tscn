@@ -1,21 +1,22 @@
-[gd_scene load_steps=22 format=3 uid="uid://dwwnt6qwu14ew"]
+[gd_scene load_steps=24 format=3 uid="uid://b7bjrolsphimu"]
 
-[ext_resource type="Script" uid="uid://dakmuf2m0kdmu" path="res://Views/Tutorial/tutorial.gd" id="1_44o0c"]
-[ext_resource type="Material" uid="uid://b3k41nmnmix4k" path="res://Global/Shaders/singleSpriteCRT/spriteCRT.tres" id="2_fm27j"]
-[ext_resource type="Texture2D" uid="uid://cg8rfo3cth6i3" path="res://Views/Tutorial/Assets/GAMEBG2.png" id="3_44o0c"]
-[ext_resource type="Script" uid="uid://bg85pbhu10rdu" path="res://Views/Level1/result_label.gd" id="5_odcu0"]
-[ext_resource type="PackedScene" uid="uid://cr55hlxfh385c" path="res://Entities/Fighter/Enemy/Enemy.tscn" id="6_70fql"]
-[ext_resource type="PackedScene" uid="uid://ccu5pylc5aui7" path="res://Entities/Fighter/Player/Player.tscn" id="7_56m3q"]
-[ext_resource type="FontFile" uid="uid://cfa4vejqva60b" path="res://Entities/UI/Tiny5-Regular.ttf" id="8_a2wmr"]
-[ext_resource type="Script" uid="uid://bosya3vcsaa8e" path="res://Views/Level1/debuglabel.gd" id="9_a5xwf"]
-[ext_resource type="PackedScene" uid="uid://btsthgqwbxfrf" path="res://Entities/UI/BeatSlider/BeatSlider.tscn" id="10_vvjro"]
-[ext_resource type="Script" uid="uid://cwd460tcty84l" path="res://Views/Level1/camera_2d.gd" id="11_dkmk3"]
-[ext_resource type="PackedScene" uid="uid://dp0bhf44ueyi1" path="res://Entities/UI/EnemyHP/EnemyHp.tscn" id="12_wxf35"]
-[ext_resource type="PackedScene" uid="uid://d4gbprg56cy7s" path="res://Entities/UI/PlayerHP/PlayerHP.tscn" id="13_v2g64"]
-[ext_resource type="PackedScene" uid="uid://d3n17wdkrqfle" path="res://Entities/UI/321Start/321Start.tscn" id="14_sy3hl"]
-[ext_resource type="PackedScene" uid="uid://bj661pypnyxav" path="res://Global/PauseManager/PauseMenu.tscn" id="15_abwbg"]
-[ext_resource type="Shader" uid="uid://dm70kqlkjectq" path="res://shader/crt.gdshader" id="15_fm27j"]
-[ext_resource type="AudioStream" uid="uid://cg1wbu756pchv" path="res://audio/BeatMaps/explosion.wav" id="16_06rnv"]
+[ext_resource type="Script" uid="uid://c5dhbcn4eqwwg" path="res://Views/Tutorial/tutorial.gd" id="1_44o0c"]
+[ext_resource type="Material" uid="uid://b3k41nmnmix4k" path="res://Global/Shaders/singleSpriteCRT/spriteCRT.tres" id="1_yjuw3"]
+[ext_resource type="Texture2D" uid="uid://2bidp6g30hli" path="res://Views/Level1/Assets/level1bg.png" id="2_44o0c"]
+[ext_resource type="Script" uid="uid://bg85pbhu10rdu" path="res://Views/Level1/result_label.gd" id="3_huo23"]
+[ext_resource type="PackedScene" uid="uid://cr55hlxfh385c" path="res://Entities/Fighter/Enemy/Enemy.tscn" id="4_ujmmu"]
+[ext_resource type="PackedScene" uid="uid://ccu5pylc5aui7" path="res://Entities/Fighter/Player/Player.tscn" id="5_68usa"]
+[ext_resource type="FontFile" uid="uid://cfa4vejqva60b" path="res://Entities/UI/Tiny5-Regular.ttf" id="6_iu8xb"]
+[ext_resource type="Script" uid="uid://bosya3vcsaa8e" path="res://Views/Level1/debuglabel.gd" id="7_fm6p7"]
+[ext_resource type="PackedScene" uid="uid://btsthgqwbxfrf" path="res://Entities/UI/BeatSlider/BeatSlider.tscn" id="8_7b7ob"]
+[ext_resource type="Script" uid="uid://cwd460tcty84l" path="res://Views/Level1/camera_2d.gd" id="9_ddr0y"]
+[ext_resource type="PackedScene" uid="uid://dp0bhf44ueyi1" path="res://Entities/UI/EnemyHP/EnemyHp.tscn" id="10_qxaty"]
+[ext_resource type="PackedScene" uid="uid://d4gbprg56cy7s" path="res://Entities/UI/PlayerHP/PlayerHP.tscn" id="11_oobur"]
+[ext_resource type="PackedScene" uid="uid://d3n17wdkrqfle" path="res://Entities/UI/321Start/321Start.tscn" id="12_xo5pi"]
+[ext_resource type="PackedScene" uid="uid://bj661pypnyxav" path="res://Global/PauseManager/PauseMenu.tscn" id="13_anefj"]
+[ext_resource type="Shader" uid="uid://dm70kqlkjectq" path="res://shader/crt.gdshader" id="14_qrsej"]
+[ext_resource type="AudioStream" uid="uid://cg1wbu756pchv" path="res://audio/BeatMaps/explosion.wav" id="15_i1v58"]
+
 
 [sub_resource type="LabelSettings" id="LabelSettings_o8gfm"]
 font = ExtResource("8_a2wmr")
@@ -28,11 +29,11 @@ colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 1)
 gradient = SubResource("Gradient_3b737")
 
 [sub_resource type="LabelSettings" id="LabelSettings_7tcgg"]
-font = ExtResource("8_a2wmr")
+font = ExtResource("6_iu8xb")
 font_size = 12
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_8awem"]
-shader = ExtResource("15_fm27j")
+shader = ExtResource("14_qrsej")
 shader_parameter/scanline_color = Color(0, 0, 0, 1)
 shader_parameter/flicker_color = Color(0, 0, 0, 1)
 shader_parameter/scanlines_count = 10.85
@@ -42,33 +43,33 @@ shader_parameter/flicker_intensity = 0.007
 shader_parameter/color_offset = 0.0
 shader_parameter/blur = 0.15
 
-[node name="Tutorial" type="Node2D"]
+[sub_resource type="LabelSettings" id="LabelSettings_44o0c"]
+font = ExtResource("6_iu8xb")
+font_size = 60
+outline_size = 10
+outline_color = Color(0, 0, 0, 1)
+
+[node name="Tutorial2" type="Node2D"]
 scale = Vector2(0.967373, 0.989198)
 script = ExtResource("1_44o0c")
-player_phase_position = Vector2(-50, 90)
-player_enemy_phase_position = Vector2(-200, 90)
-enemy_phase_position = Vector2(250, 90)
-enemy_player_phase_position = Vector2(80, 90)
-move_duration = 0.1
-position_change_delay = 0.3
 
 [node name="Node2D" type="Node2D" parent="."]
 position = Vector2(-591.292, -386.171)
 
 [node name="Background" type="Sprite2D" parent="Node2D"]
-material = ExtResource("2_fm27j")
+material = ExtResource("1_yjuw3")
 position = Vector2(-13.4385, -1.01135)
 scale = Vector2(0.233, 0.233)
-texture = ExtResource("3_44o0c")
+texture = ExtResource("2_44o0c")
 
 [node name="ResultLabel" type="Label" parent="Node2D"]
 offset_left = -52.72
-offset_top = -200.162
+offset_top = -140.518
 offset_right = 39.28
-offset_bottom = -131.162
+offset_bottom = -71.5179
 text = "test"
 label_settings = SubResource("LabelSettings_o8gfm")
-script = ExtResource("5_odcu0")
+script = ExtResource("3_huo23")
 display_duration = 10.0
 
 [node name="Darkening2" type="Sprite2D" parent="Node2D"]
@@ -77,14 +78,17 @@ position = Vector2(-12.4049, 4.04324)
 scale = Vector2(4.676, 663.163)
 texture = SubResource("GradientTexture1D_ygm8m")
 
-[node name="Enemy" parent="Node2D" instance=ExtResource("6_70fql")]
+[node name="Enemy" parent="Node2D" instance=ExtResource("4_ujmmu")]
 position = Vector2(241.892, 95.0261)
 scale = Vector2(0.224832, 0.228508)
+
 max_health = 50
 
-[node name="Player" parent="Node2D" instance=ExtResource("7_56m3q")]
+
+[node name="Player" parent="Node2D" instance=ExtResource("5_68usa")]
 position = Vector2(-193.307, 90.9824)
 scale = Vector2(-0.231, 0.231)
+
 max_health = 50
 
 [node name="Debuglabel" type="Label" parent="Node2D"]
@@ -94,9 +98,9 @@ offset_right = -497.865
 offset_bottom = -240.494
 text = "test"
 label_settings = SubResource("LabelSettings_7tcgg")
-script = ExtResource("9_a5xwf")
+script = ExtResource("7_fm6p7")
 
-[node name="BeatSlider" parent="." instance=ExtResource("10_vvjro")]
+[node name="BeatSlider" parent="." instance=ExtResource("8_7b7ob")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -110,26 +114,26 @@ scale = Vector2(0.381, 0.381)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(-605.764, -385.16)
-script = ExtResource("11_dkmk3")
+script = ExtResource("9_ddr0y")
 
-[node name="EnemyHp" parent="." instance=ExtResource("12_wxf35")]
+[node name="EnemyHp" parent="." instance=ExtResource("10_qxaty")]
 offset_left = -589.225
 offset_top = -770.397
 offset_right = -589.225
 offset_bottom = -770.397
 scale = Vector2(0.4, 0.4)
 
-[node name="PlayerHp" parent="." instance=ExtResource("13_v2g64")]
+[node name="PlayerHp" parent="." instance=ExtResource("11_oobur")]
 offset_left = -1172.25
 offset_top = -770.321
 offset_right = -1172.25
 offset_bottom = -770.321
 scale = Vector2(0.4, 0.4)
 
-[node name="321Start" parent="." instance=ExtResource("14_sy3hl")]
+[node name="321Start" parent="." instance=ExtResource("12_xo5pi")]
 position = Vector2(-605.764, -500.405)
 
-[node name="PauseMenu" parent="." instance=ExtResource("15_abwbg")]
+[node name="PauseMenu" parent="." instance=ExtResource("13_anefj")]
 visible = false
 offset_left = -601.629
 offset_top = -390.215
@@ -147,6 +151,22 @@ scale = Vector2(4.58789, 665)
 texture = SubResource("GradientTexture1D_ygm8m")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("16_06rnv")
+stream = ExtResource("15_i1v58")
 volume_db = 14.054
 pitch_scale = 0.97
+
+[node name="cutsceneLabel" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -595.427
+offset_top = -465.023
+offset_right = -594.427
+offset_bottom = -397.023
+grow_horizontal = 2
+grow_vertical = 2
+label_settings = SubResource("LabelSettings_44o0c")
+horizontal_alignment = 1
+vertical_alignment = 1

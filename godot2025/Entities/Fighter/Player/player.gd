@@ -62,6 +62,7 @@ func _input(event):
 
 func submit_player_action_to_manager(action: FightEnums.Action):
 	# Debug the window state before processing
+	print("Currtime" + str(BeatManager._get_current_time()))
 	print("=== Player Input Debug ===")
 	print("Action: ", FightEnums.Action.keys()[action])
 	
@@ -72,6 +73,8 @@ func submit_player_action_to_manager(action: FightEnums.Action):
 	# Use the new submit method which handles timing validation internally
 	FightManager.submit_player_action(action)
 	print("From player.gd = Player pressed " + FightEnums.Action.keys()[action] + ' ' + FightEnums.BeatTiming.keys()[timing])
+	
+
 	
 	# Store the selected action and timing locally for display
 	selected_action_enum = action

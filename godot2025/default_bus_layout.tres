@@ -4,7 +4,7 @@
 resource_name = "StereoEnhance"
 
 [resource]
-bus/0/volume_db = -30.1465
+bus/0/volume_db = 0.662756
 bus/1/name = &"sounds"
 bus/1/solo = false
 bus/1/mute = false
