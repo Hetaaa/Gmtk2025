@@ -9,11 +9,13 @@ signal scene_changed(scene_name: String)
 # Scene registry - maps scene names to their file paths
 var scenes: Dictionary = {
 	"main_menu": "res://Views/MainMenu/MainMenu.tscn",
+	"calibration": "res://Views/TimingOffsetSetter/TimingCalibrator.tscn",
 	"choosing_levels": "res://Views/ChoosingLevels/ChoosingLevel.tscn",
 	"options": "res://Views/Options/Options.tscn",
-	"level_1": "res://Views/Level1/Level1.tscn",
-	"level_2": "res://Views/Level2/Level2.tscn",
+	"level_1": "res://Views/Tutorial/level1.tscn",
+	"level_2": "res://Views/Level1/level2.tscn",
 	"level_3": "res://Views/Level3/Level3.tscn",
+	"level_4": "res://Views/Level4/level4.tscn",
 	# Dodaj więcej poziomów według potrzeb
 	"game_over": "res://scenes/GameOver.tscn"
 }

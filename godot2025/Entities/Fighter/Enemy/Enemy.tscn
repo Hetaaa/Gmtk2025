@@ -46,7 +46,7 @@
 [ext_resource type="Texture2D" uid="uid://dncm7p2w532kf" path="res://Textures/Enemy/idle/0003.png" id="49_u1gke"]
 [ext_resource type="Texture2D" uid="uid://b6d7d7tnew0hm" path="res://Textures/Enemy/idle/0004.png" id="50_bc0ac"]
 [ext_resource type="Texture2D" uid="uid://itnuqnfqaklp" path="res://Textures/Enemy/idle/0005.png" id="51_ge57i"]
-[ext_resource type="Texture2D" uid="uid://c6kjpmt2gmlxa" path="res://Textures/UI/KeyboardButtons/K.png" id="52_3ngr0"]
+[ext_resource type="Texture2D" uid="uid://bvowvp636s0tw" path="res://Textures/UI/KeyboardButtons/K.png" id="52_3ngr0"]
 [ext_resource type="Texture2D" uid="uid://b5rj04vkm4cid" path="res://Textures/Enemy/idle/0006.png" id="52_p8oja"]
 [ext_resource type="Texture2D" uid="uid://wkwus83ckgf5" path="res://Textures/Enemy/idle/0007.png" id="53_gcpcs"]
 [ext_resource type="Texture2D" uid="uid://bohsqyr43hv4k" path="res://Textures/Enemy/idle/0008.png" id="54_l07dy"]
@@ -166,7 +166,7 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("32_kd5y6")
 }],
-"loop": true,
+"loop": false,
 "name": &"BLOCK_LOW",
 "speed": 5.0
 }, {
@@ -200,7 +200,7 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("40_m0p84")
 }],
-"loop": true,
+"loop": false,
 "name": &"ENEMY_HIT",
 "speed": 8.0
 }, {
@@ -250,7 +250,7 @@ script = ExtResource("5_fia76")
 material = SubResource("ShaderMaterial_3ngr0")
 scale = Vector2(3, 3)
 sprite_frames = SubResource("SpriteFrames_tvap6")
-animation = &"ATTACK_LOW"
+animation = &"ATTACK_HIGH"
 
 [node name="ButtonDisplayContainer" type="Control" parent="." index="2"]
 layout_mode = 3

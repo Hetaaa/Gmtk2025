@@ -1,21 +1,21 @@
-[gd_scene load_steps=23 format=3 uid="uid://dwwnt6qwu14ew"]
+[gd_scene load_steps=23 format=3 uid="uid://cjt57r1exa2hk"]
 
-[ext_resource type="Script" uid="uid://fnahnjy3r1lf" path="res://Views/Level1/level_1.gd" id="1_bso2q"]
-[ext_resource type="Material" uid="uid://b3k41nmnmix4k" path="res://Global/Shaders/singleSpriteCRT/spriteCRT.tres" id="2_fm27j"]
-[ext_resource type="Texture2D" uid="uid://cg8rfo3cth6i3" path="res://Views/Tutorial/Assets/GAMEBG2.png" id="3_44o0c"]
-[ext_resource type="Script" uid="uid://bg85pbhu10rdu" path="res://Views/Level1/result_label.gd" id="5_odcu0"]
-[ext_resource type="PackedScene" uid="uid://cr55hlxfh385c" path="res://Entities/Fighter/Enemy/Enemy.tscn" id="6_70fql"]
-[ext_resource type="PackedScene" uid="uid://ccu5pylc5aui7" path="res://Entities/Fighter/Player/Player.tscn" id="7_56m3q"]
-[ext_resource type="FontFile" uid="uid://cfa4vejqva60b" path="res://Entities/UI/Tiny5-Regular.ttf" id="8_a2wmr"]
-[ext_resource type="Script" uid="uid://bosya3vcsaa8e" path="res://Views/Level1/debuglabel.gd" id="9_a5xwf"]
-[ext_resource type="PackedScene" uid="uid://btsthgqwbxfrf" path="res://Entities/UI/BeatSlider/BeatSlider.tscn" id="10_vvjro"]
-[ext_resource type="Script" uid="uid://cwd460tcty84l" path="res://Views/Level1/camera_2d.gd" id="11_dkmk3"]
-[ext_resource type="PackedScene" uid="uid://dp0bhf44ueyi1" path="res://Entities/UI/EnemyHP/EnemyHp.tscn" id="12_wxf35"]
-[ext_resource type="PackedScene" uid="uid://d4gbprg56cy7s" path="res://Entities/UI/PlayerHP/PlayerHP.tscn" id="13_v2g64"]
-[ext_resource type="PackedScene" uid="uid://d3n17wdkrqfle" path="res://Entities/UI/321Start/321Start.tscn" id="14_sy3hl"]
-[ext_resource type="PackedScene" uid="uid://bj661pypnyxav" path="res://Global/PauseManager/PauseMenu.tscn" id="15_abwbg"]
-[ext_resource type="Shader" uid="uid://dm70kqlkjectq" path="res://shader/crt.gdshader" id="15_fm27j"]
-[ext_resource type="AudioStream" uid="uid://cg1wbu756pchv" path="res://audio/BeatMaps/explosion.wav" id="16_06rnv"]
+[ext_resource type="Script" uid="uid://bnj2u5le60vv4" path="res://Views/Level4/level_4.gd" id="1_ype4u"]
+[ext_resource type="Material" uid="uid://b3k41nmnmix4k" path="res://Global/Shaders/singleSpriteCRT/spriteCRT.tres" id="2_h44ol"]
+[ext_resource type="Texture2D" uid="uid://2bidp6g30hli" path="res://Views/Level1/Assets/level1bg.png" id="3_agtoj"]
+[ext_resource type="Script" uid="uid://bg85pbhu10rdu" path="res://Views/Level1/result_label.gd" id="4_yia7j"]
+[ext_resource type="PackedScene" uid="uid://cr55hlxfh385c" path="res://Entities/Fighter/Enemy/Enemy.tscn" id="5_i1s5j"]
+[ext_resource type="PackedScene" uid="uid://ccu5pylc5aui7" path="res://Entities/Fighter/Player/Player.tscn" id="6_tej35"]
+[ext_resource type="FontFile" uid="uid://cfa4vejqva60b" path="res://Entities/UI/Tiny5-Regular.ttf" id="7_gru2n"]
+[ext_resource type="Script" uid="uid://bosya3vcsaa8e" path="res://Views/Level1/debuglabel.gd" id="8_nsxrt"]
+[ext_resource type="PackedScene" uid="uid://btsthgqwbxfrf" path="res://Entities/UI/BeatSlider/BeatSlider.tscn" id="9_mo0ro"]
+[ext_resource type="Script" uid="uid://cwd460tcty84l" path="res://Views/Level1/camera_2d.gd" id="10_fb5se"]
+[ext_resource type="PackedScene" uid="uid://dp0bhf44ueyi1" path="res://Entities/UI/EnemyHP/EnemyHp.tscn" id="11_2fwex"]
+[ext_resource type="PackedScene" uid="uid://d4gbprg56cy7s" path="res://Entities/UI/PlayerHP/PlayerHP.tscn" id="12_a07ai"]
+[ext_resource type="PackedScene" uid="uid://d3n17wdkrqfle" path="res://Entities/UI/321Start/321Start.tscn" id="13_vuknv"]
+[ext_resource type="PackedScene" uid="uid://bj661pypnyxav" path="res://Global/PauseManager/PauseMenu.tscn" id="14_lcooa"]
+[ext_resource type="Shader" uid="uid://dm70kqlkjectq" path="res://shader/crt.gdshader" id="15_ognoi"]
+[ext_resource type="AudioStream" uid="uid://cg1wbu756pchv" path="res://audio/BeatMaps/explosion.wav" id="16_2s72u"]
 
 [sub_resource type="FontFile" id="FontFile_8awem"]
 cache/0/50/0/ascent = 0.0
@@ -40,11 +40,11 @@ colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 1)
 gradient = SubResource("Gradient_3b737")
 
 [sub_resource type="LabelSettings" id="LabelSettings_7tcgg"]
-font = ExtResource("8_a2wmr")
+font = ExtResource("7_gru2n")
 font_size = 12
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_8awem"]
-shader = ExtResource("15_fm27j")
+shader = ExtResource("15_ognoi")
 shader_parameter/scanline_color = Color(0, 0, 0, 1)
 shader_parameter/flicker_color = Color(0, 0, 0, 1)
 shader_parameter/scanlines_count = 10.85
@@ -54,33 +54,27 @@ shader_parameter/flicker_intensity = 0.007
 shader_parameter/color_offset = 0.0
 shader_parameter/blur = 0.15
 
-[node name="Tutorial" type="Node2D"]
+[node name="level4" type="Node2D"]
 scale = Vector2(0.967373, 0.989198)
-script = ExtResource("1_bso2q")
-player_phase_position = Vector2(-50, 90)
-player_enemy_phase_position = Vector2(-200, 90)
-enemy_phase_position = Vector2(250, 90)
-enemy_player_phase_position = Vector2(80, 90)
-move_duration = 0.1
-position_change_delay = 0.3
+script = ExtResource("1_ype4u")
 
 [node name="Node2D" type="Node2D" parent="."]
 position = Vector2(-591.292, -386.171)
 
 [node name="Background" type="Sprite2D" parent="Node2D"]
-material = ExtResource("2_fm27j")
+material = ExtResource("2_h44ol")
 position = Vector2(-13.4385, -1.01135)
 scale = Vector2(0.233, 0.233)
-texture = ExtResource("3_44o0c")
+texture = ExtResource("3_agtoj")
 
 [node name="ResultLabel" type="Label" parent="Node2D"]
 offset_left = -52.72
-offset_top = -200.162
+offset_top = -140.518
 offset_right = 39.28
-offset_bottom = -131.162
+offset_bottom = -71.5179
 text = "test"
 label_settings = SubResource("LabelSettings_o8gfm")
-script = ExtResource("5_odcu0")
+script = ExtResource("4_yia7j")
 display_duration = 10.0
 
 [node name="Darkening2" type="Sprite2D" parent="Node2D"]
@@ -89,14 +83,16 @@ position = Vector2(-12.4049, 4.04324)
 scale = Vector2(4.676, 663.163)
 texture = SubResource("GradientTexture1D_ygm8m")
 
-[node name="Enemy" parent="Node2D" instance=ExtResource("6_70fql")]
+[node name="Enemy" parent="Node2D" instance=ExtResource("5_i1s5j")]
 position = Vector2(241.892, 95.0261)
 scale = Vector2(0.224832, 0.228508)
-max_health = 2
+max_health = 10
+move_pattern = Array[int]([1, 3, 6, 5, 2])
 
-[node name="Player" parent="Node2D" instance=ExtResource("7_56m3q")]
+[node name="Player" parent="Node2D" instance=ExtResource("6_tej35")]
 position = Vector2(-193.307, 90.9824)
 scale = Vector2(-0.231, 0.231)
+max_health = 20
 
 [node name="Debuglabel" type="Label" parent="Node2D"]
 offset_left = -608.865
@@ -105,9 +101,9 @@ offset_right = -497.865
 offset_bottom = -240.494
 text = "test"
 label_settings = SubResource("LabelSettings_7tcgg")
-script = ExtResource("9_a5xwf")
+script = ExtResource("8_nsxrt")
 
-[node name="BeatSlider" parent="." instance=ExtResource("10_vvjro")]
+[node name="BeatSlider" parent="." instance=ExtResource("9_mo0ro")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -121,26 +117,26 @@ scale = Vector2(0.381, 0.381)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(-605.764, -385.16)
-script = ExtResource("11_dkmk3")
+script = ExtResource("10_fb5se")
 
-[node name="EnemyHp" parent="." instance=ExtResource("12_wxf35")]
+[node name="EnemyHp" parent="." instance=ExtResource("11_2fwex")]
 offset_left = -589.225
 offset_top = -770.397
 offset_right = -589.225
 offset_bottom = -770.397
 scale = Vector2(0.4, 0.4)
 
-[node name="PlayerHp" parent="." instance=ExtResource("13_v2g64")]
+[node name="PlayerHp" parent="." instance=ExtResource("12_a07ai")]
 offset_left = -1172.25
 offset_top = -770.321
 offset_right = -1172.25
 offset_bottom = -770.321
 scale = Vector2(0.4, 0.4)
 
-[node name="321Start" parent="." instance=ExtResource("14_sy3hl")]
+[node name="321Start" parent="." instance=ExtResource("13_vuknv")]
 position = Vector2(-605.764, -500.405)
 
-[node name="PauseMenu" parent="." instance=ExtResource("15_abwbg")]
+[node name="PauseMenu" parent="." instance=ExtResource("14_lcooa")]
 visible = false
 offset_left = -601.629
 offset_top = -390.215
@@ -158,6 +154,6 @@ scale = Vector2(4.58789, 665)
 texture = SubResource("GradientTexture1D_ygm8m")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("16_06rnv")
+stream = ExtResource("16_2s72u")
 volume_db = 14.054
 pitch_scale = 0.97

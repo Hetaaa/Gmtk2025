@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ot6uq4yi8cau"
-path="res://.godot/imported/darnek.png-2a59508d2670e16cf97ceb38ff21c06e.ctex"
+uid="uid://b3hry81livwnh"
+path="res://.godot/imported/TEXT.png-63ca76ef2574861d07d7817a1957474c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Views/Tutorial/Assets/darnek.png"
-dest_files=["res://.godot/imported/darnek.png-2a59508d2670e16cf97ceb38ff21c06e.ctex"]
+source_file="res://Views/TimingOffsetSetter/Assets/TEXT.png"
+dest_files=["res://.godot/imported/TEXT.png-63ca76ef2574861d07d7817a1957474c.ctex"]
 
 [params]
 

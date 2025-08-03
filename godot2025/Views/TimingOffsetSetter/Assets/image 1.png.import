@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cg8rfo3cth6i3"
-path="res://.godot/imported/GAMEBG2.png-7a1c9f81622565ebbaf764ec65c996fa.ctex"
+uid="uid://dxkftq270377t"
+path="res://.godot/imported/image 1.png-522a667aca0219c007d51deb89855630.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Views/Tutorial/Assets/GAMEBG2.png"
-dest_files=["res://.godot/imported/GAMEBG2.png-7a1c9f81622565ebbaf764ec65c996fa.ctex"]
+source_file="res://Views/TimingOffsetSetter/Assets/image 1.png"
+dest_files=["res://.godot/imported/image 1.png-522a667aca0219c007d51deb89855630.ctex"]
 
 [params]
 

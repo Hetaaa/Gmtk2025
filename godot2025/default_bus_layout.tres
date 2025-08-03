@@ -1,15 +1,4 @@
-[gd_resource type="AudioBusLayout" load_steps=2 format=3 uid="uid://bulp505t7qun6"]
-
-[sub_resource type="AudioEffectStereoEnhance" id="AudioEffectStereoEnhance_j3pel"]
-resource_name = "StereoEnhance"
+[gd_resource type="AudioBusLayout" format=3 uid="uid://bulp505t7qun6"]
 
 [resource]
-bus/0/volume_db = -30.1465
-bus/1/name = &"sounds"
-bus/1/solo = false
-bus/1/mute = false
-bus/1/bypass_fx = false
-bus/1/volume_db = 0.0
-bus/1/send = &"Master"
-bus/1/effect/0/effect = SubResource("AudioEffectStereoEnhance_j3pel")
-bus/1/effect/0/enabled = true
+bus/0/volume_db = 1.05827

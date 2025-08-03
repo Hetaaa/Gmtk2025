@@ -1,6 +1,7 @@
-[gd_scene load_steps=21 format=3 uid="uid://celjxnl8ka434"]
+[gd_scene load_steps=17 format=3 uid="uid://celjxnl8ka434"]
 
 [ext_resource type="Script" uid="uid://d4g5x4eb12wbv" path="res://Views/ChoosingLevels/choosing_level.gd" id="1_y007q"]
+[ext_resource type="Material" uid="uid://b3k41nmnmix4k" path="res://Global/Shaders/singleSpriteCRT/spriteCRT.tres" id="2_hjon0"]
 [ext_resource type="Texture2D" uid="uid://k32fmvgliorv" path="res://Views/MainMenu/image_1 (1).png" id="2_ujt8o"]
 [ext_resource type="Texture2D" uid="uid://btvlato3l4dn5" path="res://Views/MainMenu/Sciemnienie_1.png" id="3_rhw8o"]
 [ext_resource type="FontFile" uid="uid://cdgyynrj00xij" path="res://Views/MainMenu/IBMPlexMono-Regular.ttf" id="4_rhw8o"]
@@ -37,24 +38,6 @@ texture = ExtResource("5_hjon0")
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ihud4"]
 texture = ExtResource("5_hjon0")
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dm813"]
-texture = ExtResource("5_hjon0")
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_a2a4u"]
-texture = ExtResource("5_hjon0")
-modulate_color = Color(0.400698, 0.400698, 0.400698, 1)
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wvoe2"]
-texture = ExtResource("5_hjon0")
-modulate_color = Color(0.400698, 0.400698, 0.400698, 1)
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_edt88"]
-texture = ExtResource("5_hjon0")
-modulate_color = Color(0.400698, 0.400698, 0.400698, 1)
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7sh2o"]
-texture = ExtResource("5_hjon0")
-
 [node name="ChoosingLevel" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -65,6 +48,7 @@ grow_vertical = 2
 script = ExtResource("1_y007q")
 
 [node name="Panel" type="Panel" parent="."]
+material = ExtResource("2_hjon0")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -78,6 +62,8 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = 11.0
+offset_bottom = 11.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_hjon0")
@@ -89,10 +75,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -186.0
-offset_top = -104.0
-offset_right = -36.0
-offset_bottom = 146.0
+offset_left = -51.0
+offset_top = -91.0
+offset_right = 99.0
+offset_bottom = 159.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 10
@@ -110,7 +96,7 @@ theme_override_styles/focus = SubResource("StyleBoxTexture_gg2qs")
 theme_override_styles/hover = SubResource("StyleBoxTexture_j3kqe")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_i0rvh")
 theme_override_styles/normal = SubResource("StyleBoxTexture_0qn42")
-text = "Level 1"
+text = "Tutorial"
 
 [node name="LevelButton2" type="Button" parent="VBox1"]
 layout_mode = 2
@@ -125,7 +111,7 @@ theme_override_styles/focus = SubResource("StyleBoxTexture_gg2qs")
 theme_override_styles/hover = SubResource("StyleBoxTexture_j3kqe")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_i0rvh")
 theme_override_styles/normal = SubResource("StyleBoxTexture_et8kq")
-text = "Level 2"
+text = "Level 1"
 
 [node name="LevelButton3" type="Button" parent="VBox1"]
 layout_mode = 2
@@ -140,7 +126,7 @@ theme_override_styles/focus = SubResource("StyleBoxTexture_gg2qs")
 theme_override_styles/hover = SubResource("StyleBoxTexture_j3kqe")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_i0rvh")
 theme_override_styles/normal = SubResource("StyleBoxTexture_5u7ni")
-text = "Level 3"
+text = "Level 2"
 
 [node name="LevelButton4" type="Button" parent="VBox1"]
 layout_mode = 2
@@ -155,9 +141,10 @@ theme_override_styles/focus = SubResource("StyleBoxTexture_gg2qs")
 theme_override_styles/hover = SubResource("StyleBoxTexture_j3kqe")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_i0rvh")
 theme_override_styles/normal = SubResource("StyleBoxTexture_ihud4")
-text = "Level 4"
+text = "Level 3"
 
 [node name="LevelButton5" type="Button" parent="VBox1"]
+modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
@@ -169,8 +156,8 @@ theme_override_font_sizes/font_size = 12
 theme_override_styles/focus = SubResource("StyleBoxTexture_gg2qs")
 theme_override_styles/hover = SubResource("StyleBoxTexture_j3kqe")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_i0rvh")
-theme_override_styles/normal = SubResource("StyleBoxTexture_dm813")
-text = "Level 5"
+theme_override_styles/normal = SubResource("StyleBoxTexture_0qn42")
+text = "Tutorial"
 
 [node name="VBox2" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -186,81 +173,6 @@ offset_bottom = 146.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 10
-
-[node name="LevelButton6" type="Button" parent="VBox2"]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
-theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("4_rhw8o")
-theme_override_font_sizes/font_size = 12
-theme_override_styles/focus = SubResource("StyleBoxTexture_a2a4u")
-theme_override_styles/hover = SubResource("StyleBoxTexture_wvoe2")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_edt88")
-theme_override_styles/normal = SubResource("StyleBoxTexture_7sh2o")
-text = "Level 6"
-
-[node name="LevelButton7" type="Button" parent="VBox2"]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
-theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("4_rhw8o")
-theme_override_font_sizes/font_size = 12
-theme_override_styles/focus = SubResource("StyleBoxTexture_a2a4u")
-theme_override_styles/hover = SubResource("StyleBoxTexture_wvoe2")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_edt88")
-theme_override_styles/normal = SubResource("StyleBoxTexture_7sh2o")
-text = "Level 7"
-
-[node name="LevelButton8" type="Button" parent="VBox2"]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
-theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("4_rhw8o")
-theme_override_font_sizes/font_size = 12
-theme_override_styles/focus = SubResource("StyleBoxTexture_a2a4u")
-theme_override_styles/hover = SubResource("StyleBoxTexture_wvoe2")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_edt88")
-theme_override_styles/normal = SubResource("StyleBoxTexture_7sh2o")
-text = "Level 8"
-
-[node name="LevelButton9" type="Button" parent="VBox2"]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
-theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("4_rhw8o")
-theme_override_font_sizes/font_size = 12
-theme_override_styles/focus = SubResource("StyleBoxTexture_a2a4u")
-theme_override_styles/hover = SubResource("StyleBoxTexture_wvoe2")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_edt88")
-theme_override_styles/normal = SubResource("StyleBoxTexture_7sh2o")
-text = "Level 9"
-
-[node name="LevelButton10" type="Button" parent="VBox2"]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
-theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("4_rhw8o")
-theme_override_font_sizes/font_size = 12
-theme_override_styles/focus = SubResource("StyleBoxTexture_a2a4u")
-theme_override_styles/hover = SubResource("StyleBoxTexture_wvoe2")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_edt88")
-theme_override_styles/normal = SubResource("StyleBoxTexture_7sh2o")
-text = "Level 10"
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 1

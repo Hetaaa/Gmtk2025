@@ -2,11 +2,15 @@ extends Node
 
 var end_screen: Sprite2D = null
 var pulse_tween: Tween = null
+var input_enabled: bool = false
 
 func show(winner: String) -> void:
 	# Usuń poprzedni, jeśli istnieje
 	if end_screen:
 		end_screen.queue_free()
+	
+	# Zresetuj stan inputu
+	input_enabled = false
 	
 	# Stwórz nowego Sprite2D
 	end_screen = Sprite2D.new()
@@ -36,7 +40,9 @@ func show(winner: String) -> void:
 	# Rozpocznij pulsowanie po zakończeniu fade-in
 	fade_tween.tween_callback(Callable(self, "_start_pulsing"))
 	
-	get_tree().get_root().set_process_input(true)
+	# WAŻNE: Opóźnienie przed włączeniem inputu
+	# Czeka na zakończenie fade-in + dodatkowe opóźnienie
+	fade_tween.tween_callback(Callable(self, "_enable_input_after_delay"))
 
 func _start_pulsing() -> void:
 	if not end_screen or not is_instance_valid(end_screen):
@@ -51,7 +57,15 @@ func _start_pulsing() -> void:
 	pulse_tween.tween_property(end_screen, "scale", pulse_up, 0.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	pulse_tween.tween_property(end_screen, "scale", pulse_down, 0.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 
+func _enable_input_after_delay() -> void:
+	# Dodatkowe opóźnienie po fade-in (1.0 sekunda dla pewności)
+	await get_tree().create_timer(1.0).timeout
+	input_enabled = true
+	print("EndScreen: Input NOW enabled - you can press any key to continue")
+
 func stop() -> void:
+	input_enabled = false
+	
 	if pulse_tween and pulse_tween.is_running():
 		pulse_tween.kill()
 		pulse_tween = null
@@ -67,3 +81,7 @@ func cleanup_before_scene_change() -> void:
 # Funkcja do sprawdzenia czy ekran jest aktywny
 func is_end_screen_active() -> bool:
 	return end_screen != null and is_instance_valid(end_screen)
+
+# Funkcja do sprawdzenia czy input jest włączony
+func is_input_enabled() -> bool:
+	return input_enabled and is_end_screen_active()
