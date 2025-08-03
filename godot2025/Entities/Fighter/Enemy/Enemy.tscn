@@ -1,4 +1,4 @@
-[gd_scene load_steps=54 format=3 uid="uid://cr55hlxfh385c"]
+[gd_scene load_steps=52 format=3 uid="uid://cr55hlxfh385c"]
 
 [ext_resource type="PackedScene" uid="uid://bt5mahxf87w81" path="res://Entities/Fighter/Fighter.tscn" id="1_d0mcx"]
 [ext_resource type="Script" uid="uid://xr44ff0rrgbk" path="res://Entities/Fighter/Enemy/enemy.gd" id="2_s3sib"]
@@ -14,12 +14,10 @@
 [ext_resource type="Texture2D" uid="uid://kjsxg6ua6dwo" path="res://Textures/Enemy/hitLow/0001.png" id="14_3qbqq"]
 [ext_resource type="Texture2D" uid="uid://cr4nbnvgibfrc" path="res://Textures/Enemy/hitMiddle/0001.png" id="14_76pct"]
 [ext_resource type="Texture2D" uid="uid://yb7c7k6uq3cr" path="res://Textures/Enemy/hitMiddle/0003.png" id="15_b20c8"]
-[ext_resource type="Texture2D" uid="uid://bg1jor3kc1mfm" path="res://Textures/Enemy/hitLow/0002.png" id="15_s4xwd"]
 [ext_resource type="Texture2D" uid="uid://dvra4cq1w2mqk" path="res://Textures/Enemy/hitLow/0003.png" id="16_3dvy3"]
 [ext_resource type="Texture2D" uid="uid://cbkj3cghhey01" path="res://Textures/Enemy/hitMiddle/0005.png" id="16_3her7"]
 [ext_resource type="Texture2D" uid="uid://wnk0ruaewqsa" path="res://Textures/Enemy/hitMiddle/0006.png" id="17_khp0n"]
 [ext_resource type="Texture2D" uid="uid://csbis32xrw5bp" path="res://Textures/Enemy/hitLow/0004.png" id="17_skwkm"]
-[ext_resource type="Texture2D" uid="uid://bsu3fxqtkgs0q" path="res://Textures/Enemy/hitLow/0005.png" id="18_5c61j"]
 [ext_resource type="Texture2D" uid="uid://drf43dycucn7u" path="res://Textures/Enemy/hitMiddle/0007.png" id="18_j7iuw"]
 [ext_resource type="Texture2D" uid="uid://bt3uy4qjgx5nk" path="res://Textures/Enemy/blockUp/0001.png" id="19_7ottu"]
 [ext_resource type="Texture2D" uid="uid://bmfdxpoq0lyns" path="res://Textures/Enemy/hitLow/0006.png" id="19_tia7x"]
@@ -89,16 +87,10 @@ animations = [{
 "texture": ExtResource("14_3qbqq")
 }, {
 "duration": 1.0,
-"texture": ExtResource("15_s4xwd")
-}, {
-"duration": 1.0,
 "texture": ExtResource("16_3dvy3")
 }, {
 "duration": 1.0,
 "texture": ExtResource("17_skwkm")
-}, {
-"duration": 1.0,
-"texture": ExtResource("18_5c61j")
 }, {
 "duration": 1.0,
 "texture": ExtResource("19_tia7x")
@@ -252,7 +244,7 @@ script = ExtResource("5_fia76")
 [node name="Sprite2D" type="AnimatedSprite2D" parent="." index="1"]
 scale = Vector2(3, 3)
 sprite_frames = SubResource("SpriteFrames_tvap6")
-animation = &"ATTACK_HIGH"
+animation = &"ATTACK_LOW"
 
 [node name="ButtonDisplayContainer" type="Control" parent="." index="2"]
 layout_mode = 3
