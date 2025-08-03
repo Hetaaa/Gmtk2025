@@ -12,8 +12,8 @@ var scenes: Dictionary = {
 	"calibration": "res://Views/TimingOffsetSetter/TimingCalibrator.tscn",
 	"choosing_levels": "res://Views/ChoosingLevels/ChoosingLevel.tscn",
 	"options": "res://Views/Options/Options.tscn",
-	"level_1": "res://Views/Level1/Level1.tscn",
-	"level_2": "res://Views/Level2/Level2.tscn",
+	"level_1": "res://Views/Tutorial/level1.tscn",
+	"level_2": "res://Views/Level1/level2.tscn",
 	"level_3": "res://Views/Level3/Level3.tscn",
 	# Dodaj więcej poziomów według potrzeb
 	"game_over": "res://scenes/GameOver.tscn"

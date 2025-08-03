@@ -24,7 +24,6 @@ var beat_hit_connection: Callable
 
 func _ready():
 	# Store original offset and scale
-	original_offset = BeatManager.timing_offset
 	if music_indicator:
 		original_scale = music_indicator.scale
 	
@@ -82,7 +81,6 @@ func start_calibration():
 
 func start_music():
 	# Temporarily set offset to 0 for pure measurement
-	BeatManager.timing_offset = 0.0
 	
 	# Create the connection callable for beat recording
 	beat_hit_connection = func(beat_count: int):
@@ -162,7 +160,6 @@ func reset_calibration():
 		BeatManager.beat_hit.disconnect(beat_hit_connection)
 	
 	# Restore original offset
-	BeatManager.timing_offset = original_offset
 	
 	# Reset to waiting state
 	set_ui_state_waiting()
@@ -177,12 +174,10 @@ func calculate_and_display_offset():
 	
 	if num_inputs == 0:
 		print("ERROR: No inputs recorded")
-		BeatManager.timing_offset = original_offset
 		return
 	
 	if num_beats == 0:
 		print("ERROR: No beats detected")
-		BeatManager.timing_offset = original_offset
 		return
 	
 	# Match inputs to nearest beats
@@ -215,7 +210,6 @@ func calculate_and_display_offset():
 	
 	if valid_samples == 0:
 		print("ERROR: No valid input-beat pairs found")
-		BeatManager.timing_offset = original_offset
 		return
 	
 	# Calculate statistics
@@ -230,8 +224,7 @@ func calculate_and_display_offset():
 	var std_deviation = sqrt(variance)
 	
 	# Display and apply results
-	BeatManager.timing_offset = recommended_offset
-	
+	SceneManager.isOffset = true
 	var result_text = "Offset: %.1fms" % (recommended_offset * 1000)
-	
+		
 	SceneManager.change_scene("choosing_levels")

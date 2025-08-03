@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d1e5wxpu43qbk"
-path="res://.godot/imported/L.png-254066e90934a8f8ea397a40be6ccb27.ctex"
+uid="uid://cu0yb6c0lqkri"
+path="res://.godot/imported/Credits.png-ec854bf476825adac7639d6400c32e6f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Textures/UI/KeyboardButtons/L.png"
-dest_files=["res://.godot/imported/L.png-254066e90934a8f8ea397a40be6ccb27.ctex"]
+source_file="res://Views/MainMenu/Credits.png"
+dest_files=["res://.godot/imported/Credits.png-ec854bf476825adac7639d6400c32e6f.ctex"]
 
 [params]
 

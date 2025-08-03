@@ -1,4 +1,5 @@
-[gd_scene load_steps=22 format=3 uid="uid://dhqvjboele1dy"]
+[gd_scene load_steps=23 format=3 uid="uid://cj8hwo1tp55gc"]
+
 
 [ext_resource type="Material" uid="uid://b3k41nmnmix4k" path="res://Global/Shaders/singleSpriteCRT/spriteCRT.tres" id="2_dbhb4"]
 [ext_resource type="Texture2D" uid="uid://2bidp6g30hli" path="res://Views/Level1/Assets/level1bg.png" id="3_4nyb8"]
@@ -67,9 +68,9 @@ texture = ExtResource("3_4nyb8")
 
 [node name="ResultLabel" type="Label" parent="Node2D"]
 offset_left = -52.72
-offset_top = -140.518
+offset_top = -192.863
 offset_right = 39.28
-offset_bottom = -71.5179
+offset_bottom = -124.333
 text = "test"
 label_settings = SubResource("LabelSettings_o8gfm")
 script = ExtResource("4_8i0s0")
@@ -84,7 +85,7 @@ texture = SubResource("GradientTexture1D_ygm8m")
 [node name="Enemy" parent="Node2D" instance=ExtResource("5_yyqrp")]
 position = Vector2(241.892, 95.0261)
 scale = Vector2(0.224832, 0.228508)
-max_health = 20
+max_health = 2
 
 [node name="Player" parent="Node2D" instance=ExtResource("6_jyufn")]
 position = Vector2(-193.307, 90.9824)
