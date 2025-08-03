@@ -62,63 +62,63 @@ class ActionWindow:
 
 var tracks = [
 	{ 
-		"path": "res://Audio/oldDisc.mp3",
-		"beat_map_file": "res://Audio//BeatMaps/oldDiscMap.txt"
+		"path": "res://Audio/oldDisc.mp3", 
+		"beat_map_file": "res://Audio//BeatMaps/oldDiscMap.txt"  #0
 	},
 	{
-		"path": "res://Audio/synth136.mp3", 
+		"path": "res://Audio/synth136.mp3",  #1
 		"beat_map_file":"res://Audio/BeatMaps/synthkickMap.txt"
 	},
 	{
-		"path": "res://Audio/noca90.mp3",
+		"path": "res://Audio/noca90.mp3", #2
 		"beat_map_file":"res://Audio/BeatMaps/piekaryMap.txt"
 	},
 	{ 
-		"path": "res://Audio/trance150.mp3", 
+		"path": "res://Audio/trance150.mp3",  #3
 		"beat_map_file": "res://Audio/BeatMaps/tranceMap.txt"
 		},
 	{ 
-		"path": "res://Audio/techno120.mp3",
+		"path": "res://Audio/techno120.mp3", #4
 		"bpm": 150 
 	},
 	{ 
-		"path": "res://Audio/soyouthinkmucheasier.mp3", 
+		"path": "res://Audio/soyouthinkmucheasier.mp3",  #5
 		"beat_map_file": "res://Audio/BeatMaps/soyouthinkMap.txt"
 	},
 	{ 
-		"path": "res://Audio/synthdrill.mp3", 
+		"path": "res://Audio/synthdrill.mp3", #6
 		"beat_map_file": "res://Audio/BeatMaps/synthdrillMap.txt"
 	},
 	{ 
-		"path": "res://Audio/bonus.mp3", 
+		"path": "res://Audio/bonus.mp3", #7
 		"beat_map_file": "res://Audio/BeatMaps/bonusMap.txt"
 	},
 	{ 
-		"path": "res://Audio/thebindingofbeatboxer.mp3", 
+		"path": "res://Audio/thebindingofbeatboxer.mp3",  #8
 		"beat_map_file": "res://Audio/BeatMaps/bindingMap.txt"
 	},
 	{ 
-		"path": "res://Audio/pluck.mp3", 
+		"path": "res://Audio/pluck.mp3",  #9
 		"beat_map_file": "res://Audio/BeatMaps/pluckMap.txt"
 	},
 	{ 
-		"path": "res://Audio/hihatcity.mp3", 
+		"path": "res://Audio/hihatcity.mp3",  #10
 		"beat_map_file": "res://Audio/BeatMaps/hihatMap.txt"
 	},
 	{ 
-		"path": "res://Audio/jazdazkur.mp3", 
+		"path": "res://Audio/jazdazkur.mp3",  #11
 		"beat_map_file": "res://Audio/BeatMaps/jazdaMap.txt"
 	},
 	{ 
-		"path": "res://Audio/fastmeloody.mp3", 
+		"path": "res://Audio/fastmeloody.mp3",  #12
 		"beat_map_file": "res://Audio/BeatMaps/festMap.txt"
 	},
 	{ 
-		"path": "res://Audio/myarchnemesis.mp3", 
+		"path": "res://Audio/myarchnemesis.mp3",  #13
 		"beat_map_file": "res://Audio/BeatMaps/myarchnemesiskickMap.txt"
 	},
 	{ 
-		"path": "res://Audio/cartrip.mp3", 
+		"path": "res://Audio/cartrip.mp3", #14
 		"beat_map_file": "res://Audio/BeatMaps/cartripMap.txt"
 	}
 ]
@@ -374,7 +374,6 @@ func get_timing_for_window(window_id: int) -> FightEnums.BeatTiming:
 	
 	var current_time = _get_current_time()
 	var distance = abs(current_time - target_window.target_beat_time)
-	print(distance)
 	
 	if distance <= 0.1:
 		return FightEnums.BeatTiming.PERFECT

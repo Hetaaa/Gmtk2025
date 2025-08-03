@@ -29,7 +29,6 @@ var is_moving: bool = false
 var is_waiting_for_input: bool = false
 
 func _ready() -> void:
-	# Konfiguracja poziomu
 	BeatManager.play_track(9, 4)
 	FightManager.load_phase_pattern("res://audio/BeatMaps/test.txt")
 	beatslider.start_beats(0.0)
