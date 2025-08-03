@@ -84,12 +84,12 @@ func start_cutscene() -> void:
 	if FightManager.player_ref and FightManager.player_ref.has_node("Sprite2D"):
 		var player_sprite = FightManager.player_ref.get_node("Sprite2D")
 		if player_sprite is AnimatedSprite2D:
-			player_sprite.speed_scale = 0.02
+			player_sprite.speed_scale = 0.1
 	
 	if FightManager.enemy_ref and FightManager.enemy_ref.has_node("Sprite2D"):
 		var enemy_sprite = FightManager.enemy_ref.get_node("Sprite2D")
 		if enemy_sprite is AnimatedSprite2D:
-			enemy_sprite.speed_scale = 0.02
+			enemy_sprite.speed_scale = 0.1
 	
 	# Display texts with longer intervals
 	for i in range(cutscene_texts.size()):
