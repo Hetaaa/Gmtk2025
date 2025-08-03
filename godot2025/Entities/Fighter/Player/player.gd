@@ -6,13 +6,20 @@ class_name Player extends Fighter
 var current_health: int
 var selected_action_enum: FightEnums.Action = FightEnums.Action.NULL # Store the enum value
 var selected_timing_enum: FightEnums.BeatTiming = FightEnums.BeatTiming.NULL
+
+var hit_sound: AudioStreamPlayer
+
 @onready var Sprite = $Sprite2D
+
 
 func _ready():
 	current_health = max_health
 	Sprite.play("WAIT")
 	FightManager.register_player(self)
 
+	hit_sound = AudioStreamPlayer.new()
+	hit_sound.stream = load("res://audio/hit3.wav")
+	add_child(hit_sound)
 
 	
 func _input(event):
@@ -52,7 +59,13 @@ func submit_player_action_to_manager(action: FightEnums.Action):
 func take_damage(amount: int):
 	current_health -= amount
 	current_health = max(0, current_health)
+	
+
+	#Sound effect
+	hit_sound.play()
+	
 	Sprite.play("PLAYER_HIT")
+
 	# Visual damage effect
 	modulate = Color.RED
 	var tween = create_tween()
