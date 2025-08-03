@@ -41,8 +41,8 @@ var is_waiting_for_input: bool = false
 var cutscene_active: bool = false
 
 func _ready() -> void:
-	BeatManager.play_track(13, 4)
-	FightManager.load_phase_pattern("res://audio/BeatMaps/test.txt")
+	BeatManager.play_track(13, 0)
+	FightManager.load_phase_pattern("res://audio/patterns/myarchnemesis.txt")
 	beatslider.start_beats(0.0)
 	
 	# Hide cutscene label initially
@@ -75,7 +75,7 @@ func start_cutscene() -> void:
 	cutscene_active = true
 	
 	# Wait 7 seconds before starting cutscene
-	await get_tree().create_timer(7).timeout
+	await get_tree().create_timer(9).timeout
 	
 	# Slow down music
 	BeatManager.set_music_speed(0.02)

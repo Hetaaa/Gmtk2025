@@ -166,7 +166,7 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("32_kd5y6")
 }],
-"loop": true,
+"loop": false,
 "name": &"BLOCK_LOW",
 "speed": 5.0
 }, {
@@ -200,7 +200,7 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("40_m0p84")
 }],
-"loop": true,
+"loop": false,
 "name": &"ENEMY_HIT",
 "speed": 8.0
 }, {
@@ -250,7 +250,7 @@ script = ExtResource("5_fia76")
 material = SubResource("ShaderMaterial_3ngr0")
 scale = Vector2(3, 3)
 sprite_frames = SubResource("SpriteFrames_tvap6")
-animation = &"ATTACK_LOW"
+animation = &"ATTACK_HIGH"
 
 [node name="ButtonDisplayContainer" type="Control" parent="." index="2"]
 layout_mode = 3
