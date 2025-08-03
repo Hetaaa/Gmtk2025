@@ -19,6 +19,9 @@ class_name Enemy extends Fighter
 @onready var button_display_container = $ButtonDisplayContainer
 @onready var button_icon = $ButtonDisplayContainer/ButtonIcon
 
+var submitted_windows_this_phase: Array[int] = []
+var phase_move_count: int = 0
+
 var current_health: int
 var move_index: int = 0
 var last_submitted_window: int = -1  # Track which window we last submitted to
@@ -83,9 +86,9 @@ func submit_enemy_action(target_window_id: int = -1):
 		print("Enemy tried to act outside enemy phase - ignored")
 		return
 	
-	# Prevent multiple submissions to the same window
-	if target_window_id == last_submitted_window:
-		print("DEBUG: Enemy already submitted to window ", target_window_id, " - skipping")
+	# FIXED: Additional validation
+	if target_window_id in submitted_windows_this_phase:
+		print("DEBUG: Enemy already submitted to window ", target_window_id, " - skipping duplicate")
 		return
 	
 	var action = get_current_action()
@@ -95,10 +98,12 @@ func submit_enemy_action(target_window_id: int = -1):
 	
 	
 	# Track that we submitted to this window
-	last_submitted_window = target_window_id
+	submitted_windows_this_phase.append(target_window_id)
+	phase_move_count += 1
 	
-	# Use FightManager's method instead of direct signal emission
+	# Use FightManager's method
 	FightManager.submit_enemy_action(action, target_window_id)
+
 	show_button_animation(action)
 func show_button_animation(action: FightEnums.Action):
 	"""Pokazuje animację przycisku nad głową enemy"""
@@ -158,15 +163,33 @@ func set_new_pattern(new_pattern: Array[FightEnums.Action]):
 
 # Reset for new phase
 func reset_for_new_phase():
-	last_submitted_window = -1
-	# Don't reset move_index here - let FightManager control when to advance
+	submitted_windows_this_phase.clear()
+	phase_move_count = 0
 
 # --- Signal Callbacks ---
 
 func _on_action_window_open(window_id: int, beat_count: int) -> void:
 	# Only act during enemy phase
-	if FightManager.is_enemy_phase():
-		submit_enemy_action(window_id)
+	if not FightManager.is_enemy_phase():
+		return
+	
+	# FIXED: Check if we've already submitted to this window
+	if window_id in submitted_windows_this_phase:
+		print("DEBUG: Enemy already submitted to window ", window_id, " this phase - skipping")
+		return
+	
+	# FIXED: Check if we've made all required moves for this phase
+	var phase_info = FightManager.get_current_phase_info()
+	var total_moves_for_phase = phase_info.moves_remaining + phase_move_count
+	
+	if phase_move_count >= total_moves_for_phase:
+		print("DEBUG: Enemy has made all required moves for this phase - skipping window ", window_id)
+		return
+	
+	# FIXED: Add small delay to ensure window is fully initialized
+	await get_tree().process_frame
+	
+	submit_enemy_action(window_id)
 
 func _on_action_window_close(window_id: int, beat_count: int):
 	# No visual changes here - phase color takes precedence

@@ -55,7 +55,7 @@ func submit_player_action_to_manager(action: FightEnums.Action):
 	selected_action_enum = action
 	selected_timing_enum = timing
 	
-	change_animation(FightEnums.Action.keys()[action])
+	
 func take_damage(amount: int):
 	current_health -= amount
 	current_health = max(0, current_health)
