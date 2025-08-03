@@ -1,5 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://cj8hwo1tp55gc"]
-
+[gd_scene load_steps=22 format=3 uid="uid://cj8hwo1tp55gc"]
 
 [ext_resource type="Material" uid="uid://b3k41nmnmix4k" path="res://Global/Shaders/singleSpriteCRT/spriteCRT.tres" id="2_dbhb4"]
 [ext_resource type="Texture2D" uid="uid://2bidp6g30hli" path="res://Views/Level1/Assets/level1bg.png" id="3_4nyb8"]

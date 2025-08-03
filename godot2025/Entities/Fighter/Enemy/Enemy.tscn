@@ -46,7 +46,7 @@
 [ext_resource type="Texture2D" uid="uid://dncm7p2w532kf" path="res://Textures/Enemy/idle/0003.png" id="49_u1gke"]
 [ext_resource type="Texture2D" uid="uid://b6d7d7tnew0hm" path="res://Textures/Enemy/idle/0004.png" id="50_bc0ac"]
 [ext_resource type="Texture2D" uid="uid://itnuqnfqaklp" path="res://Textures/Enemy/idle/0005.png" id="51_ge57i"]
-[ext_resource type="Texture2D" uid="uid://c6kjpmt2gmlxa" path="res://Textures/UI/KeyboardButtons/K.png" id="52_3ngr0"]
+[ext_resource type="Texture2D" uid="uid://bvowvp636s0tw" path="res://Textures/UI/KeyboardButtons/K.png" id="52_3ngr0"]
 [ext_resource type="Texture2D" uid="uid://b5rj04vkm4cid" path="res://Textures/Enemy/idle/0006.png" id="52_p8oja"]
 [ext_resource type="Texture2D" uid="uid://wkwus83ckgf5" path="res://Textures/Enemy/idle/0007.png" id="53_gcpcs"]
 [ext_resource type="Texture2D" uid="uid://bohsqyr43hv4k" path="res://Textures/Enemy/idle/0008.png" id="54_l07dy"]
