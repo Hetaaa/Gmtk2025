@@ -9,6 +9,9 @@ signal action_window_close(window_id: int, beat_count: int)
 signal resolve_round(window_id: int, beat_count: int)
 
 signal mapLoaded()
+signal music_looped()  # New signal for when music loops
+signal beat_skipped(beat_count: int)  # New signal for when a beat is skipped
+signal skip_mode_changed(is_skipping: bool, skip_count: int)  # Signal when entering/exiting skip mode
 
 @onready var music_player := AudioStreamPlayer.new()
 @onready var beat_indicator_player := AudioStreamPlayer.new()
@@ -17,6 +20,7 @@ signal mapLoaded()
 @export var beats_per_measure: int = 4
 @export var grace_period: float = 0.4
 @export var timing_offset: float = 0.00
+@export var skip_first_beats: int = 0  # New export: number of beats to skip on first loop only
 
 @export var beat_sound_path: String = "res://Global/BeatManager/audiomass-output.mp3"
 
@@ -28,6 +32,7 @@ var is_paused = true
 var beat_count := 0
 var measure_count := 0
 var beat_index := 0
+var is_first_loop := true  # New variable to track if we're on the first loop
 
 var beat_timer: Timer
 var seconds_per_beat: float
@@ -36,6 +41,8 @@ var seconds_per_beat: float
 var active_windows: Array[ActionWindow] = []
 var next_window_id := 0
 
+var was_paused_by_user: bool = false  
+var pause_position: float = 0.0  
 # ActionWindow class to track individual windows
 class ActionWindow:
 	var id: int
@@ -138,6 +145,9 @@ func _process(_delta):
 			beat_count = 0
 			measure_count = 0
 			_reset_all_windows()
+			is_first_loop = false  # Mark that we're no longer on the first loop
+			skip_mode_changed.emit(false, 0)  # No more skipping after first loop
+			music_looped.emit()  # Emit the loop signal
 
 		last_time = current_time
 
@@ -147,11 +157,20 @@ func _process(_delta):
 
 			if current_time >= beat_scheduling_trigger_time:
 				beat_count += 1
-				if beat_count % beats_per_measure == 0:
-					measure_count += 1
-					measure_complete.emit(measure_count)
 				
-				_schedule_beat_events_custom(current_beat_time)
+				# Check if we should skip this beat (only on first loop)
+				var should_skip_beat = is_first_loop and beat_count <= skip_first_beats
+				
+				if should_skip_beat:
+					# Emit signal that this beat is being skipped
+					beat_skipped.emit(beat_count)
+				else:
+					if beat_count % beats_per_measure == 0:
+						measure_count += 1
+						measure_complete.emit(measure_count)
+					
+					_schedule_beat_events_custom(current_beat_time)
+				
 				beat_index += 1
 	
 	# Update all active windows
@@ -205,8 +224,17 @@ func set_bpm(new_bpm: float):
 	update_tempo()
 	tempo_changed.emit(bpm)
 
-func play_track(index: int):
+func play_track(index: int, skip_beats: int = -1):
 	reset()
+	
+	# If skip_beats is provided, use it; otherwise keep current value
+	if skip_beats >= 0:
+		skip_first_beats = skip_beats
+	
+	# Emit signal about skip mode
+	if skip_first_beats > 0:
+		skip_mode_changed.emit(true, skip_first_beats)
+	
 	var track = tracks[index]
 
 	if track.has("beat_map_file"):
@@ -224,16 +252,40 @@ func play_track(index: int):
 
 	if not use_beat_map:
 		beat_timer.start()
+func pause_track():
+	if not is_paused and music_player.playing:
+		was_paused_by_user = true
+		pause_position = music_player.get_playback_position()
+		music_player.stream_paused = true
+		beat_timer.paused = true
+		is_paused = true
+		print("BeatManager: Track paused at position ", pause_position)
 
+func resume_track():
+	if was_paused_by_user and is_paused:
+		was_paused_by_user = false
+		music_player.stream_paused = false
+		beat_timer.paused = false
+		is_paused = false
+		print("BeatManager: Track resumed from position ", pause_position)
+
+func is_track_playing() -> bool:
+	return music_player.playing and not is_paused
+	
 func stop_track():
 	music_player.stop()
 	beat_timer.stop()
+	was_paused_by_user = false  # Reset flagi pauzy
+	pause_position = 0.0
 	reset()
 	is_paused = true
 
 func reset():
 	beat_count = 0
 	measure_count = 0
+	is_first_loop = true
+	was_paused_by_user = false  # Reset flagi pauzy
+	pause_position = 0.0
 	_reset_all_windows()
 	
 	
@@ -250,11 +302,19 @@ func _on_beat_timer_timeout():
 		return
 
 	beat_count += 1
-	if beat_count % beats_per_measure == 0:
-		measure_count += 1
-		measure_complete.emit(measure_count)
+	
+	# Check if we should skip this beat (only on first loop and only for timer-based beats)
+	var should_skip_beat = is_first_loop and beat_count <= skip_first_beats
+	
+	if should_skip_beat:
+		# Emit signal that this beat is being skipped
+		beat_skipped.emit(beat_count)
+	else:
+		if beat_count % beats_per_measure == 0:
+			measure_count += 1
+			measure_complete.emit(measure_count)
 
-	_schedule_beat_events()
+		_schedule_beat_events()
 
 func _schedule_beat_events():
 	var current_time = _get_current_time()

@@ -11,10 +11,10 @@ func _process(delta: float) -> void:
 	pass
 
 func _on_start_pressed() -> void:
-	get_tree().change_scene_to_file("res://Views/ChoosingLevels/ChoosingLevel.tscn")
+	SceneManager.change_scene("choosing_levels")
 
 func _on_rules_pressed() -> void:
-	get_tree().change_scene_to_file("res://Views/HowToPlay/HowToPlay.tscn")
+	SceneManager.change_scene("options")
 
 func _on_exit_pressed() -> void:
 	get_tree().quit()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://dhqvjboele1dy"]
+[gd_scene load_steps=18 format=3 uid="uid://dhqvjboele1dy"]
 
 [ext_resource type="Script" uid="uid://fnahnjy3r1lf" path="res://Views/Level1/level_1.gd" id="1_jx4cl"]
 [ext_resource type="PackedScene" uid="uid://cr55hlxfh385c" path="res://Entities/Fighter/Enemy/Enemy.tscn" id="1_k7om7"]
@@ -8,20 +8,30 @@
 [ext_resource type="Script" uid="uid://bosya3vcsaa8e" path="res://Views/Level1/debuglabel.gd" id="4_7tcgg"]
 [ext_resource type="Texture2D" uid="uid://hksmych4yaof" path="res://Views/Level1/Assets/darnek.png" id="4_68f1g"]
 [ext_resource type="Script" uid="uid://bg85pbhu10rdu" path="res://Views/Level1/result_label.gd" id="5_o8gfm"]
+[ext_resource type="FontFile" uid="uid://cfa4vejqva60b" path="res://Entities/UI/Tiny5-Regular.ttf" id="7_8duqw"]
 [ext_resource type="Script" uid="uid://cwd460tcty84l" path="res://Views/Level1/camera_2d.gd" id="7_rkknl"]
 [ext_resource type="PackedScene" uid="uid://btsthgqwbxfrf" path="res://Entities/UI/BeatSlider/BeatSlider.tscn" id="8_eifpy"]
 [ext_resource type="PackedScene" uid="uid://dp0bhf44ueyi1" path="res://Entities/UI/EnemyHP/EnemyHp.tscn" id="9_obthu"]
 [ext_resource type="PackedScene" uid="uid://d4gbprg56cy7s" path="res://Entities/UI/PlayerHP/PlayerHP.tscn" id="9_x75e8"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_7tcgg"]
-font_size = 12
+[ext_resource type="PackedScene" uid="uid://d3n17wdkrqfle" path="res://Entities/UI/321Start/321Start.tscn" id="13_mdt5n"]
+[ext_resource type="PackedScene" uid="uid://bj661pypnyxav" path="res://Global/PauseManager/PauseMenu.tscn" id="15_3b737"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_o8gfm"]
 font_size = 50
 
+[sub_resource type="LabelSettings" id="LabelSettings_7tcgg"]
+font = ExtResource("7_8duqw")
+font_size = 12
+
 [node name="Level1" type="Node2D"]
 scale = Vector2(0.967373, 0.989198)
 script = ExtResource("1_jx4cl")
+player_phase_position = Vector2(-50, 90)
+player_enemy_phase_position = Vector2(-200, 90)
+enemy_phase_position = Vector2(250, 90)
+enemy_player_phase_position = Vector2(80, 90)
+move_duration = 0.1
+position_change_delay = 0.3
 
 [node name="Node2D" type="Node2D" parent="."]
 position = Vector2(-591.292, -386.171)
@@ -36,23 +46,6 @@ texture = ExtResource("3_o8gfm")
 scale = Vector2(0.244536, 0.244536)
 texture = ExtResource("4_68f1g")
 
-[node name="Enemy" parent="Node2D" instance=ExtResource("1_k7om7")]
-position = Vector2(412.457, 91.9933)
-scale = Vector2(0.564785, 0.564785)
-
-[node name="Player" parent="Node2D" instance=ExtResource("2_7tcgg")]
-position = Vector2(-353.535, 90.9824)
-scale = Vector2(0.611772, 0.611772)
-
-[node name="Debuglabel" type="Label" parent="Node2D"]
-offset_left = -608.865
-offset_top = -323.494
-offset_right = -497.865
-offset_bottom = -240.494
-text = "test"
-label_settings = SubResource("LabelSettings_7tcgg")
-script = ExtResource("4_7tcgg")
-
 [node name="ResultLabel" type="Label" parent="Node2D"]
 offset_left = -52.72
 offset_top = -140.518
@@ -62,6 +55,23 @@ text = "test"
 label_settings = SubResource("LabelSettings_o8gfm")
 script = ExtResource("5_o8gfm")
 display_duration = 10.0
+
+[node name="Enemy" parent="Node2D" instance=ExtResource("1_k7om7")]
+position = Vector2(241.892, 95.0261)
+scale = Vector2(0.224832, 0.228508)
+
+[node name="Player" parent="Node2D" instance=ExtResource("2_7tcgg")]
+position = Vector2(-193.307, 90.9824)
+scale = Vector2(-0.231, 0.231)
+
+[node name="Debuglabel" type="Label" parent="Node2D"]
+offset_left = -608.865
+offset_top = -323.494
+offset_right = -497.865
+offset_bottom = -240.494
+text = "test"
+label_settings = SubResource("LabelSettings_7tcgg")
+script = ExtResource("4_7tcgg")
 
 [node name="BeatSlider" parent="." instance=ExtResource("8_eifpy")]
 anchors_preset = 15
@@ -74,7 +84,6 @@ offset_bottom = -144.562
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.241312, 0.241312)
-slide_distance = -400.0
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(-605.764, -385.16)
@@ -88,8 +97,20 @@ offset_bottom = -770.397
 scale = Vector2(0.31, 0.31)
 
 [node name="PlayerHp" parent="." instance=ExtResource("9_x75e8")]
-offset_left = -1117.46
-offset_top = -770.0
-offset_right = -1117.46
-offset_bottom = -770.0
+
+offset_left = -1147.44
+offset_top = -770.321
+offset_right = -1147.44
+offset_bottom = -770.321
 scale = Vector2(0.31, 0.31)
+
+[node name="321Start" parent="." instance=ExtResource("13_mdt5n")]
+position = Vector2(-605.764, -500.405)
+
+[node name="PauseMenu" parent="." instance=ExtResource("15_3b737")]
+visible = false
+offset_left = -601.629
+offset_top = -390.215
+offset_right = -601.629
+offset_bottom = -390.215
+
