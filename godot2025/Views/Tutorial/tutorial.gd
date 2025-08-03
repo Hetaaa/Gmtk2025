@@ -35,7 +35,7 @@ enum PhaseType {
 	PLAYER_PHASE
 }
 
-var current_phase: PhaseType = PhaseType.PLAYER_PHASE
+var current_phase: PhaseType = PhaseType.ENEMY_PHASE
 var is_moving: bool = false
 var is_waiting_for_input: bool = false
 var cutscene_active: bool = false
