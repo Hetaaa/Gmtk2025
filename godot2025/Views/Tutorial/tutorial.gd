@@ -35,7 +35,7 @@ enum PhaseType {
 	PLAYER_PHASE
 }
 
-var current_phase: PhaseType = PhaseType.PLAYER_PHASE
+var current_phase: PhaseType = PhaseType.ENEMY_PHASE
 var is_moving: bool = false
 var is_waiting_for_input: bool = false
 var cutscene_active: bool = false
@@ -190,36 +190,58 @@ func _on_fight_ended(winner: String) -> void:
 	set_process_input(true)
 
 func _input(event: InputEvent) -> void:
-	# Don't handle input during cutscene
-	if cutscene_active:
-		return
+	# DEBUG - pokaż każdy input event
+	if event is InputEventKey and event.pressed:
+		print("=== INPUT DEBUG ===")
+		print("Key pressed: ", event.as_text())
+		print("is_waiting_for_input: ", is_waiting_for_input)
+		if is_waiting_for_input:
+			print("EndScreenManager.is_input_enabled(): ", EndScreenManager.is_input_enabled())
+		print("==================")
 	
-	# Obsługuj input tylko gdy czekamy na zakończenie walki
-	if is_waiting_for_input and event is InputEventKey and event.pressed:
-		# Nie pozwól na pauzę podczas ekranu końca walki
-		if event.is_action_pressed("PAUSE"):
-			print("Ignoring PAUSE - waiting for input after fight")
+	# ZAWSZE sprawdź czy czekamy na input po walce na początku
+	if is_waiting_for_input:
+		print("We are waiting for input after fight!")
+		
+		# Jeśli EndScreenManager nie pozwala jeszcze na input, zablokuj wszystko
+		if not EndScreenManager.is_input_enabled():
+			print("Blocking input - EndScreenManager not ready yet")
 			get_viewport().set_input_as_handled()
 			return
 		
-		# Inne klawisze kończą walkę
-		is_waiting_for_input = false
-		EndScreenManager.stop()
-		set_process_input(false)
-		print("Zamykam ekran końca walki.")
+		# EndScreenManager pozwala na input, sprawdź czy to naciśnięty klawisz
+		if event is InputEventKey and event.pressed:
+			print("EndScreenManager allows input and key was pressed!")
+			
+			# Nie pozwól na pauzę podczas ekranu końca walki
+			if event.is_action_pressed("PAUSE"):
+				print("Ignoring PAUSE - waiting for input after fight")
+				get_viewport().set_input_as_handled()
+				return
+			
+			# Inne klawisze kończą walkę
+			print("Key pressed - ending fight screen")
+			is_waiting_for_input = false
+			EndScreenManager.stop()
+			print("Zamykam ekran końca walki.")
+			
+			# Małe opóźnienie przed zmianą sceny
+			await get_tree().create_timer(0.1).timeout
+			SceneManager.change_scene("main_menu")
+			get_viewport().set_input_as_handled()
+			return
 		
-		# Małe opóźnienie przed zmianą sceny
-		await get_tree().create_timer(0.1).timeout
-		SceneManager.change_scene("main_menu")
+		# Jeśli czekamy na input ale to nie był klawisz, zablokuj
+		print("Blocking non-key input during end screen")
 		get_viewport().set_input_as_handled()
 		return
 	
-	# Pauza tylko gdy nie czekamy na input po walce
-	if not is_waiting_for_input and event.is_action_pressed("PAUSE") and not PauseSystem.is_game_paused:
+	# Normalny input gdy nie czekamy na zakończenie walki
+	if event.is_action_pressed("PAUSE") and not PauseSystem.is_game_paused:
 		print("Pausing game...")
 		PauseSystem.pause_game()
 		get_viewport().set_input_as_handled()
-
+		
 func _on_scene_changing(from_scene: String, to_scene: String) -> void:
 	print("Zmiana sceny z ", from_scene, " na ", to_scene)
 	
@@ -228,7 +250,7 @@ func _on_scene_changing(from_scene: String, to_scene: String) -> void:
 		EndScreenManager.cleanup_before_scene_change()
 	
 	PauseSystem.cleanup_before_scene_change()
-
+	
 func setup_scene(data: Dictionary) -> void:
 	if data.has("level_number"):
 		print("Załadowano poziom: ", data.level_number)

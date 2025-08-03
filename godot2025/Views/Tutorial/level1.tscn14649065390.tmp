@@ -49,6 +49,14 @@ outline_color = Color(0, 0, 0, 1)
 [node name="Tutorial2" type="Node2D"]
 scale = Vector2(0.967373, 0.989198)
 script = ExtResource("1_va8xp")
+player_phase_position = null
+player_enemy_phase_position = null
+enemy_phase_position = null
+enemy_player_phase_position = null
+move_duration = null
+use_smooth_movement = null
+position_change_delay = null
+cutscene_texts = null
 
 [node name="Node2D" type="Node2D" parent="."]
 position = Vector2(-591.292, -386.171)
@@ -60,10 +68,10 @@ scale = Vector2(0.233, 0.233)
 texture = ExtResource("3_06vfv")
 
 [node name="ResultLabel" type="Label" parent="Node2D"]
-offset_left = -53.32
-offset_top = -183.403
-offset_right = 34.085
-offset_bottom = -114.403
+offset_left = -52.72
+offset_top = -140.518
+offset_right = 39.28
+offset_bottom = -71.5179
 text = "test"
 label_settings = SubResource("LabelSettings_o8gfm")
 script = ExtResource("4_j5vp3")
@@ -153,10 +161,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -597.397
-offset_top = -554.523
-offset_right = -596.397
-offset_bottom = -486.523
+offset_left = -595.427
+offset_top = -465.023
+offset_right = -594.427
+offset_bottom = -397.023
 grow_horizontal = 2
 grow_vertical = 2
 label_settings = SubResource("LabelSettings_44o0c")

@@ -49,7 +49,6 @@
 [ext_resource type="Texture2D" uid="uid://dmui4hpvvqckk" path="res://Textures/Player/punchUP/0006.png" id="43_peq7b"]
 [ext_resource type="Texture2D" uid="uid://ee0bgo5ksl3b" path="res://Textures/Player/punchUP/0007.png" id="44_7rsf0"]
 [ext_resource type="Texture2D" uid="uid://l3jr2c7vejbl" path="res://Textures/Player/punchUP/0008.png" id="45_mdx4t"]
-[ext_resource type="Texture2D" uid="uid://c6kjpmt2gmlxa" path="res://Textures/UI/KeyboardButtons/K.png" id="49_u8sl1"]
 [ext_resource type="AudioStream" uid="uid://d321c4git4ewv" path="res://audio/punch1.mp3" id="50_fskie"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_yhbrc"]
@@ -241,6 +240,9 @@ animations = [{
 "speed": 8.0
 }]
 
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_fskie"]
+load_path = "res://.godot/imported/K.png-a3efb7c3796a1a94f24d0eb4211532e7.ctex"
+
 [node name="Player" instance=ExtResource("1_7qnjv")]
 script = ExtResource("2_278gh")
 max_health = 2
@@ -269,8 +271,7 @@ grow_vertical = 2
 layout_mode = 0
 offset_right = 317.0
 offset_bottom = 317.0
-texture = ExtResource("49_u8sl1")
-flip_h = true
+texture = SubResource("CompressedTexture2D_fskie")
 
 [node name="HurtSound" type="AudioStreamPlayer" parent="." index="2"]
 stream = ExtResource("50_fskie")

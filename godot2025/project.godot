@@ -13,6 +13,7 @@ config_version=5
 config/name="Godot2025"
 run/main_scene="uid://bdwtqglppwmjj"
 config/features=PackedStringArray("4.4", "GL Compatibility")
+boot_splash/image="uid://bmidf8rajc47t"
 config/icon="res://icon.svg"
 
 [autoload]

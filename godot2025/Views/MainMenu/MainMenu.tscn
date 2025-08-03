@@ -1,12 +1,14 @@
-[gd_scene load_steps=17 format=3 uid="uid://bdwtqglppwmjj"]
+[gd_scene load_steps=18 format=3 uid="uid://bdwtqglppwmjj"]
 
 [ext_resource type="Script" uid="uid://b1hgre3sxaak2" path="res://Views/MainMenu/main_menu.gd" id="1_rf5ug"]
 [ext_resource type="Texture2D" uid="uid://k32fmvgliorv" path="res://Views/MainMenu/image_1 (1).png" id="2_4yp08"]
 [ext_resource type="Texture2D" uid="uid://btvlato3l4dn5" path="res://Views/MainMenu/Sciemnienie_1.png" id="3_es7p0"]
+[ext_resource type="Material" uid="uid://b3k41nmnmix4k" path="res://Global/Shaders/singleSpriteCRT/spriteCRT.tres" id="3_xa8vm"]
 [ext_resource type="PackedScene" uid="uid://bj661pypnyxav" path="res://Global/PauseManager/PauseMenu.tscn" id="4_sbnus"]
 [ext_resource type="Texture2D" uid="uid://r2bou1bxjj0y" path="res://Views/MainMenu/LOGO_OVERLAY.png" id="4_xa8vm"]
 [ext_resource type="FontFile" uid="uid://cdgyynrj00xij" path="res://Views/MainMenu/IBMPlexMono-Regular.ttf" id="5_iikyv"]
 [ext_resource type="Texture2D" uid="uid://c7y6qalbd6sdp" path="res://Views/MainMenu/Button.png" id="6_k3chn"]
+[ext_resource type="Texture2D" uid="uid://cu0yb6c0lqkri" path="res://Views/MainMenu/Credits.png" id="8_es7p0"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_sbnus"]
 texture = ExtResource("2_4yp08")
@@ -22,10 +24,6 @@ texture = ExtResource("6_k3chn")
 modulate_color = Color(0.400698, 0.400698, 0.400698, 1)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8ppx8"]
-texture = ExtResource("6_k3chn")
-modulate_color = Color(0.400698, 0.400698, 0.400698, 1)
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_t6p5f"]
 texture = ExtResource("6_k3chn")
 modulate_color = Color(0.400698, 0.400698, 0.400698, 1)
 
@@ -50,6 +48,7 @@ grow_vertical = 2
 script = ExtResource("1_rf5ug")
 
 [node name="Panel" type="Panel" parent="."]
+material = ExtResource("3_xa8vm")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -101,7 +100,6 @@ theme_override_fonts/font = ExtResource("5_iikyv")
 theme_override_font_sizes/font_size = 12
 theme_override_styles/focus = SubResource("StyleBoxTexture_gs84t")
 theme_override_styles/hover = SubResource("StyleBoxTexture_8ppx8")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_t6p5f")
 theme_override_styles/normal = SubResource("StyleBoxTexture_ivwm6")
 text = "Fight"
 
@@ -116,9 +114,8 @@ theme_override_fonts/font = ExtResource("5_iikyv")
 theme_override_font_sizes/font_size = 12
 theme_override_styles/focus = SubResource("StyleBoxTexture_gs84t")
 theme_override_styles/hover = SubResource("StyleBoxTexture_gs84t")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_gs84t")
 theme_override_styles/normal = SubResource("StyleBoxTexture_e6wsv")
-text = "Options"
+text = "Credits"
 
 [node name="Button4" type="Button" parent="VBoxContainer"]
 layout_mode = 2
@@ -163,6 +160,12 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
+
+[node name="Credits" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(574.222, 323)
+scale = Vector2(0.4625, 0.4625)
+texture = ExtResource("8_es7p0")
 
 [connection signal="pressed" from="VBoxContainer/Button" to="." method="_on_start_pressed"]
 [connection signal="pressed" from="VBoxContainer/Button2" to="." method="_on_rules_pressed"]
