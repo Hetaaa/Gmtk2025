@@ -97,6 +97,7 @@ offset_bottom = -770.397
 scale = Vector2(0.31, 0.31)
 
 [node name="PlayerHp" parent="." instance=ExtResource("9_x75e8")]
+
 offset_left = -1147.44
 offset_top = -770.321
 offset_right = -1147.44
@@ -112,3 +113,4 @@ offset_left = -601.629
 offset_top = -390.215
 offset_right = -601.629
 offset_bottom = -390.215
+

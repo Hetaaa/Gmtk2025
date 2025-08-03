@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Godot2025"
-run/main_scene="uid://bdwtqglppwmjj"
+run/main_scene="uid://dhqvjboele1dy"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="res://icon.svg"
 
@@ -23,6 +23,8 @@ BeatManager="*res://Global/BeatManager/beat_manager.gd"
 FightEnums="*res://Global/FightManager/fight_enums.gd"
 FightManager="*res://Global/FightManager/fight_manager.gd"
 PauseMenu="*res://Global/PauseManager/PauseMenu.tscn"
+
+EndScreenManager="*res://Global/EndScreenManager/end_screen_manager.gd"
 SceneManager="*res://Global/SceneManager.gd"
 PauseSystem="*res://Global/PauseManager/PauseSystem.gd"
 

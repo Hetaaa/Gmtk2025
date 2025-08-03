@@ -241,7 +241,7 @@ animations = [{
 
 [node name="Player" instance=ExtResource("1_7qnjv")]
 script = ExtResource("2_278gh")
-max_health = 100
+max_health = 2
 
 [node name="Sprite2D" type="AnimatedSprite2D" parent="." index="0"]
 scale = Vector2(3, 3)
