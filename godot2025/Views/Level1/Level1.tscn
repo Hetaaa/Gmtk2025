@@ -66,7 +66,6 @@ position_change_delay = 0.3
 
 [node name="Node2D" type="Node2D" parent="."]
 position = Vector2(-591.292, -386.171)
-scale = Vector2(1, 1)
 
 [node name="Background" type="Sprite2D" parent="Node2D"]
 material = ExtResource("2_sw0ay")
@@ -122,7 +121,6 @@ scale = Vector2(0.381, 0.381)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(-605.764, -385.16)
-scale = Vector2(1, 1)
 script = ExtResource("7_rkknl")
 
 [node name="EnemyHp" parent="." instance=ExtResource("9_obthu")]
@@ -141,7 +139,6 @@ scale = Vector2(0.4, 0.4)
 
 [node name="321Start" parent="." instance=ExtResource("13_mdt5n")]
 position = Vector2(-605.764, -500.405)
-scale = Vector2(1, 1)
 
 [node name="PauseMenu" parent="." instance=ExtResource("15_3b737")]
 visible = false
