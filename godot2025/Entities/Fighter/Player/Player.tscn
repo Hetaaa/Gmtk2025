@@ -243,6 +243,7 @@ script = ExtResource("2_278gh")
 max_health = 100
 
 [node name="Sprite2D" type="AnimatedSprite2D" parent="." index="0"]
+scale = Vector2(3, 3)
 sprite_frames = SubResource("SpriteFrames_yhbrc")
 animation = &"ATTACK_LOW"
 frame = 6

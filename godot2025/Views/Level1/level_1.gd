@@ -1,3 +1,4 @@
+# Level1.gd - Uproszczony
 extends Node2D
 
 @onready var beatslider = $BeatSlider
@@ -28,6 +29,7 @@ var current_phase: PhaseType = PhaseType.PLAYER_PHASE
 var is_moving: bool = false
 
 func _ready() -> void:
+	# Podstawowa konfiguracja levelu
 	BeatManager.play_track(9, 4)
 	FightManager.load_phase_pattern("res://audio/BeatMaps/test.txt")
 	beatslider.start_beats(0.0)
@@ -93,3 +95,31 @@ func switch_to_enemy_phase() -> void:
 # Call this function when you want to change phases manually
 func change_phase(new_phase: PhaseType, moves_remaining: int = 0) -> void:
 	_on_phase_changed(new_phase, moves_remaining)
+
+	# Zarejestruj level w PauseSystem
+	PauseSystem.register_level(self, {
+		"beatslider": beatslider,
+		"beat_manager": BeatManager
+	})
+	
+	# Połącz się z sygnałem zmiany sceny
+	if SceneManager:
+		SceneManager.scene_changing.connect(_on_scene_changing)
+
+func _on_scene_changing(from_scene: String, to_scene: String):
+	print("Zmiana sceny z ", from_scene, " na ", to_scene)
+	# PauseSystem zajmie się czyszczeniem
+	PauseSystem.cleanup_before_scene_change()
+
+func _unhandled_input(event: InputEvent) -> void:
+	# Obsługa pauzy - jedna linia!
+	if event.is_action_pressed("PAUSE") and not PauseSystem.is_game_paused:
+		PauseSystem.pause_game()
+
+# Opcjonalna funkcja do obsługi danych przekazanych z SceneManager
+func setup_scene(data: Dictionary):
+	if data.has("level_number"):
+		print("Załadowano poziom: ", data.level_number)
+	if data.has("previous_scene"):
+		print("Poprzednia scena: ", data.previous_scene)
+

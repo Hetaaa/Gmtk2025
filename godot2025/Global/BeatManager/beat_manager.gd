@@ -41,6 +41,8 @@ var seconds_per_beat: float
 var active_windows: Array[ActionWindow] = []
 var next_window_id := 0
 
+var was_paused_by_user: bool = false  
+var pause_position: float = 0.0  
 # ActionWindow class to track individual windows
 class ActionWindow:
 	var id: int
@@ -250,17 +252,40 @@ func play_track(index: int, skip_beats: int = -1):
 
 	if not use_beat_map:
 		beat_timer.start()
+func pause_track():
+	if not is_paused and music_player.playing:
+		was_paused_by_user = true
+		pause_position = music_player.get_playback_position()
+		music_player.stream_paused = true
+		beat_timer.paused = true
+		is_paused = true
+		print("BeatManager: Track paused at position ", pause_position)
 
+func resume_track():
+	if was_paused_by_user and is_paused:
+		was_paused_by_user = false
+		music_player.stream_paused = false
+		beat_timer.paused = false
+		is_paused = false
+		print("BeatManager: Track resumed from position ", pause_position)
+
+func is_track_playing() -> bool:
+	return music_player.playing and not is_paused
+	
 func stop_track():
 	music_player.stop()
 	beat_timer.stop()
+	was_paused_by_user = false  # Reset flagi pauzy
+	pause_position = 0.0
 	reset()
 	is_paused = true
 
 func reset():
 	beat_count = 0
 	measure_count = 0
-	is_first_loop = true  # Reset first loop flag
+	is_first_loop = true
+	was_paused_by_user = false  # Reset flagi pauzy
+	pause_position = 0.0
 	_reset_all_windows()
 	
 	
