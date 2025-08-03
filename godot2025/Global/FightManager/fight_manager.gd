@@ -298,7 +298,7 @@ func submit_player_action(action: FightEnums.Action):
 		return
 
 	player_ref.change_animation(FightEnums.Action.keys()[action])
-
+	player_ref.show_button_animation(action)
 	var is_attack := action in ATTACKS
 	var is_block := action in BLOCKS
 
@@ -593,7 +593,7 @@ func _cleanup_window(window_id: int):
 
 func determine_winner(p_action: FightEnums.Action, e_action: FightEnums.Action) -> FightEnums.FightResult:
 	print("DEBUG: Combat - Player: ", p_action, " vs Enemy: ", e_action)
-	
+	enemy_ref.change_animation(FightEnums.Action.keys()[e_action])
 	# Handle WAIT actions first
 	if p_action == FightEnums.Action.WAIT:
 		if e_action in ATTACKS:

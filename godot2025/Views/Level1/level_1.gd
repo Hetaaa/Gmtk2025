@@ -122,4 +122,3 @@ func setup_scene(data: Dictionary):
 		print("Załadowano poziom: ", data.level_number)
 	if data.has("previous_scene"):
 		print("Poprzednia scena: ", data.previous_scene)
-

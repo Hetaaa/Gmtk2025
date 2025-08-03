@@ -30,8 +30,8 @@ player_phase_position = Vector2(-50, 90)
 player_enemy_phase_position = Vector2(-200, 90)
 enemy_phase_position = Vector2(250, 90)
 enemy_player_phase_position = Vector2(80, 90)
-move_duration = 0.2
-position_change_delay = 0.1
+move_duration = 0.1
+position_change_delay = 0.3
 
 [node name="Node2D" type="Node2D" parent="."]
 position = Vector2(-591.292, -386.171)
