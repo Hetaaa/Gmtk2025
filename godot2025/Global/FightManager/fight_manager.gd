@@ -303,6 +303,7 @@ func submit_enemy_action(action: FightEnums.Action, target_window_id: int = -1):
 		sound_success_block.play()
 	enemy_action_submitted.emit(action, window_id)
 	enemy_ref.change_animation(FightEnums.Action.keys()[action])
+	
 func _resolve_window_immediately(window_id: int):
 	if not window_actions.has(window_id):
 		return

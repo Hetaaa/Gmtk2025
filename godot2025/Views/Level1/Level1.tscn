@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://dhqvjboele1dy"]
+[gd_scene load_steps=18 format=3 uid="uid://dhqvjboele1dy"]
 
 [ext_resource type="Script" uid="uid://fnahnjy3r1lf" path="res://Views/Level1/level_1.gd" id="1_jx4cl"]
 [ext_resource type="PackedScene" uid="uid://cr55hlxfh385c" path="res://Entities/Fighter/Enemy/Enemy.tscn" id="1_k7om7"]
@@ -14,13 +14,14 @@
 [ext_resource type="PackedScene" uid="uid://dp0bhf44ueyi1" path="res://Entities/UI/EnemyHP/EnemyHp.tscn" id="9_obthu"]
 [ext_resource type="PackedScene" uid="uid://d4gbprg56cy7s" path="res://Entities/UI/PlayerHP/PlayerHP.tscn" id="9_x75e8"]
 [ext_resource type="PackedScene" uid="uid://d3n17wdkrqfle" path="res://Entities/UI/321Start/321Start.tscn" id="13_mdt5n"]
+[ext_resource type="PackedScene" uid="uid://bj661pypnyxav" path="res://Global/PauseManager/PauseMenu.tscn" id="15_3b737"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_o8gfm"]
+font_size = 50
 
 [sub_resource type="LabelSettings" id="LabelSettings_7tcgg"]
 font = ExtResource("7_8duqw")
 font_size = 12
-
-[sub_resource type="LabelSettings" id="LabelSettings_o8gfm"]
-font_size = 50
 
 [node name="Level1" type="Node2D"]
 scale = Vector2(0.967373, 0.989198)
@@ -39,6 +40,16 @@ texture = ExtResource("3_o8gfm")
 scale = Vector2(0.244536, 0.244536)
 texture = ExtResource("4_68f1g")
 
+[node name="ResultLabel" type="Label" parent="Node2D"]
+offset_left = -52.72
+offset_top = -140.518
+offset_right = 39.28
+offset_bottom = -71.5179
+text = "test"
+label_settings = SubResource("LabelSettings_o8gfm")
+script = ExtResource("5_o8gfm")
+display_duration = 10.0
+
 [node name="Enemy" parent="Node2D" instance=ExtResource("1_k7om7")]
 position = Vector2(412.457, 91.9933)
 scale = Vector2(0.224832, 0.228508)
@@ -55,16 +66,6 @@ offset_bottom = -240.494
 text = "test"
 label_settings = SubResource("LabelSettings_7tcgg")
 script = ExtResource("4_7tcgg")
-
-[node name="ResultLabel" type="Label" parent="Node2D"]
-offset_left = -52.72
-offset_top = -140.518
-offset_right = 39.28
-offset_bottom = -71.5179
-text = "test"
-label_settings = SubResource("LabelSettings_o8gfm")
-script = ExtResource("5_o8gfm")
-display_duration = 10.0
 
 [node name="BeatSlider" parent="." instance=ExtResource("8_eifpy")]
 anchors_preset = 15
@@ -98,3 +99,10 @@ scale = Vector2(0.31, 0.31)
 
 [node name="321Start" parent="." instance=ExtResource("13_mdt5n")]
 position = Vector2(-605.764, -500.405)
+
+[node name="PauseMenu" parent="." instance=ExtResource("15_3b737")]
+visible = false
+offset_left = -601.629
+offset_top = -390.215
+offset_right = -601.629
+offset_bottom = -390.215

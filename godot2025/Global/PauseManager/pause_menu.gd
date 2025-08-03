@@ -1,31 +1,37 @@
+# PauseMenu.gd - Uproszczony
 extends Control
 
 @onready var resume: Button = $MarginContainer/VBoxContainer/Resume
 @onready var back_to_menu: Button = $"MarginContainer/VBoxContainer/Back To Menu"
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_WHEN_PAUSED
 	hide()
+	
+	# Połącz sygnały przycisków
+	if resume:
+		resume.pressed.connect(_on_resume_pressed)
+	if back_to_menu:
+		back_to_menu.pressed.connect(_on_back_to_menu_pressed)
 
-	#resume.pressed.connect(_on_resume_pressed)
-	#back_to_menu.pressed.connect(_on_back_to_menu_pressed)
-
-
-func show_pause_menu() -> void:
-	get_tree().paused = true
-	show()
-
-func hide_pause_menu() -> void:
-	get_tree().paused = false
-	hide()
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-
-func _process(delta: float) -> void:
-	pass
+# Obsługa ESC w PauseMenu - zamyka menu
+func _input(event: InputEvent) -> void:
+	if visible and event.is_action_pressed("PAUSE"):
+		print("ESC w PauseMenu - zamykam menu")
+		get_viewport().set_input_as_handled()
+		PauseSystem.resume_game()
 
 func _on_resume_pressed() -> void:
-	hide_pause_menu()
+	print("Resume button pressed")
+	PauseSystem.resume_game()
 
 func _on_back_to_menu_pressed() -> void:
-	get_tree().change_scene_to_file("res://Views/MainMenu/MainMenu.tscn")
+	print("Back to menu button pressed")
+	
+	# PauseSystem zajmie się czyszczeniem
+	PauseSystem.cleanup_before_scene_change()
+	
+	# Krótka pauza żeby wszystko się zatrzymało
+	await get_tree().process_frame
+	
+	SceneManager.change_scene("main_menu")
