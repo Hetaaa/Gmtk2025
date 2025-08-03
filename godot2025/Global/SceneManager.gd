@@ -9,6 +9,7 @@ signal scene_changed(scene_name: String)
 # Scene registry - maps scene names to their file paths
 var scenes: Dictionary = {
 	"main_menu": "res://Views/MainMenu/MainMenu.tscn",
+	"calibration": "res://Views/TimingOffsetSetter/TimingCalibrator.tscn",
 	"choosing_levels": "res://Views/ChoosingLevels/ChoosingLevel.tscn",
 	"options": "res://Views/Options/Options.tscn",
 	"level_1": "res://Views/Level1/Level1.tscn",

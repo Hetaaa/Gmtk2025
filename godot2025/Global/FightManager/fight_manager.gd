@@ -594,6 +594,7 @@ func _cleanup_window(window_id: int):
 func determine_winner(p_action: FightEnums.Action, e_action: FightEnums.Action) -> FightEnums.FightResult:
 	print("DEBUG: Combat - Player: ", p_action, " vs Enemy: ", e_action)
 	enemy_ref.change_animation(FightEnums.Action.keys()[e_action])
+	
 	# Handle WAIT actions first
 	if p_action == FightEnums.Action.WAIT:
 		if e_action in ATTACKS:
@@ -616,8 +617,6 @@ func determine_winner(p_action: FightEnums.Action, e_action: FightEnums.Action) 
 	var e_is_attack := e_action in ATTACKS
 	var e_is_block := e_action in BLOCKS
 	
-	
-	
 	print("DEBUG: Player - Attack: ", p_is_attack, " Block: ", p_is_block)
 	print("DEBUG: Enemy - Attack: ", e_is_attack, " Block: ", e_is_block)
 
@@ -627,24 +626,25 @@ func determine_winner(p_action: FightEnums.Action, e_action: FightEnums.Action) 
 		return FightEnums.FightResult.PLAYER_HIT
 
 	# 2) If enemy attacks and player blocks on wrong height -> player takes damage
-	# 3) If enemy attacks and player blocks on correct height -> no one takes damage
+	# 3) If enemy attacks and player blocks on correct height -> player blocked
 	if e_is_attack and p_is_block:
 		var correct_block = ATTACK_TO_BLOCK_MAP[e_action]
 		print("DEBUG: Enemy attacks, player blocks. Enemy attack: ", e_action, " needs block: ", correct_block, " player has: ", p_action)
 		if correct_block == p_action:
-			print("DEBUG: Correct block -> No hits")
+			print("DEBUG: Correct block -> Player blocked successfully")
 			return FightEnums.FightResult.PLAYER_BLOCKED  # Correct block
 		else:
 			print("DEBUG: Wrong block -> Player hit")
 			return FightEnums.FightResult.PLAYER_HIT  # Wrong block
 
-	# 4) Same reversed - if player attacks and enemy blocks
+	# 4) If player attacks and enemy blocks correctly -> enemy blocked
+	# 5) If player attacks and enemy blocks wrong -> enemy takes damage
 	if p_is_attack and e_is_block:
 		var correct_block = ATTACK_TO_BLOCK_MAP[p_action]
 		print("DEBUG: Player attacks, enemy blocks. Player attack: ", p_action, " needs block: ", correct_block, " enemy has: ", e_action)
 		if correct_block == e_action:
-			print("DEBUG: Enemy blocks correctly -> No hits")
-			return FightEnums.FightResult.NONE_HIT  # Enemy blocks correctly
+			print("DEBUG: Enemy blocks correctly -> Enemy blocked successfully")
+			return FightEnums.FightResult.ENEMY_BLOCKED  # Enemy blocks correctly
 		else:
 			print("DEBUG: Enemy blocks wrong -> Enemy hit")
 			return FightEnums.FightResult.ENEMY_HIT  # Enemy blocks wrong
@@ -656,7 +656,7 @@ func determine_winner(p_action: FightEnums.Action, e_action: FightEnums.Action) 
 
 	print("DEBUG: Fallback -> No hits")
 	return FightEnums.FightResult.NONE_HIT
-
+	
 func get_timing_bonus(timing: FightEnums.BeatTiming) -> float:
 	match timing:
 		FightEnums.BeatTiming.PERFECT: return 1.0

@@ -11,7 +11,7 @@ func _process(delta: float) -> void:
 	pass
 
 func _on_start_pressed() -> void:
-	SceneManager.change_scene("choosing_levels")
+	SceneManager.change_scene("calibration")
 
 func _on_rules_pressed() -> void:
 	SceneManager.change_scene("options")

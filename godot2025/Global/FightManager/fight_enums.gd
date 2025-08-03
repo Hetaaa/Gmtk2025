@@ -11,11 +11,11 @@ enum Action {
 	WAIT
 }
 
-
 enum FightResult {
 	ENEMY_HIT,
 	PLAYER_HIT,
 	PLAYER_BLOCKED,
+	ENEMY_BLOCKED,
 	BOTH_HIT,
 	NONE_HIT,
 }

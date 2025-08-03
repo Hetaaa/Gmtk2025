@@ -33,8 +33,11 @@ func _on_actions_revealed(player_action: FightEnums.Action, enemy_action: FightE
 		FightEnums.FightResult.BOTH_HIT:
 			result_text = "BOTH HIT!"
 			result_color = Color.ORANGE
-		FightEnums.FightResult.NONE_HIT:
+		FightEnums.FightResult.PLAYER_BLOCKED:
 			result_text = "BLOCKED!"
+			result_color = Color.YELLOW
+		FightEnums.FightResult.ENEMY_BLOCKED:
+			result_text = "ENEMY BLOCKED!"
 			result_color = Color.YELLOW
 	
 	show_result(result_text, result_color)
