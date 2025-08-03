@@ -24,6 +24,10 @@ var action_to_button_texture = {
 
 var shader_material : ShaderMaterial
 
+# Button animation state management
+var button_animation_tween: Tween
+var is_button_animating: bool = false
+
 func _ready():
 	current_health = max_health
 	
@@ -74,43 +78,89 @@ func submit_player_action_to_manager(action: FightEnums.Action):
 	selected_timing_enum = timing
 
 func show_button_animation(action: FightEnums.Action):
-	"""Pokazuje animację przycisku nad głową enemy"""
+	"""Pokazuje animację przycisku nad głową gracza z proper cleanup"""
 	if not button_icon or not action_to_button_texture.has(action):
 		return
-		
+	
+	# KRYTYCZNE: Zatrzymaj poprzednią animację jeśli trwa
+	_cleanup_button_animation()
+	
+	# Jeśli animacja już trwa, nie rozpoczynaj nowej
+	if is_button_animating:
+		print("Button animation already in progress, skipping...")
+		return
+	
+	is_button_animating = true
 	button_icon.visible = true
+	
 	# Załaduj odpowiednią teksturę
-	var texture_path = "res://Textures/UI/KeyboardButtons/" + action_to_button_texture[action]  # Zmień ścieżkę na właściwą
+	var texture_path = "res://Textures/UI/KeyboardButtons/" + action_to_button_texture[action]
 	var texture = load(texture_path)
 	
-	if texture:
-		button_icon.texture = texture
-		
-		# Pozycja startowa (nad głową, trochę wyżej niż sprite)
-		var start_pos = Vector2(0, -80)  # Dostosuj wartość -80 w zależności od rozmiaru sprite'a
-		var end_pos = Vector2(0, -120)   # Końcowa pozycja (jeszcze wyżej)
-		
-		button_icon.position = start_pos
-		
-		# Animacja pojawiania się, ruchu w górę i znikania
-		var tween = create_tween()
-		tween.set_parallel(true)  # Pozwala na równoległe animacje
-		
-		# Animacja opacity: 0 -> 1 -> 0
-		tween.tween_method(_set_button_alpha, 0.0, 1.0, 0.3)
-		tween.tween_method(_set_button_alpha, 1.0, 0.0, 0.3).set_delay(0.6)
-		
-		# Animacja pozycji: ruch w górę
-		tween.tween_property(button_icon, "position", end_pos, 0.9)
-		
-		# Opcjonalnie: lekkie skalowanie dla efektu
-		tween.tween_property(button_icon, "scale", Vector2(1.2, 1.2), 0.15)
-		tween.tween_property(button_icon, "scale", Vector2(1.0, 1.0), 0.15).set_delay(0.15)
+	if not texture:
+		_reset_button_state()
+		return
+	
+	button_icon.texture = texture
+	
+	# Reset pozycji i właściwości
+	var start_pos = Vector2(0, -80)
+	var end_pos = Vector2(0, -120)
+	
+	button_icon.position = start_pos
+	button_icon.scale = Vector2(1.0, 1.0)
+	button_icon.modulate.a = 0.0
+	
+	# Utwórz nowy tween z proper cleanup
+	button_animation_tween = create_tween()
+	button_animation_tween.set_parallel(true)
+	
+	# Połącz sygnał finished dla cleanup
+	button_animation_tween.finished.connect(_on_button_animation_finished, CONNECT_ONE_SHOT)
+	
+	# Animacja opacity: 0 -> 1 -> 0
+	button_animation_tween.tween_method(_set_button_alpha, 0.0, 1.0, 0.3)
+	button_animation_tween.tween_method(_set_button_alpha, 1.0, 0.0, 0.3).set_delay(0.6)
+	
+	# Animacja pozycji: ruch w górę
+	button_animation_tween.tween_property(button_icon, "position", end_pos, 0.9)
+	
+	# Opcjonalnie: lekkie skalowanie dla efektu
+	button_animation_tween.tween_property(button_icon, "scale", Vector2(1.2, 1.2), 0.15)
+	button_animation_tween.tween_property(button_icon, "scale", Vector2(1.0, 1.0), 0.15).set_delay(0.15)
+
+func _cleanup_button_animation():
+	"""Czyści poprzednią animację przycisku"""
+	if button_animation_tween and button_animation_tween.is_valid():
+		button_animation_tween.kill()
+		button_animation_tween = null
+	
+	is_button_animating = false
+
+func _on_button_animation_finished():
+	"""Callback wywoływany gdy animacja się kończy"""
+	print("Button animation finished, cleaning up...")
+	_reset_button_state()
+
+func _reset_button_state():
+	"""Resetuje stan ikony przycisku do stanu początkowego"""
+	is_button_animating = false
+	if button_icon:
+		button_icon.visible = false
+		button_icon.modulate.a = 1.0  # Reset alpha
+		button_icon.scale = Vector2(1.0, 1.0)  # Reset scale
+		button_icon.position = Vector2(0, -80)  # Reset position
+	
+	button_animation_tween = null
 
 func _set_button_alpha(alpha: float):
 	"""Helper function do ustawiania alpha ikony przycisku"""
 	if button_icon:
 		button_icon.modulate.a = alpha
+
+# WAŻNE: Cleanup przy niszczeniu obiektu
+func _exit_tree():
+	_cleanup_button_animation()
 		
 func take_damage(amount: int):
 	current_health -= amount

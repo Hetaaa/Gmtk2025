@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://dwwnt6qwu14ew"]
+[gd_scene load_steps=22 format=3 uid="uid://dwwnt6qwu14ew"]
 
 [ext_resource type="Script" uid="uid://dakmuf2m0kdmu" path="res://Views/Tutorial/tutorial.gd" id="1_44o0c"]
 [ext_resource type="Material" uid="uid://b3k41nmnmix4k" path="res://Global/Shaders/singleSpriteCRT/spriteCRT.tres" id="2_fm27j"]
@@ -17,21 +17,9 @@
 [ext_resource type="Shader" uid="uid://dm70kqlkjectq" path="res://shader/crt.gdshader" id="15_fm27j"]
 [ext_resource type="AudioStream" uid="uid://cg1wbu756pchv" path="res://audio/BeatMaps/explosion.wav" id="16_06rnv"]
 
-[sub_resource type="FontFile" id="FontFile_8awem"]
-cache/0/50/0/ascent = 0.0
-cache/0/50/0/descent = 0.0
-cache/0/50/0/underline_position = 0.0
-cache/0/50/0/underline_thickness = 0.0
-cache/0/50/0/scale = 1.0
-cache/0/16/0/ascent = 0.0
-cache/0/16/0/descent = 0.0
-cache/0/16/0/underline_position = 0.0
-cache/0/16/0/underline_thickness = 0.0
-cache/0/16/0/scale = 1.0
-
 [sub_resource type="LabelSettings" id="LabelSettings_o8gfm"]
-font = SubResource("FontFile_8awem")
-font_size = 50
+font = ExtResource("8_a2wmr")
+font_size = 35
 
 [sub_resource type="Gradient" id="Gradient_3b737"]
 colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 1)
@@ -92,11 +80,12 @@ texture = SubResource("GradientTexture1D_ygm8m")
 [node name="Enemy" parent="Node2D" instance=ExtResource("6_70fql")]
 position = Vector2(241.892, 95.0261)
 scale = Vector2(0.224832, 0.228508)
-max_health = 2
+max_health = 50
 
 [node name="Player" parent="Node2D" instance=ExtResource("7_56m3q")]
 position = Vector2(-193.307, 90.9824)
 scale = Vector2(-0.231, 0.231)
+max_health = 50
 
 [node name="Debuglabel" type="Label" parent="Node2D"]
 offset_left = -608.865
