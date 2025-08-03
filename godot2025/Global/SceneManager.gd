@@ -51,6 +51,7 @@ func change_scene(scene_name: String, data: Dictionary = {}):
 		print("Error: Scene '", scene_name, "' not found in registry")
 		return
 	
+	
 	_change_scene_to_file(scenes[scene_name], scene_name, data)
 
 # Change to a scene by direct file path
