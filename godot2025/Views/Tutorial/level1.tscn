@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://b7bjrolsphimu"]
+[gd_scene load_steps=22 format=3 uid="uid://b7bjrolsphimu"]
 
 [ext_resource type="Script" uid="uid://c5dhbcn4eqwwg" path="res://Views/Tutorial/tutorial.gd" id="1_va8xp"]
 [ext_resource type="Material" uid="uid://b3k41nmnmix4k" path="res://Global/Shaders/singleSpriteCRT/spriteCRT.tres" id="2_4e84k"]
@@ -16,9 +16,7 @@
 [ext_resource type="Shader" uid="uid://dm70kqlkjectq" path="res://shader/crt.gdshader" id="15_7kply"]
 [ext_resource type="AudioStream" uid="uid://cg1wbu756pchv" path="res://audio/BeatMaps/explosion.wav" id="16_4sa0c"]
 
-
 [sub_resource type="LabelSettings" id="LabelSettings_o8gfm"]
-font = ExtResource("8_a2wmr")
 font_size = 35
 
 [sub_resource type="Gradient" id="Gradient_3b737"]
