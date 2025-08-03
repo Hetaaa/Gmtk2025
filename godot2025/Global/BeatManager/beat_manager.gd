@@ -44,6 +44,7 @@ var next_window_id := 0
 var was_paused_by_user: bool = false  
 var pause_position: float = 0.0  
 # ActionWindow class to track individual windows
+
 class ActionWindow:
 	var id: int
 	var beat_count: int
@@ -62,66 +63,73 @@ class ActionWindow:
 
 var tracks = [
 	{ 
-		"path": "res://Audio/oldDisc.mp3",
-		"beat_map_file": "res://Audio//BeatMaps/oldDiscMap.txt"
+		"path": "res://audio/oldDisc.mp3", #0
+		"beat_map_file": "res://audio//BeatMaps/oldDiscMap.txt"
 	},
 	{
-		"path": "res://Audio/synth136.mp3", 
-		"beat_map_file":"res://Audio/BeatMaps/synthkickMap.txt"
+		"path": "res://audio/synth136.mp3",  #1
+		"beat_map_file":"res://audio/BeatMaps/synthkickMap.txt"
 	},
 	{
-		"path": "res://Audio/noca90.mp3",
-		"beat_map_file":"res://Audio/BeatMaps/piekaryMap.txt"
+		"path": "res://audio/noca90.mp3", #2
+		"beat_map_file":"res://audio/BeatMaps/piekaryMap.txt"
 	},
 	{ 
-		"path": "res://Audio/trance150.mp3", 
-		"beat_map_file": "res://Audio/BeatMaps/tranceMap.txt"
+		"path": "res://audio/trance150.mp3",  #3
+		"beat_map_file": "res://audio/BeatMaps/tranceMap.txt"
 		},
 	{ 
-		"path": "res://Audio/techno120.mp3",
+		"path": "res://audio/techno120.mp3", # 4
 		"bpm": 150 
 	},
 	{ 
-		"path": "res://Audio/soyouthinkmucheasier.mp3", 
-		"beat_map_file": "res://Audio/BeatMaps/soyouthinkMap.txt"
+		"path": "res://audio/soyouthinkmucheasier.mp3",  #5
+		"beat_map_file": "res://audio/BeatMaps/soyouthinkMap.txt"
 	},
 	{ 
-		"path": "res://Audio/synthdrill.mp3", 
-		"beat_map_file": "res://Audio/BeatMaps/synthdrillMap.txt"
+		"path": "res://audio/synthdrill.mp3",  #6
+		"beat_map_file": "res://audio/BeatMaps/synthdrillMap.txt"
 	},
 	{ 
-		"path": "res://Audio/bonus.mp3", 
-		"beat_map_file": "res://Audio/BeatMaps/bonusMap.txt"
+		"path": "res://audio/bonus.mp3",  #7
+		"beat_map_file": "res://audio/BeatMaps/bonusMap.txt"
+	},
+	{  
+		"path": "res://audio/thebindingofbeatboxer.mp3",  #8
+		"beat_map_file": "res://audio/BeatMaps/bindingMap.txt"
 	},
 	{ 
-		"path": "res://Audio/thebindingofbeatboxer.mp3", 
-		"beat_map_file": "res://Audio/BeatMaps/bindingMap.txt"
+		"path": "res://audio/pluck.mp3",  #9
+		"beat_map_file": "res://audio/BeatMaps/pluckMap.txt"
 	},
 	{ 
-		"path": "res://Audio/pluck.mp3", 
-		"beat_map_file": "res://Audio/BeatMaps/pluckMap.txt"
+		"path": "res://audio/hihatcity.mp3",  #10
+		"beat_map_file": "res://audio/BeatMaps/hihatMap.txt"
 	},
 	{ 
-		"path": "res://Audio/hihatcity.mp3", 
-		"beat_map_file": "res://Audio/BeatMaps/hihatMap.txt"
+		"path": "res://audio/jazdazkur.mp3", #11
+		"beat_map_file": "res://audio/BeatMaps/jazdaMap.txt"
 	},
 	{ 
-		"path": "res://Audio/jazdazkur.mp3", 
-		"beat_map_file": "res://Audio/BeatMaps/jazdaMap.txt"
+		"path": "res://audio/fastmeloody.mp3", #12
+		"beat_map_file": "res://audio/BeatMaps/festMap.txt"
 	},
 	{ 
-		"path": "res://Audio/fastmeloody.mp3", 
-		"beat_map_file": "res://Audio/BeatMaps/festMap.txt"
+		"path": "res://audio/myarchnemesis.mp3",  #13
+		"beat_map_file": "res://audio/BeatMaps/myarchnemesiskickMap.txt"
 	},
 	{ 
-		"path": "res://Audio/myarchnemesis.mp3", 
-		"beat_map_file": "res://Audio/BeatMaps/myarchnemesiskickMap.txt"
+		"path": "res://audio/cartrip.mp3", #14
+		"beat_map_file": "res://audio/BeatMaps/cartripMap.txt"
 	},
-	{ 
-		"path": "res://Audio/cartrip.mp3", 
-		"beat_map_file": "res://Audio/BeatMaps/cartripMap.txt"
+		{ 
+		"path":  "res://audio/tutorial.mp3",
+		"beat_map_file": "res://audio/BeatMaps/tutorialMap.txt"
 	}
 ]
+
+var finished: bool = false
+var currenct_track 
 
 func _ready():
 	setup_timer()
@@ -129,8 +137,11 @@ func _ready():
 	add_child(beat_indicator_player)
 	beat_indicator_player.stream = load(beat_sound_path)
 	beat_hit.connect(_on_beat_hit_play_sound)
-
+	music_player.finished.connect(_on_music_finished)
 var last_time := 0.0
+
+func _on_music_finished():
+	finished = true
 
 func _process(_delta):
 	if is_paused:
@@ -140,7 +151,8 @@ func _process(_delta):
 	
 	if use_beat_map:
 		# If track reversed (e.g., loop), reset
-		if current_time < last_time:
+		if finished == true:
+			finished = false
 			beat_index = 0
 			beat_count = 0
 			measure_count = 0
@@ -148,6 +160,8 @@ func _process(_delta):
 			is_first_loop = false  # Mark that we're no longer on the first loop
 			skip_mode_changed.emit(false, 0)  # No more skipping after first loop
 			music_looped.emit()  # Emit the loop signal
+			music_player.stream = load(currenct_track["path"])
+			music_player.play()
 
 		last_time = current_time
 
@@ -244,9 +258,9 @@ func play_track(index: int, skip_beats: int = -1):
 	else:
 		use_beat_map = false
 		set_bpm(track["bpm"])
-
+	
+	currenct_track = track
 	music_player.stream = load(track["path"])
-	music_player.stream.loop = true
 	music_player.play()
 	is_paused = false
 
