@@ -5,13 +5,12 @@ extends Node2D
 @onready var enemy = $Node2D/Enemy
 
 # Player positions for different phases
-@export var player_phase_position: Vector2 = Vector2(200, 300)
-@export var player_enemy_phase_position: Vector2 = Vector2(100, 400)
+@export var player_phase_position: Vector2 = Vector2(-50, 90)
+@export var player_enemy_phase_position: Vector2 = Vector2(-200, 90)
 
-# Enemy positions for different phases  
-@export var enemy_phase_position: Vector2 = Vector2(600, 300)
-@export var enemy_player_phase_position: Vector2 = Vector2(700, 400)
-
+#Enemy positions for different phases
+@export var enemy_phase_position: Vector2 = Vector2(250, 90)
+@export var enemy_player_phase_position: Vector2 = Vector2(80, 90)
 # Movement settings
 @export var move_duration: float = 1.0
 @export var use_smooth_movement: bool = true
@@ -29,7 +28,7 @@ var is_moving: bool = false
 var is_waiting_for_input: bool = false
 
 func _ready() -> void:
-	BeatManager.play_track(9, 4)
+	BeatManager.play_track(9, 0)
 	FightManager.load_phase_pattern("res://audio/BeatMaps/test.txt")
 	beatslider.start_beats(0.0)
 	

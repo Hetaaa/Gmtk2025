@@ -14,7 +14,7 @@ var scenes: Dictionary = {
 	"options": "res://Views/Options/Options.tscn",
 	"level_1": "res://Views/Tutorial/level1.tscn",
 	"level_2": "res://Views/Level1/level2.tscn",
-	"level_3": "res://Views/Level3/Level3.tscn",
+	"level_3": "res://Views/Level3/level3.tscn",
 	"level_4": "res://Views/Level4/level4.tscn",
 	# Dodaj więcej poziomów według potrzeb
 	"game_over": "res://scenes/GameOver.tscn"

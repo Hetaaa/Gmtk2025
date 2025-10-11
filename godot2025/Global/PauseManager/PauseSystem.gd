@@ -142,6 +142,9 @@ func cleanup_before_scene_change():
 	for comp_data in pausable_components:
 		stop_component_completely(comp_data.component, comp_data.name)
 	
+	BeatManager.timing_offset = 0
+	BeatManager.finished = false
+	BeatManager.stop_track()
 	# Reset stanu
 	is_game_paused = false
 	get_tree().paused = false

@@ -162,6 +162,7 @@ func _process(_delta):
 			music_looped.emit()  # Emit the loop signal
 			music_player.stream = load(currenct_track["path"])
 			music_player.play()
+			last_time = 0.0
 
 		last_time = current_time
 
@@ -263,6 +264,12 @@ func play_track(index: int, skip_beats: int = -1):
 	music_player.stream = load(track["path"])
 	music_player.play()
 	is_paused = false
+	finished = false
+	beat_index = 0
+	beat_count = 0
+	measure_count = 0
+	_reset_all_windows()
+	is_first_loop = false  # Mark that we're no longer on the first loop
 
 	if not use_beat_map:
 		beat_timer.start()

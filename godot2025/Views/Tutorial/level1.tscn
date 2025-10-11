@@ -17,6 +17,7 @@
 [ext_resource type="AudioStream" uid="uid://cg1wbu756pchv" path="res://audio/BeatMaps/explosion.wav" id="16_4sa0c"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_o8gfm"]
+font = ExtResource("7_wnvx8")
 font_size = 35
 
 [sub_resource type="Gradient" id="Gradient_3b737"]
@@ -49,6 +50,8 @@ outline_color = Color(0, 0, 0, 1)
 [node name="Tutorial2" type="Node2D"]
 scale = Vector2(0.967373, 0.989198)
 script = ExtResource("1_va8xp")
+move_duration = 0.1
+position_change_delay = 0.2
 
 [node name="Node2D" type="Node2D" parent="."]
 position = Vector2(-591.292, -386.171)

@@ -78,7 +78,7 @@ func start_cutscene() -> void:
 	await get_tree().create_timer(9).timeout
 	
 	# Slow down music
-	BeatManager.set_music_speed(0.02)
+	BeatManager.pause_track()
 	
 	# Slow down player and enemy animations via their Sprite AnimationPlayer
 	if FightManager.player_ref and FightManager.player_ref.has_node("Sprite2D"):
@@ -91,20 +91,20 @@ func start_cutscene() -> void:
 		if enemy_sprite is AnimatedSprite2D:
 			enemy_sprite.speed_scale = 0.1
 	
-	# Display texts with longer intervals
-	for i in range(cutscene_texts.size()):
-		await get_tree().create_timer(3.0).timeout
-		show_cutscene_text(cutscene_texts[i])
+	show_cutscene_text(cutscene_texts[0])
+	for i in range(cutscene_texts.size()-1):
+		await get_tree().create_timer(5.0).timeout
+		show_cutscene_text(cutscene_texts[i+1])
 		
 		# Extra long delay for the last text (controls instruction)
 		if i == cutscene_texts.size() - 1:
-			await get_tree().create_timer(5.0).timeout
+			await get_tree().create_timer(7.0).timeout
 	
 	# Wait 2 more seconds after the last text
 	await get_tree().create_timer(2.0).timeout
 	
 	# Restore normal music speed
-	BeatManager.set_music_speed(1.0)
+	BeatManager.resume_track()
 	
 	# Restore normal animation speeds
 	if FightManager.player_ref and FightManager.player_ref.has_node("Sprite2D"):
@@ -235,6 +235,12 @@ func _input(event: InputEvent) -> void:
 		print("Blocking non-key input during end screen")
 		get_viewport().set_input_as_handled()
 		return
+	
+	# Normalny input gdy nie czekamy na zakończenie walki
+	if event.is_action_pressed("PAUSE") and not PauseSystem.is_game_paused:
+		print("Pausing game...")
+		PauseSystem.pause_game()
+		get_viewport().set_input_as_handled()
 	
 	# Normalny input gdy nie czekamy na zakończenie walki
 	if event.is_action_pressed("PAUSE") and not PauseSystem.is_game_paused:
